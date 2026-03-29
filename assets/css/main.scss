@@ -1,60 +1,263 @@
 ---
-# Only the main Sass file needs front matter (the dashes are enough)
 ---
+
+/* ─── Dark Forest Green Color Palette ─── */
+
+$background-color: #0d1b0e !default;
+$text-color: #d4ddd5 !default;
+$primary-color: #2d8a4e !default;
+$border-color: #1a3a1f !default;
+$footer-background-color: #081208 !default;
+
+$link-color: #4eaa6e !default;
+$link-color-hover: #6fce8e !default;
+$link-color-visited: #3d9a5e !default;
+
+$masthead-link-color: #d4ddd5 !default;
+$masthead-link-color-hover: #4eaa6e !default;
+$navicon-link-color-hover: #4eaa6e !default;
+
+$code-background-color: #0a150b !default;
+$code-background-color-dark: #071008 !default;
+
+$info-color: #2d8a4e !default;
+$success-color: #3da55e !default;
+$warning-color: #c9a227 !default;
+$danger-color: #c0392b !default;
 
 @import "minimal-mistakes/skins/dark";
 @import "minimal-mistakes";
 
-/* ─── Custom Overrides ─── */
+/* ─── Global ─── */
 
-/* Smoother link transitions */
+body {
+  background-color: #0d1b0e;
+  color: #d4ddd5;
+}
+
 a {
   transition: color 0.2s ease;
 }
 
-/* Splash page hero — more breathing room */
+::selection {
+  background-color: #2d8a4e;
+  color: #fff;
+}
+
+hr {
+  border-color: #1a3a1f;
+}
+
+/* ─── Masthead / Nav Bar ─── */
+
+.masthead {
+  background-color: #081208;
+  border-bottom: 1px solid #1a3a1f;
+}
+
+.greedy-nav {
+  background-color: #081208;
+
+  a {
+    color: #d4ddd5;
+    &:hover { color: #4eaa6e; }
+  }
+
+  .visible-links a:before {
+    background: #2d8a4e;
+  }
+}
+
+/* ─── Page Content ─── */
+
+.page a {
+  color: #4eaa6e;
+  &:hover { color: #6fce8e; }
+}
+
+.page__content {
+  p, li {
+    font-size: 1.05em;
+    line-height: 1.75;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #e0ebe1;
+  }
+
+  strong {
+    color: #e8f0e8;
+  }
+
+  code {
+    background-color: #0a150b;
+    border: 1px solid #1a3a1f;
+    color: #4eaa6e;
+  }
+}
+
+/* ─── Splash Hero ─── */
+
 .page__hero--overlay {
+  background-color: #0a2e14;
   padding: 6em 0;
+
+  .page__title {
+    font-size: 2.4em;
+    font-weight: 700;
+  }
 }
 
-.page__hero--overlay .page__title {
-  font-size: 2.4em;
-  font-weight: 700;
+.page__hero--overlay .btn--primary {
+  background-color: #2d8a4e;
+  color: #fff;
+  border: none;
+  &:hover { background-color: #3da55e; }
 }
 
-/* Feature row cards — subtle card styling */
+/* ─── Buttons ─── */
+
+.btn--primary {
+  background-color: #2d8a4e;
+  color: #fff;
+  &:hover { background-color: #3da55e; }
+}
+
+/* ─── Feature Row Cards ─── */
+
 .feature__item {
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid #1a3a1f;
   border-radius: 6px;
   padding: 1.5em;
+  background-color: #0a150b;
   transition: border-color 0.2s ease;
+
+  &:hover { border-color: #2d8a4e; }
 }
 
-.feature__item:hover {
-  border-color: rgba(255, 255, 255, 0.2);
+/* ─── Sidebar Navigation ─── */
+
+.sidebar {
+  background-color: transparent;
 }
 
-/* Better readability */
-.page__content p,
-.page__content li {
-  font-size: 1.05em;
-  line-height: 1.75;
+.nav__list {
+  .nav__items {
+    background-color: #0a150b;
+    border: 1px solid #1a3a1f;
+    border-radius: 6px;
+    padding: 0.5em;
+  }
+
+  a {
+    color: #b0c4b0;
+    padding: 0.35em 0.5em;
+    transition: color 0.15s ease;
+    &:hover { color: #4eaa6e; }
+  }
+
+  .active {
+    border-left: 3px solid #2d8a4e;
+    padding-left: 0.5em;
+    font-weight: 600;
+    color: #4eaa6e;
+  }
 }
 
-/* Nicer code blocks */
+.nav__sub-title {
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #7a9a7e;
+  border-bottom: 1px solid #1a3a1f;
+  padding-bottom: 0.4em;
+  margin-bottom: 0.5em;
+}
+
+/* ─── Code Blocks ─── */
+
 div.highlighter-rouge,
 figure.highlight {
   border-radius: 6px;
+  background-color: #0a150b;
+  border: 1px solid #1a3a1f;
 }
 
-/* Sidebar author bio */
-.author__bio {
-  margin-top: 0.5em;
-  font-style: italic;
-  opacity: 0.85;
-}
+/* ─── Footer ─── */
 
-/* Understated footer */
 .page__footer {
-  opacity: 0.7;
+  background-color: #081208;
+  border-top: 1px solid #1a3a1f;
+  color: #7a9a7e;
+  opacity: 1;
+
+  a {
+    color: #4eaa6e;
+    &:hover { color: #6fce8e; }
+  }
+}
+
+/* ─── Archive / Post List ─── */
+
+.archive__item-title a {
+  color: #d4ddd5;
+  &:hover { color: #4eaa6e; }
+}
+
+.archive__item-excerpt {
+  color: #a0b8a2;
+}
+
+/* ─── Pagination ─── */
+
+.pagination--pager {
+  background-color: #0a150b;
+  border: 1px solid #1a3a1f;
+  color: #d4ddd5;
+
+  &:hover {
+    background-color: #1a3a1f;
+    color: #4eaa6e;
+  }
+}
+
+/* ─── Search ─── */
+
+.search__toggle {
+  color: #d4ddd5;
+  &:hover { color: #4eaa6e; }
+}
+
+/* ─── Tags ─── */
+
+.page__taxonomy-item {
+  background-color: #0a150b;
+  border: 1px solid #1a3a1f;
+  color: #b0c4b0;
+  &:hover {
+    background-color: #1a3a1f;
+    color: #4eaa6e;
+  }
+}
+
+/* ─── Blockquotes ─── */
+
+blockquote {
+  border-left: 4px solid #2d8a4e;
+  color: #a0b8a2;
+}
+
+/* ─── Tables ─── */
+
+table {
+  border-color: #1a3a1f;
+
+  th {
+    background-color: #0a150b;
+    color: #e0ebe1;
+  }
+
+  td {
+    border-color: #1a3a1f;
+  }
 }
