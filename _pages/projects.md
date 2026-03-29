@@ -1,47 +1,37 @@
 ---
-title: "Projects"
+title: "Research & Projects"
 permalink: /projects/
 layout: single
-author_profile: true
+sidebar:
+  nav: "projects"
 ---
 
-A selection of projects I've worked on. More coming soon as I document past and ongoing work.
-
----
-
-<!-- ─── PROJECT TEMPLATE ────────────────────────────
-Copy the block below for each new project.
-You can also add images: ![screenshot](/assets/images/project-name.png)
-──────────────────────────────────────────────── -->
-
-## 📊 Project Name One
-
-**Tags:** `Python` · `Data Analysis` · `Visualization`
-
-A brief description of what this project does, what problem it solves, and what you learned. Keep it to 2–3 sentences.
-
-[View on GitHub](https://github.com/taulantkoka/your-repo){: .btn .btn--primary .btn--small}
+An overview of my research projects and selected work. Use the sidebar to explore each project in detail.
 
 ---
 
-## 🔬 Project Name Two
+### [Scalable Variable Selection with Statistical Error Control](/projects/variable-selection/)
+**Tags:** `Python` · `C++` · `High-Dimensional Statistics` · `FDR Control`
 
-**Tags:** `R` · `Statistics` · `Research`
-
-Another project description. Explain the context, your approach, and the results or outcome.
-
-[View on GitHub](https://github.com/taulantkoka/your-repo){: .btn .btn--primary .btn--small}
+A novel framework for high-dimensional variable selection with false discovery rate control, scaled to datasets with 500k+ samples and millions of features through memory-aware algorithmic optimization.
 
 ---
 
-## 🛠️ Project Name Three
+### [Robust Multi-Channel Signal Recovery](/projects/signal-recovery/)
+**Tags:** `Python` · `Optimization` · `Sparse Recovery` · `Signal Processing`
 
-**Tags:** `Python` · `Automation` · `Web Scraping`
-
-Describe one more project here. Highlight the tools you used and why the project matters.
-
-[View on GitHub](https://github.com/taulantkoka/your-repo){: .btn .btn--primary .btn--small}
+Optimization-based algorithms for recovering multi-channel signals from permutation-corrupted measurements. Published at IEEE ICASSP 2025 and Signal Processing 2024.
 
 ---
 
-*This page is a work in progress — more projects are on the way.*
+### [Visibility Graph R-Peak Detection](/projects/visibility-graph/)
+**Tags:** `Python` · `Graph Algorithms` · `ECG` · `Biomedical`
+
+A graph-based algorithm for fast and accurate R-peak detection in noisy ECG signals, adopted into the [neurokit2](https://github.com/neuropsychology/NeuroKit) open-source library. Published at IEEE EMBC 2022.
+
+---
+
+### [Computer Vision Pipeline at PSI](/projects/psi-cv-pipeline/)
+**Tags:** `Python` · `Computer Vision` · `X-ray Crystallography`
+
+End-to-end pipeline for background estimation and signal detection in noisy X-ray crystallography imaging data, built during an internship at the Swiss Data Science Center / Paul Scherrer Institute.
