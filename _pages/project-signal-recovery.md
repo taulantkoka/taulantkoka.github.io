@@ -6,11 +6,26 @@ mathjax: true
 sidebar:
   nav: "projects"
 ---
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
-    TeX: { extensions: ["bm.js"] }
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    TeX: {
+      extensions: ["bm.js"]
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
   });
 </script>
+
 `Signal Processing` · `Optimization` · `Sampling Theory` · `Sparse Recovery`
 
 Traditional sampling theorems, from Shannon-Nyquist to Compressed Sensing, rely on a fundamental assumption: the correspondence between a sample and its index (or channel) is known and fixed. But what if this assumption breaks down?
