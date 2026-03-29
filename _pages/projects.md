@@ -16,4 +16,4 @@ How do you recover signals when the measurements got shuffled across channels?
 
 ---
 
-*More projects coming — I'm still migrating things over.*
+*More projects coming, I'm still migrating things over.*
