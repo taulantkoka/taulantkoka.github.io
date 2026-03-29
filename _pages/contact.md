@@ -4,7 +4,7 @@ permalink: /contact/
 layout: single
 ---
 
-Best way to reach me is through the form below or via email at [koka.taulant@outlook.de](mailto:koka.taulant@outlook.de).
+Best way to reach me is through the form below.
 
 I'm also on [LinkedIn](https://linkedin.com/in/taulant-koka-36a7971b6), [GitHub](https://github.com/taulantkoka), and [Google Scholar](https://scholar.google.com/citations?user=dbpEvYUAAAAJ&hl=de).
 
