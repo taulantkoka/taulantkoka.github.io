@@ -1,96 +1,60 @@
 ---
-# Front matter dashes tell Jekyll to process this file
+# Only the main Sass file needs front matter (the dashes are enough)
 ---
 
-/* ─── 1. CORE FOREST GREEN VARIABLES ─── */
+@import "minimal-mistakes/skins/dark";
+@import "minimal-mistakes";
 
-$background-color: #0d1b0e;
-$text-color: #d4ddd5;
-$primary-color: #2d8a4e;
-$border-color: #0a150b;
-$ui-dark: #0a150b; // This is the color of your Header/Masthead
+/* ─── Custom Overrides ─── */
 
-$link-color: #4eaa6e;
-$link-color-hover: #6fce8e;
-
-$masthead-link-color: #d4ddd5;
-$masthead-link-color-hover: #4eaa6e;
-
-$code-background-color: #081208;
-
-/* ─── 2. THEME IMPORTS ─── */
-
-@import "minimal-mistakes/skins/dark"; 
-@import "minimal-mistakes";            
-
-/* ─── 3. GLOBAL OVERRIDES ─── */
-
-body {
-  background-color: $background-color !important;
-  color: $text-color;
+/* Smoother link transitions */
+a {
+  transition: color 0.2s ease;
 }
 
-/* ─── 4. THE "MATCHING" SECTIONS (Header, Hero, Feature Area) ─── */
-
-/* Header/Masthead */
-.masthead {
-  background-color: $ui-dark !important;
-  border-bottom: 1px solid $border-color;
-}
-
-.greedy-nav {
-  background-color: $ui-dark !important;
-}
-
-/* Splash Hero (The part with your name) */
+/* Splash page hero — more breathing room */
 .page__hero--overlay {
-  background-color: $ui-dark !important; 
-  border-bottom: 1px solid $border-color;
+  padding: 6em 0;
 }
 
-/* FEATURE ROW SECTION (The background behind the three cards) */
-.feature__wrapper {
-  background-color: $ui-dark !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding: 2em 0;
-  border-bottom: 1px solid $border-color;
+.page__hero--overlay .page__title {
+  font-size: 2.4em;
+  font-weight: 700;
 }
 
-/* Individual Cards */
+/* Feature row cards — subtle card styling */
 .feature__item {
-  background-color: transparent !important; // Let the section color show through
-  border: 1px solid $border-color !important;
-  border-radius: 8px;
-  
-  &:hover {
-    border-color: $primary-color !important;
-  }
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 1.5em;
+  transition: border-color 0.2s ease;
 }
 
-/* ─── 5. BUTTONS ─── */
-
-.btn--primary {
-  background-color: $primary-color !important;
-  border: none !important;
-  color: #fff !important;
-  &:hover { background-color: #3da55e !important; }
+.feature__item:hover {
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* ─── 6. FOOTER ─── */
+/* Better readability */
+.page__content p,
+.page__content li {
+  font-size: 1.05em;
+  line-height: 1.75;
+}
 
+/* Nicer code blocks */
+div.highlighter-rouge,
+figure.highlight {
+  border-radius: 6px;
+}
+
+/* Sidebar author bio */
+.author__bio {
+  margin-top: 0.5em;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* Understated footer */
 .page__footer {
-  background-color: $ui-dark !important;
-  border-top: 1px solid $border-color;
-  color: #7a9a7e !important;
-  margin-top: 0 !important;
-}
-
-/* ─── 7. SIDEBAR ─── */
-
-.sidebar {
-  .nav__items {
-    background-color: $ui-dark;
-    border: 1px solid $border-color;
-  }
+  opacity: 0.7;
 }
