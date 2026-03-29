@@ -11,7 +11,7 @@ I'm also on [LinkedIn](https://linkedin.com/in/taulant-koka-36a7971b6), [GitHub]
 
 ---
 
-<form action="https://formspree.io/f/xnjopozr" method="POST" style="max-width: 600px;">
+<form action="https://formspree.io/f/xnjopozr" method="POST" style="max-width: 600px; background: #0a1c19; color: inherit;">
   <p>
     <label for="name"><strong>Name</strong></label><br/>
     <input type="text" name="name" id="name" required
