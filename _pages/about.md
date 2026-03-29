@@ -6,7 +6,7 @@ layout: single
 
 ## Hey, I'm Taulant
 
-I’m a Ph.D. candidate at [TU Darmstadt](https://www.etit.tu-darmstadt.de/rds/index.en.jsp), focusing on the intersection of machine learning and signal processing. My work centers on high-dimensional variable selection—specifically, how to identify meaningful patterns in massive datasets while ensuring those patterns aren't just statistical artifacts.
+I’m a Ph.D. candidate at [TU Darmstadt](https://www.etit.tu-darmstadt.de/rds/index.en.jsp), focusing on the intersection of machine learning and signal processing. My work centers on high-dimensional variable selection. Specifically, how can I identify meaningful patterns in massive datasets while ensuring those patterns aren't just statistical artifacts.
 
 I’m drawn to problems where sheer computational power isn't enough. Most of my research involves developing algorithms that can handle sparse signals and messy measurements under strict memory and reliability constraints. In practice, this means balancing theoretical guarantees with high-performance implementation in C++ and Python.
 
