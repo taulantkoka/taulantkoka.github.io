@@ -6,7 +6,7 @@ layout: single
 
 ## Hi, I'm Taulant
 
-I'm an ML researcher and Ph.D. candidate at the [Robust Data Science Group](https://www.etit.tu-darmstadt.de/rds/index.en.jsp), TU Darmstadt, Germany. My research sits at the intersection of machine learning and signal processing — I design algorithms that are scalable, statistically principled, and useful for real-world problems.
+I'm an Data Science researcher and Ph.D. candidate at the [Robust Data Science Group](https://www.etit.tu-darmstadt.de/rds/index.en.jsp), TU Darmstadt, Germany. My research sits at the intersection of machine learning and signal processing — I design algorithms that are scalable, statistically principled, and useful for real-world problems.
 
 ### Research Interests
 
