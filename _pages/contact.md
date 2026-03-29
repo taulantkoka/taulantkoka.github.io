@@ -14,17 +14,17 @@ I'm also on [LinkedIn](https://linkedin.com/in/taulant-koka-36a7971b6), [GitHub]
   <p>
     <label for="name"><strong>Name</strong></label><br/>
     <input type="text" name="name" id="name" required
-      style="width: 100%; padding: 0.5em; border: 1px solid #1f4a28; border-radius: 4px; background: #0a150b; color: inherit;">
+      style="width: 100%; padding: 0.5em; border: 1px solid #204e47; border-radius: 4px; background: #0a150b; color: inherit;">
   </p>
   <p>
     <label for="email"><strong>Email</strong></label><br/>
     <input type="email" name="_replyto" id="email" required
-      style="width: 100%; padding: 0.5em; border: 1px solid #1f4a28; border-radius: 4px; background: #0a150b; color: inherit;">
+      style="width: 100%; padding: 0.5em; border: 1px solid #204e47; border-radius: 4px; background: #0a150b; color: inherit;">
   </p>
   <p>
     <label for="message"><strong>Message</strong></label><br/>
     <textarea name="message" id="message" rows="6" required
-      style="width: 100%; padding: 0.5em; border: 1px solid #1f4a28; border-radius: 4px; background: #0a150b; color: inherit;"></textarea>
+      style="width: 100%; padding: 0.5em; border: 1px solid #204e47; border-radius: 4px; background: #0a150b; color: inherit;"></textarea>
   </p>
   <p>
     <input type="hidden" name="_subject" value="New message from taulantkoka.com">
