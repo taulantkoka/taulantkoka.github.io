@@ -1,5 +1,5 @@
 ---
-title: "Hello World — Setting Up This Site"
+title: "Setting Up This Site"
 date: 2026-03-29
 categories:
   - Meta
@@ -17,7 +17,7 @@ I've set up this site as a space to share my research, document projects, and wr
 
 I plan to write about:
 
-- **Research** — insights from my work on high-dimensional statistics, sparse signal recovery, and algorithm design
+- **Research** — insights from my research work
 - **Technical notes** — short posts on tools, methods, or problems I've solved
 - **General thoughts** — reflections on the research process, and working with data
 

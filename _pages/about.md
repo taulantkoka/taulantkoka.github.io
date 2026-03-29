@@ -11,9 +11,8 @@ I'm a Data Science researcher and Ph.D. candidate at the [Robust Data Science Gr
 ### Research Interests
 
 - **Scalable Machine Learning** — High-dimensional variable selection with statistical error control
-- **Sparse Signal Recovery** — Algorithms for recovering signals from corrupted or permuted measurements
+- **Sparse Signal Recovery** — Algorithms for recovering signals from permuted measurements
 - **Biomedical Signal Processing** — Graph-based methods for ECG analysis and noisy time-series data
-- **Computer Vision** — Detection and estimation pipelines for scientific imaging
 
 ### Background
 
