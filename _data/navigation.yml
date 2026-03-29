@@ -17,7 +17,7 @@ main:
 # Sidebar nav: Projects
 # ──────────────────────────────────────────────
 projects:
-  - title: "Research & Projects"
+  - title: "Projects"
     children:
       - title: "Overview"
         url: /projects/
