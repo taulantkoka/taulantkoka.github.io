@@ -15,16 +15,17 @@ main:
 
 # ──────────────────────────────────────────────
 # Sidebar nav: Projects
-# Add new projects here — they appear in the left sidebar
 # ──────────────────────────────────────────────
 projects:
-  - title: "Projects"
+  - title: "Research & Projects"
     children:
       - title: "Overview"
         url: /projects/
-      - title: "Project Alpha"
-        url: /projects/project-alpha/
-      - title: "Project Beta"
-        url: /projects/project-beta/
-      - title: "Project Gamma"
-        url: /projects/project-gamma/
+      - title: "Scalable Variable Selection"
+        url: /projects/variable-selection/
+      - title: "Multi-Channel Signal Recovery"
+        url: /projects/signal-recovery/
+      - title: "Visibility Graph R-Peak Detection"
+        url: /projects/visibility-graph/
+      - title: "CV Pipeline at PSI"
+        url: /projects/psi-cv-pipeline/

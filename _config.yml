@@ -2,27 +2,26 @@
 # Site Settings
 # ──────────────────────────────────────────────
 title: "Taulant Koka"
-subtitle: "Data Researcher"
+subtitle: "ML Researcher"
 name: "Taulant Koka"
-description: "Personal site of Taulant Koka — Data Researcher based in Germany. Projects, writing, and more."
+description: "Personal site of Taulant Koka — ML Researcher and Ph.D. candidate at TU Darmstadt. Research, projects, and writing."
 url: "https://taulantkoka.com"
 baseurl: ""
 repository: "taulantkoka/taulantkoka.github.io"
 
 # ──────────────────────────────────────────────
-# Theme & Skin
+# Theme & Skin — MINT = green theme
 # ──────────────────────────────────────────────
 remote_theme: "mmistakes/minimal-mistakes@4.26.2"
-minimal_mistakes_skin: "dark"
+minimal_mistakes_skin: "mint"
 
 # ──────────────────────────────────────────────
-# Site Author (used in footer now, not sidebar)
+# Site Author — used for metadata only
 # ──────────────────────────────────────────────
 author:
   name: "Taulant Koka"
-  # avatar: "/assets/images/bio-photo.jpg"
-  bio: "Data Researcher based in Germany."
-  location: "Germany"
+  bio: "ML Researcher · Ph.D. candidate at TU Darmstadt"
+  location: "Darmstadt, Germany"
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
@@ -30,12 +29,15 @@ author:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://linkedin.com/in/taulant-koka-36a7971b6"
+    - label: "Google Scholar"
+      icon: "fas fa-fw fa-graduation-cap"
+      url: "https://scholar.google.com/citations?user=dbpEvYUAAAAJ&hl=de"
     - label: "Email"
       icon: "fas fa-fw fa-envelope"
-      url: "mailto:your-email@example.com"
+      url: "mailto:koka.taulant@outlook.de"
 
 # ──────────────────────────────────────────────
-# Footer Links (your social links live here now)
+# Footer — social links live here
 # ──────────────────────────────────────────────
 footer:
   links:
@@ -45,9 +47,12 @@ footer:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://linkedin.com/in/taulant-koka-36a7971b6"
+    - label: "Google Scholar"
+      icon: "fas fa-fw fa-graduation-cap"
+      url: "https://scholar.google.com/citations?user=dbpEvYUAAAAJ&hl=de"
     - label: "Email"
       icon: "fas fa-fw fa-envelope"
-      url: "mailto:your-email@example.com"
+      url: "mailto:koka.taulant@outlook.de"
 
 # ──────────────────────────────────────────────
 # Reading & Output
@@ -82,7 +87,7 @@ include:
   - _pages
 
 # ──────────────────────────────────────────────
-# Defaults — author_profile OFF, sidebar nav where needed
+# Defaults — author_profile OFF on all pages
 # ──────────────────────────────────────────────
 defaults:
   # Blog posts
@@ -108,10 +113,10 @@ defaults:
 # ──────────────────────────────────────────────
 # SEO / Social
 # ──────────────────────────────────────────────
-og_image: /assets/images/site-og.png
 social:
   type: "Person"
   name: "Taulant Koka"
   links:
     - "https://github.com/taulantkoka"
     - "https://linkedin.com/in/taulant-koka-36a7971b6"
+    - "https://scholar.google.com/citations?user=dbpEvYUAAAAJ&hl=de"

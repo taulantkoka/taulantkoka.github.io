@@ -1,18 +1,16 @@
 ---
-# Only the main Sass file needs front matter (the dashes are enough)
 ---
 
-@import "minimal-mistakes/skins/dark";
+@import "minimal-mistakes/skins/mint";
 @import "minimal-mistakes";
 
 /* ─── Custom Overrides ─── */
 
-/* Smoother link transitions */
 a {
   transition: color 0.2s ease;
 }
 
-/* Splash page hero */
+/* Splash hero */
 .page__hero--overlay {
   padding: 6em 0;
 }
@@ -24,14 +22,14 @@ a {
 
 /* Feature row cards */
 .feature__item {
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 6px;
   padding: 1.5em;
   transition: border-color 0.2s ease;
 }
 
 .feature__item:hover {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 /* Better readability */
@@ -49,35 +47,35 @@ figure.highlight {
 
 /* ─── Sidebar Nav Styling ─── */
 
-/* Active link in sidebar nav */
+/* Active link highlight */
 .nav__list .active {
-  border-left: 3px solid #f89820;
+  border-left: 3px solid $primary-color;
   padding-left: 0.5em;
   font-weight: 600;
 }
 
-/* Sidebar nav links — spacing and hover */
+/* Nav link spacing */
 .nav__list a {
   padding: 0.35em 0;
   transition: color 0.15s ease;
 }
 
 .nav__list a:hover {
-  color: #f89820;
+  color: $primary-color;
 }
 
-/* Sidebar nav section title */
+/* Section title in sidebar */
 .nav__sub-title {
   font-size: 0.85em;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   opacity: 0.7;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding-bottom: 0.4em;
   margin-bottom: 0.5em;
 }
 
-/* Understated footer */
+/* Footer — clean and understated */
 .page__footer {
-  opacity: 0.7;
+  opacity: 0.8;
 }

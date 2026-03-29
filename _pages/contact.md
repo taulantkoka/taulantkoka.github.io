@@ -4,7 +4,9 @@ permalink: /contact/
 layout: single
 ---
 
-Have a question, want to collaborate, or just want to say hello? Feel free to reach out using the form below or connect with me on [LinkedIn](https://linkedin.com/in/taulant-koka-36a7971b6) or [GitHub](https://github.com/taulantkoka).
+Have a question, want to collaborate on research, or just want to say hello? Feel free to reach out using the form below.
+
+You can also find me on [LinkedIn](https://linkedin.com/in/taulant-koka-36a7971b6), [GitHub](https://github.com/taulantkoka), or [Google Scholar](https://scholar.google.com/citations?user=dbpEvYUAAAAJ&hl=de).
 
 ---
 
