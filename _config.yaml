@@ -1,6 +1,13 @@
+
 remote_theme: mmistakes/minimal-mistakes
 minimal_mistakes_skin: "air"
 
+plugins:
+  - jekyll-include-cache
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
 # Site Settings
 title: "Taulant Koka"
 url: "https://taulantkoka.com"
