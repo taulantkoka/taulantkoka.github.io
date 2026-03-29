@@ -1,8 +1,7 @@
 remote_theme: mmistakes/minimal-mistakes
 minimal_mistakes_skin: "custom"
-repository: taulantkoka/taulantkoka.github.io  # <--- ADD THIS LINE
+repository: taulantkoka/taulantkoka.github.io 
 
-# The rest of your config stays the same...
 plugins:
   - jekyll-include-cache
   - jekyll-paginate
