@@ -3,17 +3,15 @@
 ---
 
 /* ─── 1. 5-COLOR SYSTEM ─── */
-/* ─── 1. 5-COLOR SYSTEM (REFINED) ─── */
 
-$bg: #122317;        // ← lighter, richer forest green (MAIN BODY)
-$surface: #ffffff;   // cards / panels
-$surface-dark: #ffffff; // ← DARKEST (nav + footer)
+$white: #ffffff;        // white
+$bg: #004115;        // page background
+$surface: #001d04;   // cards, nav, footer
+$text: #c1d1c3;      // main text
+$primary: #2d8a4e;   // accent green
+$border: #002706;    // borders
 
-$text: #d4ddd5;
-$primary: #ffffff;
-$border: #ffffff;
-
-/* ─── DERIVED ─── */
+/* ─── DERIVED COLORS ─── */
 
 $text-soft: rgba($text, 0.75);
 $text-strong: lighten($text, 8%);
@@ -26,7 +24,6 @@ $surface-strong: darken($surface, 4%);
 
 $code-bg: darken($bg, 2%);
 $code-bg-dark: darken($bg, 4%);
-
 
 /* ─── 2. THEME IMPORTS ─── */
 
