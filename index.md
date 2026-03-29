@@ -17,7 +17,7 @@ feature_row:
     btn_label: "Browse Projects"
     btn_class: "btn--primary"
   - title: "Blog"
-    excerpt: "Notes on things I find interesting, problems I've solved, and occasional rabbit holes."
+    excerpt: "Notes on things I find interesting, problems I've solved, and occasional rabbit holes.    <br/>"
     url: "/blog/"
     btn_label: "Read Posts"
     btn_class: "btn--primary"
@@ -25,7 +25,7 @@ feature_row:
     excerpt: "Want to reach me?<br/>
     <br/>
     <br/>
-    bla
+    <br/>
     "
     url: "/contact/"
     btn_label: "Say Hello"
