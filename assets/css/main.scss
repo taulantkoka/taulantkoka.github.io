@@ -32,8 +32,8 @@ $code-bg-dark: darken($bg, 4%);
 
 /* ─── 3. BASE ─── */
 
-body {
-  background: $bg;
+html, body {
+  background: $bg !important;
   color: $text;
 }
 
@@ -58,7 +58,7 @@ hr {
 .masthead,
 .greedy-nav,
 .page__footer {
-  background: $surface;
+  background: $surface-dark !important;
 }
 
 .masthead {
@@ -68,10 +68,7 @@ hr {
 .page__footer {
   border-top: 1px solid $border;
   color: $text-soft;
-
-  a:hover { color: $link-hover; }
 }
-
 /* ─── 5. HERO ─── */
 
 .page__hero--overlay {
