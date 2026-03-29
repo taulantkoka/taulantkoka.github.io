@@ -4,6 +4,7 @@ title: "Taulant Koka"
 permalink: /
 hidden: true
 header:
+  overlay_color: "#ffffff00"
   overlay_filter: "0.5"
 excerpt: >
   Data Science Researcher · Ph.D. candidate at TU Darmstadt<br/>
