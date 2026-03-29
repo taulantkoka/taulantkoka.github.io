@@ -1,1 +1,15 @@
 remote_theme: mmistakes/minimal-mistakes
+minimal_mistakes_skin: "default" # Options: "air", "contrast", "dark", "dirt", "sunrise"
+
+# Site Information
+title: "Taulant Koka"
+description: "Causal Inference & Air Quality Research"
+url: "https://taulantkoka.com"
+author:
+  name: "Taulant Koka"
+  bio: "Data Researcher analyzing urban policy impacts."
+  location: "Germany"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/taulantkoka"
