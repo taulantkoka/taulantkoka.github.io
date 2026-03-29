@@ -1,4 +1,4 @@
-/* Deep Forest Green Skin */
+/* Deep Forest Green Skin - Full Coverage */
 
 /* Core Colors */
 $background-color: #0d1b15 !default; 
@@ -13,10 +13,14 @@ $link-color-hover: #ffffff !default;
 /* Navigation & UI */
 $masthead-link-color: $text-color !default;
 $masthead-link-color-hover: $link-color !default;
-$navicon-link-color-hover: $link-color !default;
 
 /* Sidebar Colors */
 $sidebar-color: $text-color !default;
+
+/* Footer - THIS FIXES THE WHITE BOX */
+$footer-background-color: #0a1410 !default; // Even darker green for the bottom
+$footer-link-color: $muted-text-color !default;
+$footer-link-color-hover: $text-color !default;
 
 /* Code Blocks */
 $code-background-color: #13241c !default;
