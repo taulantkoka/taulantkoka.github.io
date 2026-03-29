@@ -1,17 +1,20 @@
-/* Custom Dark Skin (Mocha-ish) */
+/* Deep Forest Green Custom Skin */
 
 /* Colors */
-$background-color: #1e1e2e !default; // Dark crust
-$text-color: #cdd6f4 !default;       // Light text
-$muted-text-color: #a6adc8 !default;
-$primary-color: #89b4fa !default;    // Blue accent
-$border-color: #313244 !default;
-$link-color: #f5c2e7 !default;       // Pink links
-$link-color-hover: #94e2d5 !default; // Teal hover
+$background-color: #0d1b15 !default; // The "Deep Forest" base (nearly black-green)
+$text-color: #e8f5e9 !default;       // Soft mint-white (high contrast but easy on eyes)
+$muted-text-color: #a5d6a7 !default; // Mossy green for secondary text
+$primary-color: #2e7d32 !default;    // Rich forest green for accents
+$border-color: #1b3022 !default;     // Darker green for lines
+$link-color: #81c784 !default;       // Pale leaf green for links
+$link-color-hover: #ffffff !default; // Pure white on hover
 
-/* Site header */
+/* Site header (Masthead) */
 $masthead-link-color: $text-color !default;
-$masthead-link-color-hover: $primary-color !default;
+$masthead-link-color-hover: $link-color !default;
 
 /* Sidebar */
 $sidebar-color: $text-color !default;
+
+/* Code blocks (to keep them dark and readable) */
+$code-background-color: #13241c !default;
