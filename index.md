@@ -17,14 +17,12 @@ feature_row:
     btn_label: "Browse Projects"
     btn_class: "btn--primary"
   - title: "Blog"
-    excerpt: "Notes on things I find interesting, problems I've solved, and occasional rabbit holes.    <br/>
-    <br/>"
+    excerpt: "Notes on things I find interesting, problems I've solved, and occasional rabbit holes.    <br/>"
     url: "/blog/"
     btn_label: "Read Posts"
     btn_class: "btn--primary"
   - title: "Contact"
     excerpt: "Want to reach me?<br/>
-    <br/>
     <br/>
     <br/>
     "
