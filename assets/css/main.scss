@@ -199,7 +199,7 @@ hr {
 
   .nav__items {
     background: $surface;
-    border: 1px solid $link_hover;
+    border: 1px solid $border;
     border-radius: 8px;
     padding: 1.25em 1em;
   }
@@ -213,7 +213,7 @@ hr {
   font-size: 0.8em;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: $link;
+  color: $link_hover;
   border-bottom: 1px solid $border;
   padding-bottom: 0.6em;
   margin-bottom: 0.75em;
