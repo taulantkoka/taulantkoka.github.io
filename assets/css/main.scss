@@ -1,0 +1,60 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+@import "minimal-mistakes/skins/dark";
+@import "minimal-mistakes";
+
+/* ─── Custom Overrides ─── */
+
+/* Smoother link transitions */
+a {
+  transition: color 0.2s ease;
+}
+
+/* Splash page hero — more breathing room */
+.page__hero--overlay {
+  padding: 6em 0;
+}
+
+.page__hero--overlay .page__title {
+  font-size: 2.4em;
+  font-weight: 700;
+}
+
+/* Feature row cards — subtle card styling */
+.feature__item {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 1.5em;
+  transition: border-color 0.2s ease;
+}
+
+.feature__item:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Better readability */
+.page__content p,
+.page__content li {
+  font-size: 1.05em;
+  line-height: 1.75;
+}
+
+/* Nicer code blocks */
+div.highlighter-rouge,
+figure.highlight {
+  border-radius: 6px;
+}
+
+/* Sidebar author bio */
+.author__bio {
+  margin-top: 0.5em;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* Understated footer */
+.page__footer {
+  opacity: 0.7;
+}
