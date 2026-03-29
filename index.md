@@ -27,8 +27,7 @@ feature_row:
     btn_label: "Read Posts"
     btn_class: "btn--primary"
   - title: "Contact"
-    excerpt: "Want to reach me?
-    
+    excerpt: "Want to reach me?<br/><br/>
     "
     url: "/contact/"
     btn_label: "Say Hello"
