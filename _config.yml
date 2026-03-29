@@ -20,7 +20,7 @@ minimal_mistakes_skin: "dark"
 # ──────────────────────────────────────────────
 author:
   name: "Taulant Koka"
-  bio: "ML Researcher · Ph.D. candidate at TU Darmstadt"
+  bio: "Data Science Researcher · Ph.D. candidate at TU Darmstadt"
   location: "Darmstadt, Germany"
   links:
     - label: "GitHub"

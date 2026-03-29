@@ -13,10 +13,11 @@ header:
       url: "/about/"
 excerpt: >
   Data Science Researcher · Ph.D. candidate at TU Darmstadt<br/>
+  Scalable machine learning, high-dimensional optimization, and statistical inference.
 
 feature_row:
   - title: "Research & Projects"
-    excerpt: "Novel algorithms for variable selection, signal recovery, and biomedical signal processing."
+    excerpt: "Novel algorithms for variable selection, signal recovery, and biomedical signal processing — published at IEEE ICASSP, Signal Processing, and IEEE EMBC."
     url: "/projects/"
     btn_label: "Browse Projects"
     btn_class: "btn--primary"
