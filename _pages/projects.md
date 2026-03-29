@@ -12,7 +12,7 @@ A mix of research projects, side projects, and things I've built. Some are publi
 
 ### [Shuffled Multi-Channel Signal Recovery](/projects/signal-recovery/)
 
-How do you recover signals when the measurements got shuffled across channels? This one turned into two publications.
+How do you recover signals when the measurements got shuffled across channels?
 
 ---
 
