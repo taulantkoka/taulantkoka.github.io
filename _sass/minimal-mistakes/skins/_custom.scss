@@ -1,0 +1,17 @@
+/* Custom Dark Skin (Mocha-ish) */
+
+/* Colors */
+$background-color: #1e1e2e !default; // Dark crust
+$text-color: #cdd6f4 !default;       // Light text
+$muted-text-color: #a6adc8 !default;
+$primary-color: #89b4fa !default;    // Blue accent
+$border-color: #313244 !default;
+$link-color: #f5c2e7 !default;       // Pink links
+$link-color-hover: #94e2d5 !default; // Teal hover
+
+/* Site header */
+$masthead-link-color: $text-color !default;
+$masthead-link-color-hover: $primary-color !default;
+
+/* Sidebar */
+$sidebar-color: $text-color !default;
