@@ -3,7 +3,6 @@ title: "About"
 permalink: /about/
 layout: single
 mathjax: true
-
 ---
 
 ## Hey, I'm Taulant
@@ -30,6 +29,7 @@ Beyond my thesis, I enjoy tinkering with public data and open-source tools:
 * **Air Quality in Hessen**: I am currently [analyzing public data](/projects/) to quantify the impact of "Umweltzonen" (low-emission zones) on urban air quality over the last decade.
 * **ECG Analysis**: As a side project during my Master's, I developed a visibility-graph-based method for R-peak detection in noisy ECG signals. It was integrated into [NeuroKit2](https://github.com/neuropsychology/NeuroKit), a library widely used in the neuroscience and biomedical engineering communities.
 * **Intersection with Hardware**: I have a strong background in measurement and sensor technology and occasionally work on microcontroller and Arduino-based projects in my free time. The intersection of signal processing and statistics with the hardware domain proves time and time again to be a rewarding combination.
+  
 ---
 
 [GitHub](https://github.com/taulantkoka) · [LinkedIn](https://linkedin.com/in/taulant-koka-36a7971b6) · [Google Scholar](https://scholar.google.com/citations?user=dbpEvYUAAAAJ&hl=de) · [Contact](/contact/)
