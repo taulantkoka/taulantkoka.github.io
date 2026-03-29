@@ -13,7 +13,6 @@ header:
       url: "/about/"
 excerpt: >
   Data Science Researcher · Ph.D. candidate at TU Darmstadt<br/>
-  Scalable machine learning, high-dimensional optimization, and statistical inference.
 
 feature_row:
   - title: "Research & Projects"
