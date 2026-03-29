@@ -1,86 +1,84 @@
 ---
+# Front matter dashes tell Jekyll to process this file
 ---
 
-/* ─── Dark Forest Green Color Palette ─── */
+/* ─── 1. CORE FOREST GREEN VARIABLES ─── */
+/* We remove !default to FORCE these colors over the theme defaults */
 
-$background-color: #0d1b0e !default;
-$text-color: #d4ddd5 !default;
-$primary-color: #2d8a4e !default;
-$border-color: #1a3a1f !default;
-$footer-background-color: #081208 !default;
+$background-color: #0d1b0e;
+$text-color: #d4ddd5;
+$primary-color: #2d8a4e;
+$border-color: #1a3a1f;
+$footer-background-color: #081208;
 
-$link-color: #4eaa6e !default;
-$link-color-hover: #6fce8e !default;
-$link-color-visited: #3d9a5e !default;
+$link-color: #4eaa6e;
+$link-color-hover: #6fce8e;
+$link-color-visited: #3d9a5e;
 
-$masthead-link-color: #d4ddd5 !default;
-$masthead-link-color-hover: #4eaa6e !default;
-$navicon-link-color-hover: #4eaa6e !default;
+$masthead-link-color: #d4ddd5;
+$masthead-link-color-hover: #4eaa6e;
+$navicon-link-color-hover: #4eaa6e;
 
-$code-background-color: #0a150b !default;
-$code-background-color-dark: #071008 !default;
+$code-background-color: #0a150b;
+$code-background-color-dark: #071008;
 
-$info-color: #2d8a4e !default;
-$success-color: #3da55e !default;
-$warning-color: #c9a227 !default;
-$danger-color: #c0392b !default;
+$info-color: #2d8a4e;
+$success-color: #3da55e;
+$warning-color: #c9a227;
+$danger-color: #c0392b;
 
-@import "minimal-mistakes/skins/dark";
-@import "minimal-mistakes";
+/* ─── 2. THEME IMPORTS ─── */
 
-/* ─── Global ─── */
+@import "minimal-mistakes/skins/dark"; // Provides the base dark logic
+@import "minimal-mistakes";            // Provides the layout logic
+
+/* ─── 3. GLOBAL OVERRIDES ─── */
 
 body {
-  background-color: #0d1b0e;
-  color: #d4ddd5;
+  background-color: $background-color !important;
+  color: $text-color;
 }
 
-a {
-  transition: color 0.2s ease;
+/* Fixes the "White Bottom" and ensures the footer is Forest Dark */
+.page__footer {
+  background-color: $footer-background-color !important;
+  color: #7a9a7e !important;
+  border-top: 1px solid $border-color;
+  margin-top: 0; // Ensures no gap between content and footer
+  
+  a {
+    color: $link-color;
+    &:hover { color: $link-color-hover; }
+  }
 }
 
-::selection {
-  background-color: #2d8a4e;
-  color: #fff;
+.page__footer-copyright {
+  color: #5a7a5e !important;
 }
 
-hr {
-  border-color: #1a3a1f;
-}
-
-/* ─── Masthead / Nav Bar ─── */
+/* ─── 4. MASTHEAD / NAVIGATION ─── */
 
 .masthead {
-  background-color: #081208;
-  border-bottom: 1px solid #1a3a1f;
+  background-color: $footer-background-color;
+  border-bottom: 1px solid $border-color;
 }
 
 .greedy-nav {
-  background-color: #081208;
-
+  background-color: $footer-background-color;
+  
   a {
-    color: #d4ddd5;
-    &:hover { color: #4eaa6e; }
+    color: $text-color;
+    &:hover { color: $link-color; }
   }
 
   .visible-links a:before {
-    background: #2d8a4e;
+    background: $primary-color;
   }
 }
 
-/* ─── Page Content ─── */
-
-.page a {
-  color: #4eaa6e;
-  &:hover { color: #6fce8e; }
-}
+/* ─── 5. PAGE CONTENT ─── */
 
 .page__content {
-  p, li {
-    font-size: 1.05em;
-    line-height: 1.75;
-  }
-
   h1, h2, h3, h4, h5, h6 {
     color: #e0ebe1;
   }
@@ -90,174 +88,53 @@ hr {
   }
 
   code {
-    background-color: #0a150b;
-    border: 1px solid #1a3a1f;
-    color: #4eaa6e;
+    background-color: $code-background-color;
+    border: 1px solid $border-color;
+    color: $link-color;
   }
 }
 
-/* ─── Splash Hero ─── */
-
-.page__hero--overlay {
-  background-color: #0a2e14;
-  padding: 6em 0;
-
-  .page__title {
-    font-size: 2.4em;
-    font-weight: 700;
-  }
-}
-
-.page__hero--overlay .btn--primary {
-  background-color: #2d8a4e;
-  color: #fff;
-  border: none;
-  &:hover { background-color: #3da55e; }
-}
-
-/* ─── Buttons ─── */
-
-.btn--primary {
-  background-color: #2d8a4e;
-  color: #fff;
-  &:hover { background-color: #3da55e; }
-}
-
-/* ─── Feature Row Cards ─── */
-
-.feature__item {
-  border: 1px solid #1a3a1f;
-  border-radius: 6px;
-  padding: 1.5em;
-  background-color: #0a150b;
-  transition: border-color 0.2s ease;
-
-  &:hover { border-color: #2d8a4e; }
-}
-
-/* ─── Sidebar Navigation ─── */
+/* ─── 6. SIDEBAR FIXES ─── */
 
 .sidebar {
-  background-color: transparent;
-}
-
-.nav__list {
+  /* Fixes the redundant title coloring and background */
+  .nav__list {
+    background-color: transparent;
+  }
+  
   .nav__items {
-    background-color: #0a150b;
-    border: 1px solid #1a3a1f;
-    border-radius: 6px;
-    padding: 0.5em;
+    background-color: $code-background-color;
+    border: 1px solid $border-color;
   }
-
-  a {
-    color: #b0c4b0;
-    padding: 0.35em 0.5em;
-    transition: color 0.15s ease;
-    &:hover { color: #4eaa6e; }
-  }
-
-  .active {
-    border-left: 3px solid #2d8a4e;
-    padding-left: 0.5em;
-    font-weight: 600;
-    color: #4eaa6e;
+  
+  .author__name {
+    color: #e0ebe1;
   }
 }
 
-.nav__sub-title {
-  font-size: 0.85em;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #7a9a7e;
-  border-bottom: 1px solid #1a3a1f;
-  padding-bottom: 0.4em;
-  margin-bottom: 0.5em;
-}
-
-/* ─── Code Blocks ─── */
+/* ─── 7. CODE BLOCKS ─── */
 
 div.highlighter-rouge,
 figure.highlight {
+  background-color: $code-background-color-dark;
+  border: 1px solid $border-color;
   border-radius: 6px;
-  background-color: #0a150b;
-  border: 1px solid #1a3a1f;
 }
 
-/* ─── Footer ─── */
+/* ─── 8. TABLES & SELECTION ─── */
 
-.page__footer {
-  background-color: #081208;
-  border-top: 1px solid #1a3a1f;
-  color: #7a9a7e;
-  opacity: 1;
-
-  a {
-    color: #4eaa6e;
-    &:hover { color: #6fce8e; }
-  }
+::selection {
+  background-color: $primary-color;
+  color: #fff;
 }
-
-/* ─── Archive / Post List ─── */
-
-.archive__item-title a {
-  color: #d4ddd5;
-  &:hover { color: #4eaa6e; }
-}
-
-.archive__item-excerpt {
-  color: #a0b8a2;
-}
-
-/* ─── Pagination ─── */
-
-.pagination--pager {
-  background-color: #0a150b;
-  border: 1px solid #1a3a1f;
-  color: #d4ddd5;
-
-  &:hover {
-    background-color: #1a3a1f;
-    color: #4eaa6e;
-  }
-}
-
-/* ─── Search ─── */
-
-.search__toggle {
-  color: #d4ddd5;
-  &:hover { color: #4eaa6e; }
-}
-
-/* ─── Tags ─── */
-
-.page__taxonomy-item {
-  background-color: #0a150b;
-  border: 1px solid #1a3a1f;
-  color: #b0c4b0;
-  &:hover {
-    background-color: #1a3a1f;
-    color: #4eaa6e;
-  }
-}
-
-/* ─── Blockquotes ─── */
-
-blockquote {
-  border-left: 4px solid #2d8a4e;
-  color: #a0b8a2;
-}
-
-/* ─── Tables ─── */
 
 table {
-  border-color: #1a3a1f;
-
+  border-color: $border-color;
   th {
-    background-color: #0a150b;
+    background-color: $code-background-color;
     color: #e0ebe1;
   }
-
   td {
-    border-color: #1a3a1f;
+    border-color: $border-color;
   }
 }
