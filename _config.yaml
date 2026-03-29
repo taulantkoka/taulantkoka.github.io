@@ -1,6 +1,6 @@
 
 remote_theme: mmistakes/minimal-mistakes
-minimal_mistakes_skin: "air"
+minimal_mistakes_skin: "catppuccin_mocha"
 
 plugins:
   - jekyll-include-cache
