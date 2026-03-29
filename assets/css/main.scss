@@ -8,23 +8,15 @@ $background-color: #0d1b0e;
 $text-color: #d4ddd5;
 $primary-color: #2d8a4e;
 $border-color: #1a3a1f;
-$footer-background-color: #081208; // This is our "Header" color
+$ui-dark: #081208; // This is the color of your Header/Masthead
 
 $link-color: #4eaa6e;
 $link-color-hover: #6fce8e;
-$link-color-visited: #3d9a5e;
 
 $masthead-link-color: #d4ddd5;
 $masthead-link-color-hover: #4eaa6e;
-$navicon-link-color-hover: #4eaa6e;
 
 $code-background-color: #0a150b;
-$code-background-color-dark: #071008;
-
-$info-color: #2d8a4e;
-$success-color: #3da55e;
-$warning-color: #c9a227;
-$danger-color: #c0392b;
 
 /* ─── 2. THEME IMPORTS ─── */
 
@@ -38,121 +30,67 @@ body {
   color: $text-color;
 }
 
-#main {
-  background-color: $background-color;
-}
+/* ─── 4. THE "MATCHING" SECTIONS (Header, Hero, Feature Area) ─── */
 
-/* ─── 4. MASTHEAD / NAVIGATION (Header Row) ─── */
-
+/* Header/Masthead */
 .masthead {
-  background-color: $footer-background-color;
+  background-color: $ui-dark !important;
   border-bottom: 1px solid $border-color;
 }
 
 .greedy-nav {
-  background-color: $footer-background-color;
-  
-  a {
-    color: $text-color;
-    &:hover { color: $link-color; }
-  }
-
-  .visible-links a:before {
-    background: $primary-color;
-  }
+  background-color: $ui-dark !important;
 }
 
-/* ─── 5. FEATURE ROW CARDS (Synced with Header) ─── */
+/* Splash Hero (The part with your name) */
+.page__hero--overlay {
+  background-color: $ui-dark !important; 
+  border-bottom: 1px solid $border-color;
+}
 
+/* FEATURE ROW SECTION (The background behind the three cards) */
+.feature__wrapper {
+  background-color: $ui-dark !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding: 2em 0;
+  border-bottom: 1px solid $border-color;
+}
+
+/* Individual Cards */
 .feature__item {
-  background-color: $footer-background-color !important; // Matches Header
-  border: 1px solid $border-color;
-  border-radius: 6px;
-  padding: 1.5em;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-
-  &:hover { 
-    border-color: $primary-color;
-    transform: translateY(-2px); // Subtle lift effect
-  }
-
-  .archive__item-title {
-    color: #e0ebe1;
+  background-color: transparent !important; // Let the section color show through
+  border: 1px solid $border-color !important;
+  border-radius: 8px;
+  
+  &:hover {
+    border-color: $primary-color !important;
   }
 }
 
-/* ─── 6. PAGE CONTENT ─── */
+/* ─── 5. BUTTONS ─── */
 
-.page__content {
-  h1, h2, h3, h4, h5, h6 {
-    color: #e0ebe1;
-  }
+.btn--primary {
+  background-color: $primary-color !important;
+  border: none !important;
+  color: #fff !important;
+  &:hover { background-color: #3da55e !important; }
+}
 
-  strong {
-    color: #e8f0e8;
-  }
+/* ─── 6. FOOTER ─── */
 
-  code {
-    background-color: $code-background-color;
-    border: 1px solid $border-color;
-    color: $link-color;
-  }
+.page__footer {
+  background-color: $ui-dark !important;
+  border-top: 1px solid $border-color;
+  color: #7a9a7e !important;
+  margin-top: 0 !important;
 }
 
 /* ─── 7. SIDEBAR ─── */
 
 .sidebar {
   .nav__items {
-    background-color: $footer-background-color; // Synced with Header/Cards
+    background-color: $ui-dark;
     border: 1px solid $border-color;
-  }
-  
-  .author__name {
-    color: #e0ebe1;
-  }
-}
-
-/* ─── 8. CODE BLOCKS ─── */
-
-div.highlighter-rouge,
-figure.highlight {
-  background-color: $code-background-color-dark;
-  border: 1px solid $border-color;
-  border-radius: 6px;
-}
-
-/* ─── 9. FOOTER ─── */
-
-.page__footer {
-  background-color: $footer-background-color !important;
-  color: #7a9a7e !important;
-  border-top: 1px solid $border-color;
-  margin-top: 0;
-  
-  a {
-    color: $link-color;
-    &:hover { color: $link-color-hover; }
-  }
-}
-
-.page__footer-copyright {
-  color: #5a7a5e !important;
-}
-
-/* ─── 10. TABLES & SELECTION ─── */
-
-::selection {
-  background-color: $primary-color;
-  color: #fff;
-}
-
-table {
-  border-color: $border-color;
-  th {
-    background-color: $footer-background-color;
-    color: #e0ebe1;
-  }
-  td {
-    border-color: $border-color;
   }
 }
