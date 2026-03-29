@@ -3,11 +3,10 @@ minimal_mistakes_skin: "default" # Options: "air", "contrast", "dark", "dirt", "
 
 # Site Information
 title: "Taulant Koka"
-description: "Causal Inference & Air Quality Research"
 url: "https://taulantkoka.com"
 author:
   name: "Taulant Koka"
-  bio: "Data Researcher analyzing urban policy impacts."
+  bio: "Data Science Researcher."
   location: "Germany"
   links:
     - label: "GitHub"
