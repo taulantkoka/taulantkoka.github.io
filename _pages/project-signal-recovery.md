@@ -8,7 +8,7 @@ sidebar:
 
 `Signal Processing` · `Optimization` · `Sampling Theory` · `Sparse Recovery`
 
-Traditional sampling theorems—from Shannon-Nyquist to Compressed Sensing—rely on a fundamental assumption: the correspondence between a sample and its index (or channel) is known and fixed. In many real-world scenarios, this assumption breaks down.
+Traditional sampling theorems, from Shannon-Nyquist to Compressed Sensing, rely on a fundamental assumption: the correspondence between a sample and its index (or channel) is known and fixed. But what if this assumption breaks down?
 
 ## The Problem: Unlabeled Sensing
 
