@@ -17,7 +17,7 @@ You can also find me on [LinkedIn](https://linkedin.com/in/taulant-koka-36a7971b
   3. Replace YOUR_FORM_ID below
 -->
 
-<form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="max-width: 600px;">
+<form action="https://formspree.io/f/xnjopozr" method="POST" style="max-width: 600px;">
   <p>
     <label for="name"><strong>Name</strong></label><br/>
     <input type="text" name="name" id="name" required
