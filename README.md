@@ -1,19 +1,15 @@
 # Deployment Instructions
 
-## IMPORTANT: Replace ALL existing files
+## IMPORTANT: Replace ALL existing files + use GitHub Actions
 
-This won't work if you just add these files alongside the old ones.
-You need to **delete everything** in your repo first, then add these files.
+This site uses a GitHub Actions workflow to build Jekyll with the remote theme.
 
-### Step-by-step:
+### Step 1: Set GitHub Pages source to GitHub Actions
 
-1. **Go to your repo**: https://github.com/taulantkoka/taulantkoka.github.io
-2. **Delete ALL existing files** in the repo (or clone locally and remove everything)
-3. **Upload/push ALL files from this zip** to the root of the repo
-4. **Wait 1-2 minutes** for GitHub Pages to rebuild
-5. **Check** https://taulantkoka.com
+1. Go to **Settings → Pages** in your repo
+2. Under **Build and deployment → Source**, select **"GitHub Actions"** (not "Deploy from a branch")
 
-### Quick way via command line:
+### Step 2: Replace all files in your repo
 
 ```bash
 # Clone your repo
@@ -26,19 +22,24 @@ find . -maxdepth 1 ! -name '.git' ! -name '.' -exec rm -rf {} +
 # Unzip the new site files here
 unzip /path/to/taulantkoka-site-v4.zip -d .
 
-# Remove the README (it's just for you, not for the site)
-rm README.md
-
-# Push
+# Push (this triggers the GitHub Actions build)
 git add -A
 git commit -m "Rebuild site with sidebar navigation"
 git push
 ```
 
-### File structure you should have:
+### Step 3: Wait and check
+
+- Go to **Actions** tab in your repo to watch the build
+- Once the green checkmark appears, check https://taulantkoka.com
+
+### File structure:
 
 ```
 taulantkoka.github.io/
+├── .github/
+│   └── workflows/
+│       └── jekyll.yml               ← GitHub Actions workflow
 ├── _config.yml
 ├── _data/
 │   └── navigation.yml
@@ -56,6 +57,7 @@ taulantkoka.github.io/
 ├── assets/
 │   └── css/
 │       └── main.scss
+├── CNAME
 ├── Gemfile
 └── index.md
 ```
