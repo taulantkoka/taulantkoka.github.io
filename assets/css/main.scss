@@ -2,15 +2,17 @@
 # Front matter dashes tell Jekyll to process this file
 ---
 
-/* ─── 1. 5-COLOR SYSTEM ─── */
+/* ─── 1. 5-COLOR SYSTEM (REFINED) ─── */
 
-$bg: #0d1b0e;        // page background
-$surface: #0f2212;   // cards, nav, footer
-$text: #d4ddd5;      // main text
-$primary: #2d8a4e;   // accent green
-$border: #1a3a1f;    // borders
+$bg: #122317;        // ← lighter, richer forest green (MAIN BODY)
+$surface: #0d1b0e;   // cards / panels
+$surface-dark: #081208; // ← DARKEST (nav + footer)
 
-/* ─── DERIVED COLORS ─── */
+$text: #d4ddd5;
+$primary: #2d8a4e;
+$border: #1a3a1f;
+
+/* ─── DERIVED ─── */
 
 $text-soft: rgba($text, 0.75);
 $text-strong: lighten($text, 8%);
@@ -23,7 +25,6 @@ $surface-strong: darken($surface, 4%);
 
 $code-bg: darken($bg, 2%);
 $code-bg-dark: darken($bg, 4%);
-
 /* ─── 2. THEME IMPORTS ─── */
 
 @import "minimal-mistakes/skins/dark";
@@ -31,8 +32,8 @@ $code-bg-dark: darken($bg, 4%);
 
 /* ─── 3. BASE ─── */
 
-body {
-  background: $bg;
+html, body {
+  background: $bg !important;
   color: $text;
 }
 
@@ -57,7 +58,7 @@ hr {
 .masthead,
 .greedy-nav,
 .page__footer {
-  background: $surface;
+  background: $surface-dark !important;
 }
 
 .masthead {
@@ -67,8 +68,6 @@ hr {
 .page__footer {
   border-top: 1px solid $border;
   color: $text-soft;
-
-  a:hover { color: $link-hover; }
 }
 
 /* ─── 5. HERO ─── */
