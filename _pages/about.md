@@ -23,32 +23,4 @@ After my Master's, I joined the SDSC Hub at the [Paul Scherrer Institute (PSI)](
 
 Since October 2022, I've been pursuing my Ph.D. at TU Darmstadt.
 
-### Publications
-
-- **T. Koka**, M. C. Tsakiris, B. Béjar Haro, M. Muma. *Cross-Channel Unlabeled Sensing over a Union of Signal Subspaces.* IEEE ICASSP, 2025.
-- **T. Koka**, M. C. Tsakiris, M. Muma, B. Béjar Haro. *Shuffled multi-channel sparse signal recovery.* Signal Processing, 2024.
-- **T. Koka**, M. Muma. *Fast and sample accurate R-peak detection for noisy ECG using visibility graphs.* IEEE EMBC, 2022.
-- J. Emrich, **T. Koka**, S. Wirth, M. Muma. *Accelerated Sample-Accurate R-Peak Detectors Based on Visibility Graphs.* EUSIPCO, 2023.
-
-### Technical Skills
-
-**Programming:** Python, C++, R, MATLAB, Bash
-
-**ML / Scientific Computing:** PyTorch, scikit-learn, NumPy, SciPy, pandas, Eigen, pybind11
-
-**Infrastructure:** Linux/Unix, HPC (Slurm), Git, OpenMP, BLAS/CBLAS
-
-**Languages:** German (native), Albanian (native), English (fluent)
-
-### Awards
-
-- **SEW-EURODRIVE Student Award** (2023) — Best Master's Thesis, EE Department, TU Darmstadt
-- **1st Place, Ideas Competition** (2018) — TU Darmstadt, Soft Exosuit project
-
-### Service
-
-- **Local Chair**, 7th Statistical Learning for Signal and Image Processing (SLSIP) Workshop, 2026, Krujë, Albania
-
----
-
 Want to collaborate or get in touch? [Contact me →](/contact/)
