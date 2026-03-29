@@ -16,11 +16,9 @@ I grew up in Germany, did my B.Sc. and M.Sc. at TU Darmstadt in Electrical Engin
 
 ### What I Work On
 
-**High-Dimensional Variable Selection**---
-When dealing with millions of features, it is easy to make false discoveries. Currently, a large portion of my research focuses on the development of scalable variable selection with False Discovery Rate (FDR) control to ensure statistical validity. Memory and hardware constraints in general, play a crucial role, when problems start to scale into regimes that require terabytes of RAM. Maintaining the balance between statistical rigor and computational efficiency is therefore indespensable.
+**High-Dimensional Variable Selection**---When dealing with millions of features, it is easy to make false discoveries. Currently, a large portion of my research focuses on the development of scalable variable selection with False Discovery Rate (FDR) control to ensure statistical validity. Memory and hardware constraints in general, play a crucial role, when problems start to scale into regimes that require terabytes of RAM. Maintaining the balance between statistical rigor and computational efficiency is therefore indespensable.
 
-**Cross-Channel Unlabeled Sensing**---
-While classical sampling assumes fixed indexing, **unlabeled sensing** addresses cases where samples are "out of order." **Cross-Channel Unlabeled Sensing**, a sub-problem of unlabeled sensing we formalized during my Master's Thesis, deals with reconstructing multi-channel signals when samples are permuted across channels at each time point. Moving beyond my initial thesis work, my recent research derives recovery bounds and addresses the underlying combinatorial challenges. This is particularly relevant for whole-brain calcium imaging or multi-target tracking in general, where data association can be difficult due to crossings of trajectories.
+**Cross-Channel Unlabeled Sensing**---While classical sampling assumes fixed indexing, **unlabeled sensing** addresses cases where samples are "out of order." **Cross-Channel Unlabeled Sensing**, a sub-problem of unlabeled sensing we formalized during my Master's Thesis, deals with reconstructing multi-channel signals when samples are permuted across channels at each time point. Moving beyond my initial thesis work, my recent research derives recovery bounds and addresses the underlying combinatorial challenges. This is particularly relevant for whole-brain calcium imaging or multi-target tracking in general, where data association can be difficult due to crossings of trajectories.
 
 
 ### Projects & Interests
