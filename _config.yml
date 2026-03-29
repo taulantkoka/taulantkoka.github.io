@@ -16,7 +16,7 @@ locale: "en-US"
 # 2. THEME
 # ──────────────────────────────────────────────
 remote_theme: "mmistakes/minimal-mistakes@4.26.2"
-minimal_mistakes_skin: "custom"
+minimal_mistakes_skin: "dark"
 
 # Enable breadcrumbs globally (nice UX + SEO)
 breadcrumbs: true
