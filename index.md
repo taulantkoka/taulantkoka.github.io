@@ -4,7 +4,7 @@ title: "Taulant Koka"
 permalink: /
 hidden: true
 header:
-  overlay_color: "#122317"
+  overlay_color: "#14342f"
   overlay_filter: "0"
 excerpt: >
   Data Science Researcher · Ph.D. candidate at TU Darmstadt<br/>
@@ -12,7 +12,7 @@ excerpt: >
 
 feature_row:
   - title: "Projects"
-    excerpt: "Research work, side projects, and things I've built, from published papers to afternoon and weekend projects."
+    excerpt: "Research work & side projects, from published papers to afternoon and weekend projects."
     url: "/projects/"
     btn_label: "Browse Projects"
     btn_class: "btn--primary"
