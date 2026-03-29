@@ -1,5 +1,5 @@
 remote_theme: mmistakes/minimal-mistakes
-minimal_mistakes_skin: "dark"
+minimal_mistakes_skin: "catppuccin_mocha"
 repository: taulantkoka/taulantkoka.github.io  # <--- ADD THIS LINE
 
 # The rest of your config stays the same...
