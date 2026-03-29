@@ -4,8 +4,6 @@ title: "Taulant Koka"
 permalink: /
 hidden: true
 header:
-  overlay_color: "#0a2e14"
-  overlay_filter: "0.5"
   actions:
     - label: "See What I'm Working On"
       url: "/projects/"
