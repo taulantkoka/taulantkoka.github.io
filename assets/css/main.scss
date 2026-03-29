@@ -233,7 +233,7 @@ hr {
   transition: 0.15s ease;
 
   &:hover {
-    color: $link;
+    color: $link_hover;
     background: rgba($primary, 0.08);
   }
 }
@@ -242,7 +242,7 @@ hr {
   border-left: 3px solid $primary;
   padding-left: 0.65em;
   font-weight: 600;
-  color: $link;
+  color: $link_hover;
   background: rgba($primary, 0.1);
 }
 
