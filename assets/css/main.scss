@@ -2,27 +2,28 @@
 # Front matter dashes tell Jekyll to process this file
 ---
 
-/* ─── 1. DESIGN TOKENS ─── */
+/* ─── 1. 5-COLOR SYSTEM ─── */
 
-$bg: #0d1b0e;
-$bg-soft: #0f2212;
-$bg-footer: #081208;
+$white: #ffffff;        // white
+$bg: #004115;        // page background
+$surface: #001d04;   // cards, nav, footer
+$text: #c1d1c3;      // main text
+$primary: #000000;   // accent green
+$border: #002706;    // borders
 
-$text: #d4ddd5;
-$text-soft: #b0c8b2;
-$text-strong: #eaf2eb;
+/* ─── DERIVED COLORS ─── */
 
-$primary: #2d8a4e;
-$primary-hover: #3da55e;
-$border: #1a3a1f;
-$border-soft: #1f4a28;
+$text-soft: rgba($text, 0.75);
+$text-strong: lighten($text, 8%);
 
-$link: #4eaa6e;
-$link-hover: #6fce8e;
-$link-visited: #3d9a5e;
+$link: $primary;
+$link-hover: lighten($primary, 12%);
 
-$code-bg: #0a150b;
-$code-bg-dark: #071008;
+$surface-hover: lighten($surface, 3%);
+$surface-strong: darken($surface, 4%);
+
+$code-bg: darken($bg, 2%);
+$code-bg-dark: darken($bg, 4%);
 
 /* ─── 2. THEME IMPORTS ─── */
 
@@ -31,8 +32,8 @@ $code-bg-dark: #071008;
 
 /* ─── 3. BASE ─── */
 
-body {
-  background: $bg;
+html, body {
+  background: $bg !important;
   color: $text;
 }
 
@@ -41,7 +42,6 @@ a {
   transition: color 0.2s ease;
 
   &:hover { color: $link-hover; }
-  &:visited { color: $link-visited; }
 }
 
 ::selection {
@@ -53,12 +53,12 @@ hr {
   border-color: $border;
 }
 
-/* ─── 4. LAYOUT SURFACES ─── */
+/* ─── 4. LAYOUT ─── */
 
 .masthead,
 .greedy-nav,
 .page__footer {
-  background: $bg-footer;
+  background: $surface-strong !important;
 }
 
 .masthead {
@@ -67,15 +67,8 @@ hr {
 
 .page__footer {
   border-top: 1px solid $border;
-  color: #7a9a7e;
-
-  a:hover { color: $link-hover; }
+  color: $text-soft;
 }
-
-.page__footer-copyright {
-  color: #5a7a5e;
-}
-
 /* ─── 5. HERO ─── */
 
 .page__hero--overlay {
@@ -88,13 +81,13 @@ hr {
   }
 
   .page__lead {
-    color: #c8dcc9;
+    color: $text-soft;
     font-size: 1.2em;
   }
 }
 
 /* Shared button style */
-%btn-green {
+%btn {
   background: $primary;
   color: #fff;
   border: 2px solid $primary;
@@ -105,18 +98,17 @@ hr {
   transition: all 0.2s ease;
 
   &:hover {
-    background: $primary-hover;
-    border-color: $primary-hover;
+    background: lighten($primary, 8%);
+    border-color: lighten($primary, 8%);
   }
 }
 
 .page__hero--overlay {
   .btn,
   .btn--light-outline {
-    @extend %btn-green;
+    @extend %btn;
   }
 
-  /* Button layout fix */
   .page__lead + p,
   .page__hero-caption + p {
     display: flex;
@@ -129,36 +121,40 @@ hr {
 /* ─── 6. BUTTONS ─── */
 
 .btn--primary {
-  @extend %btn-green;
+  @extend %btn;
   border: none;
 }
 
-/* ─── 7. CARDS / FEATURES ─── */
+/* ─── 7. FEATURE CARDS ─── */
+
+.feature__wrapper {
+  margin-bottom: 0;
+}
 
 .feature__item {
-  border: 1px solid $border-soft;
+  border: 1px solid $border;
   border-radius: 8px;
   padding: 1.5em;
-  background: $bg-soft;
+  background: $surface;
   transition: 0.2s ease;
 
   &:hover {
     border-color: $primary;
-    background: darken($bg-soft, 3%);
+    background: $surface-hover;
   }
 
   .archive__item-title {
-    color: #f0f5f0;
+    color: $text-strong;
     font-weight: 700;
   }
 
   .archive__item-excerpt {
-    color: #b8ccba;
+    color: $text-soft;
     line-height: 1.65;
   }
 
   .btn {
-    @extend %btn-green;
+    @extend %btn;
     padding: 0.5em 1.2em;
   }
 }
@@ -169,7 +165,7 @@ hr {
   p, li {
     font-size: 1.05em;
     line-height: 1.75;
-    color: #cddace;
+    color: $text-soft;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -177,16 +173,20 @@ hr {
   }
 
   strong {
-    color: #f0f5f0;
+    color: #fff;
   }
 
   code {
     background: $code-bg;
     border: 1px solid $border;
-    color: #5dbd7e;
+    color: $link;
     padding: 0.15em 0.4em;
     border-radius: 3px;
   }
+}
+
+.page__title {
+  color: $text-strong;
 }
 
 /* ─── 9. SIDEBAR ─── */
@@ -197,10 +197,14 @@ hr {
   }
 
   .nav__items {
-    background: $bg-soft;
-    border: 1px solid $border-soft;
+    background: $surface;
+    border: 1px solid $border;
     border-radius: 8px;
     padding: 1.25em 1em;
+  }
+
+  .author__name {
+    color: $text-strong;
   }
 }
 
@@ -209,13 +213,22 @@ hr {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: $link;
-  border-bottom: 1px solid $border-soft;
+  border-bottom: 1px solid $border;
+  padding-bottom: 0.6em;
+  margin-bottom: 0.75em;
+}
+
+.nav__list li {
+  margin-bottom: 0.35em;
 }
 
 .nav__list a {
   color: $text-soft;
+  display: block;
   padding: 0.5em 0.65em;
   border-radius: 5px;
+  font-size: 0.9em;
+  line-height: 1.45;
   transition: 0.15s ease;
 
   &:hover {
@@ -226,12 +239,25 @@ hr {
 
 .nav__list .active {
   border-left: 3px solid $primary;
+  padding-left: 0.65em;
   font-weight: 600;
   color: $link;
   background: rgba($primary, 0.1);
 }
 
-/* ─── 10. CODE ─── */
+/* ─── 10. ARCHIVE ─── */
+
+.archive__item-title a {
+  color: $text-strong;
+
+  &:hover { color: $link; }
+}
+
+.archive__item-excerpt {
+  color: $text-soft;
+}
+
+/* ─── 11. CODE BLOCKS ─── */
 
 div.highlighter-rouge,
 figure.highlight {
@@ -240,48 +266,59 @@ figure.highlight {
   border-radius: 6px;
 }
 
-/* ─── 11. MISC ─── */
+/* ─── 12. BLOCKQUOTE ─── */
 
 blockquote {
   border-left: 4px solid $primary;
   color: $text-soft;
 }
 
+/* ─── 13. TABLES ─── */
+
 table {
   border-color: $border;
 
   th {
-    background: $bg-soft;
+    background: $surface;
     color: $text-strong;
   }
 
   td {
-    color: #cddace;
+    border-color: $border;
+    color: $text-soft;
   }
 }
 
+/* ─── 14. TAGS ─── */
+
 .page__taxonomy-item {
-  background: $bg-soft;
-  border: 1px solid $border-soft;
+  background: $surface;
+  border: 1px solid $border;
   color: $link;
 
   &:hover {
-    background: $border;
+    background: $surface-strong;
     color: $link-hover;
   }
 }
 
+/* ─── 15. PAGINATION ─── */
+
 .pagination--pager {
-  background: $bg-soft;
-  border: 1px solid $border-soft;
+  background: $surface;
+  border: 1px solid $border;
+  color: $text;
 
   &:hover {
-    background: $border;
+    background: $surface-strong;
     color: $link;
   }
 }
 
+/* ─── 16. SEARCH ─── */
+
 .search__toggle {
   color: $text;
+
   &:hover { color: $link; }
 }
