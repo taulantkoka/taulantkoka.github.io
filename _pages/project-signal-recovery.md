@@ -6,31 +6,26 @@ sidebar:
   nav: "projects"
 ---
 
-**Tags:** `Python` · `Optimization` · `Sparse Recovery` · `Union of Subspaces`
+`Python` · `MATLAB` · `Optimization` · `Sparse Recovery`
 
-## Overview
+## The Problem
 
-This project develops optimization-based algorithms for recovering multi-channel signals from permutation-corrupted measurements — a challenging combinatorial-continuous optimization problem that arises in applications such as calcium imaging and multi-target tracking.
+Imagine you're recording signals from multiple channels — say, neural activity from different neurons — but somewhere along the way, the labels got mixed up. You don't know which measurement came from which channel. Can you still figure out the original signals?
 
-## Approach
+That's the core question behind this project. It's a surprisingly tricky problem because it combines two hard things: sparse signal recovery and a combinatorial permutation puzzle.
 
-- Formulated the problem as sparse recovery over a union of signal subspaces.
-- Designed algorithms that jointly recover the signal content and resolve the unknown permutation (channel assignment) of measurements.
-- The framework extends classical sparse recovery to settings where the association between measurements and channels is unknown ("unlabeled sensing").
+## What I Did
 
-## Applications
+I formulated this as sparse recovery over a union of signal subspaces and developed optimization-based algorithms that jointly figure out both the signal content and the correct channel assignments. The idea is that you can exploit the structure of the signals themselves to untangle the mess.
 
-- **Calcium imaging** — resolving overlapping neural signals
-- **Multi-target tracking** — associating observations with targets under unknown correspondence
-- **Multi-input FRI signals** — reconstruction from samples with unknown channel membership (Master's thesis topic at EPFL/LCAV)
+This started during my Master's thesis at EPFL, where I worked on multi-input signals with unknown channel membership, and continued into my PhD.
 
-## Publications
+## Where It Applies
+
+- **Calcium imaging** — resolving overlapping signals from different neurons
+- **Multi-target tracking** — matching observations to the right targets when you've lost track of who's who
+
+## Papers
 
 - **T. Koka**, M. C. Tsakiris, B. Béjar Haro, M. Muma. *Cross-Channel Unlabeled Sensing over a Union of Signal Subspaces.* **IEEE ICASSP**, 2025.
 - **T. Koka**, M. C. Tsakiris, M. Muma, B. Béjar Haro. *Shuffled multi-channel sparse signal recovery.* **Signal Processing**, 2024.
-
-## Key Tools
-
-Python, MATLAB, NumPy, SciPy, optimization solvers
-
-<!-- [View on GitHub](https://github.com/taulantkoka/your-repo){: .btn .btn--primary .btn--small} -->

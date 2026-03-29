@@ -7,26 +7,29 @@ header:
   overlay_color: "#0a2e14"
   overlay_filter: "0.5"
   actions:
-    - label: "View Projects"
+    - label: "See What I'm Working On"
       url: "/projects/"
     - label: "About Me"
       url: "/about/"
 excerpt: >
   Data Science Researcher · Ph.D. candidate at TU Darmstadt<br/>
-  Scalable machine learning, high-dimensional optimization, and statistical inference.
+  I work on machine learning, signal processing, and whatever else catches my interest.
 
 feature_row:
-  - title: "Research & Projects"
+  - title: "Projects"
+    excerpt: "Research work, side projects, and things I've built — from published papers to weekend experiments."
     url: "/projects/"
     btn_label: "Browse Projects"
     btn_class: "btn--primary"
   - title: "Blog"
+    excerpt: "Notes on things I find interesting, problems I've solved, and occasional rabbit holes."
     url: "/blog/"
     btn_label: "Read Posts"
     btn_class: "btn--primary"
-  - title: "Get in Touch"
+  - title: "Contact"
+    excerpt: "Want to reach me? Here's how."
     url: "/contact/"
-    btn_label: "Contact Me"
+    btn_label: "Say Hello"
     btn_class: "btn--primary"
 ---
 
