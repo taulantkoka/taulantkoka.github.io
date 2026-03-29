@@ -4,11 +4,7 @@ title: "Taulant Koka"
 permalink: /
 hidden: true
 header:
-  actions:
-    - label: "See What I'm Working On"
-      url: "/projects/"
-    - label: "About Me"
-      url: "/about/"
+  overlay_filter: "0.5"
 excerpt: >
   Data Science Researcher · Ph.D. candidate at TU Darmstadt<br/>
   I work on machine learning, signal processing, and whatever else catches my interest.
