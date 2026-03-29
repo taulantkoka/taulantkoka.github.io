@@ -2,18 +2,17 @@
 title: "Contact"
 permalink: /contact/
 layout: single
-author_profile: true
 ---
 
 Have a question, want to collaborate, or just want to say hello? Feel free to reach out using the form below or connect with me on [LinkedIn](https://linkedin.com/in/taulant-koka-36a7971b6) or [GitHub](https://github.com/taulantkoka).
 
 ---
 
-<!-- 
-  HOW TO SET UP THE CONTACT FORM:
+<!--
+  HOW TO SET UP:
   1. Go to https://formspree.io and create a free account
   2. Create a new form and copy your form ID (looks like: xabcdefg)
-  3. Replace YOUR_FORM_ID below with your actual Formspree ID
+  3. Replace YOUR_FORM_ID below
 -->
 
 <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="max-width: 600px;">

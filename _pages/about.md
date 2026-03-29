@@ -2,14 +2,11 @@
 title: "About"
 permalink: /about/
 layout: single
-author_profile: true
 ---
 
 ## Hi, I'm Taulant
 
 I'm a **Data Researcher** based in Germany. I'm passionate about working with data — finding patterns, building tools, and turning information into insight.
-
-<!-- Expand the sections below with your own details -->
 
 ### What I Do
 
@@ -21,7 +18,7 @@ I work at the intersection of data analysis and research, applying quantitative 
 
 ### Background
 
-<!-- Add your background here: education, experience, how you got into data, etc. -->
+<!-- Add your education, experience, how you got into data, etc. -->
 
 *Coming soon — I'm still filling this in.*
 

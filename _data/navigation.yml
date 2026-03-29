@@ -1,3 +1,6 @@
+# ──────────────────────────────────────────────
+# Top navigation bar
+# ──────────────────────────────────────────────
 main:
   - title: "Home"
     url: /
@@ -9,3 +12,19 @@ main:
     url: /about/
   - title: "Contact"
     url: /contact/
+
+# ──────────────────────────────────────────────
+# Sidebar nav: Projects
+# Add new projects here — they appear in the left sidebar
+# ──────────────────────────────────────────────
+projects:
+  - title: "Projects"
+    children:
+      - title: "Overview"
+        url: /projects/
+      - title: "Project Alpha"
+        url: /projects/project-alpha/
+      - title: "Project Beta"
+        url: /projects/project-beta/
+      - title: "Project Gamma"
+        url: /projects/project-gamma/

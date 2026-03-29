@@ -12,7 +12,7 @@ a {
   transition: color 0.2s ease;
 }
 
-/* Splash page hero — more breathing room */
+/* Splash page hero */
 .page__hero--overlay {
   padding: 6em 0;
 }
@@ -22,7 +22,7 @@ a {
   font-weight: 700;
 }
 
-/* Feature row cards — subtle card styling */
+/* Feature row cards */
 .feature__item {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
@@ -47,11 +47,34 @@ figure.highlight {
   border-radius: 6px;
 }
 
-/* Sidebar author bio */
-.author__bio {
-  margin-top: 0.5em;
-  font-style: italic;
-  opacity: 0.85;
+/* ─── Sidebar Nav Styling ─── */
+
+/* Active link in sidebar nav */
+.nav__list .active {
+  border-left: 3px solid #f89820;
+  padding-left: 0.5em;
+  font-weight: 600;
+}
+
+/* Sidebar nav links — spacing and hover */
+.nav__list a {
+  padding: 0.35em 0;
+  transition: color 0.15s ease;
+}
+
+.nav__list a:hover {
+  color: #f89820;
+}
+
+/* Sidebar nav section title */
+.nav__sub-title {
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.4em;
+  margin-bottom: 0.5em;
 }
 
 /* Understated footer */

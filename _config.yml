@@ -13,14 +13,14 @@ repository: "taulantkoka/taulantkoka.github.io"
 # Theme & Skin
 # ──────────────────────────────────────────────
 remote_theme: "mmistakes/minimal-mistakes@4.26.2"
-minimal_mistakes_skin: "dark" # clean dark look — alternatives: "default", "air", "aqua", "contrast", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin: "dark"
 
 # ──────────────────────────────────────────────
-# Site Author (sidebar)
+# Site Author (used in footer now, not sidebar)
 # ──────────────────────────────────────────────
 author:
   name: "Taulant Koka"
-  # avatar: "/assets/images/bio-photo.jpg"  # uncomment when you add a photo
+  # avatar: "/assets/images/bio-photo.jpg"
   bio: "Data Researcher based in Germany."
   location: "Germany"
   links:
@@ -32,7 +32,22 @@ author:
       url: "https://linkedin.com/in/taulant-koka-36a7971b6"
     - label: "Email"
       icon: "fas fa-fw fa-envelope"
-      url: "mailto:your-email@example.com"  # replace with your email
+      url: "mailto:your-email@example.com"
+
+# ──────────────────────────────────────────────
+# Footer Links (your social links live here now)
+# ──────────────────────────────────────────────
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/taulantkoka"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://linkedin.com/in/taulant-koka-36a7971b6"
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope"
+      url: "mailto:your-email@example.com"
 
 # ──────────────────────────────────────────────
 # Reading & Output
@@ -67,7 +82,7 @@ include:
   - _pages
 
 # ──────────────────────────────────────────────
-# Defaults
+# Defaults — author_profile OFF, sidebar nav where needed
 # ──────────────────────────────────────────────
 defaults:
   # Blog posts
@@ -76,7 +91,7 @@ defaults:
       type: posts
     values:
       layout: single
-      author_profile: true
+      author_profile: false
       read_time: true
       comments: false
       share: true
@@ -88,22 +103,12 @@ defaults:
       type: pages
     values:
       layout: single
-      author_profile: true
-
-# ──────────────────────────────────────────────
-# Analytics (optional — uncomment & fill in)
-# ──────────────────────────────────────────────
-# analytics:
-#   provider: "google-gtag"
-#   google:
-#     tracking_id: "G-XXXXXXXXXX"
+      author_profile: false
 
 # ──────────────────────────────────────────────
 # SEO / Social
 # ──────────────────────────────────────────────
-og_image: /assets/images/site-og.png  # optional: add a social preview image
-twitter:
-  username: ""  # fill in if you have one
+og_image: /assets/images/site-og.png
 social:
   type: "Person"
   name: "Taulant Koka"
