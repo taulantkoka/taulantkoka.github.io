@@ -3,6 +3,7 @@
 /* Core Colors */
 $background-color: #0d1b15 !default; 
 $text-color: #e8f5e9 !default;
+$muted-text-color: #a5d6a7 !default; // <--- This was the missing line!
 $primary-color: #2e7d32 !default;
 $border-color: #1b3022 !default;
 
@@ -17,10 +18,21 @@ $masthead-link-color-hover: $link-color !default;
 /* Sidebar Colors */
 $sidebar-color: $text-color !default;
 
-/* Footer - THIS FIXES THE WHITE BOX */
-$footer-background-color: #0a1410 !default; // Even darker green for the bottom
+/* Footer Fix */
+$footer-background-color: #0a1410 !default; 
 $footer-link-color: $muted-text-color !default;
 $footer-link-color-hover: $text-color !default;
 
 /* Code Blocks */
 $code-background-color: #13241c !default;
+
+/* Ensure footer text isn't black */
+.page__footer {
+  color: $text-color !default;
+  background-color: $footer-background-color !default;
+  border-top: 1px solid $border-color;
+}
+
+.page__footer-copyright {
+  color: $muted-text-color !default;
+}
