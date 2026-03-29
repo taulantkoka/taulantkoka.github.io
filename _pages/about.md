@@ -10,6 +10,10 @@ I’m a Ph.D. candidate at [TU Darmstadt](https://www.etit.tu-darmstadt.de/rds/i
 
 I’m drawn to problems where sheer computational power isn't enough. Most of my research involves developing algorithms that can handle sparse signals and messy measurements under strict memory and reliability constraints. In practice, this means balancing theoretical guarantees with high-performance implementation in C++ and Python.
 
+### The Path Here
+
+I grew up in Germany, did my B.Sc. and M.Sc. at TU Darmstadt in Electrical Engineering, and took detours to Aalto University in Finland and EPFL in Switzerland along the way. At EPFL I joined the LCAV lab and wrote my thesis in collaboration with the Swiss Data Science Center (SDSC). After that I spent a few months as an intern at the SDSC Hub at the Paul Scherrer Institute, before I returned to Darmstadt to start my PhD in late 2022.
+
 ### What I Work On
 
 **High-Dimensional Variable Selection**---
@@ -18,10 +22,6 @@ When dealing with millions of features, it is easy to make false discoveries. Cu
 **Cross-Channel Unlabeled Sensing**---
 While classical sampling assumes fixed indexing, **unlabeled sensing** addresses cases where samples are "out of order." **Cross-Channel Unlabeled Sensing**, a sub-problem of unlabeled sensing we formalized during my Master's Thesis, deals with reconstructing multi-channel signals when samples are permuted across channels at each time point. Moving beyond my initial thesis work, my recent research derives recovery bounds and addresses the underlying combinatorial challenges. This is particularly relevant for whole-brain calcium imaging or multi-target tracking in general, where data association can be difficult due to crossings of trajectories.
 
-
-### The Path Here
-
-I grew up in Germany, did my B.Sc. and M.Sc. at TU Darmstadt in Electrical Engineering, and took detours to Aalto University in Finland and EPFL in Switzerland along the way. At EPFL I joined the LCAV lab and wrote my thesis in collaboration with the Swiss Data Science Center (SDSC). After that I spent a few months as an intern at the SDSC Hub at the Paul Scherrer Institute, before I returned to Darmstadt to start my PhD in late 2022.
 
 ### Projects & Interests
 
