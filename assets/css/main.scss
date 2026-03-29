@@ -8,7 +8,7 @@ $background-color: #0d1b0e;
 $text-color: #d4ddd5;
 $primary-color: #2d8a4e;
 $border-color: #1a3a1f;
-$footer-background-color: #081208; // This is our "Header" color
+$footer-background-color: #081208; // THE "UI DARK" COLOR (Header/Cards/Footer)
 
 $link-color: #4eaa6e;
 $link-color-hover: #6fce8e;
@@ -16,15 +16,9 @@ $link-color-visited: #3d9a5e;
 
 $masthead-link-color: #d4ddd5;
 $masthead-link-color-hover: #4eaa6e;
-$navicon-link-color-hover: #4eaa6e;
 
 $code-background-color: #0a150b;
 $code-background-color-dark: #071008;
-
-$info-color: #2d8a4e;
-$success-color: #3da55e;
-$warning-color: #c9a227;
-$danger-color: #c0392b;
 
 /* ─── 2. THEME IMPORTS ─── */
 
@@ -45,80 +39,78 @@ body {
 /* ─── 4. MASTHEAD / NAVIGATION (Header Row) ─── */
 
 .masthead {
-  background-color: $footer-background-color;
+  background-color: $footer-background-color !important;
   border-bottom: 1px solid $border-color;
 }
 
 .greedy-nav {
-  background-color: $footer-background-color;
+  background-color: $footer-background-color !important;
   
   a {
     color: $text-color;
     &:hover { color: $link-color; }
   }
+}
 
-  .visible-links a:before {
-    background: $primary-color;
+/* ─── 5. SPLASH HERO (The top part with your name) ─── */
+
+.page__hero--overlay {
+  background-color: $footer-background-color !important; // Matches Header
+  border-bottom: 1px solid $border-color;
+  
+  .page__title {
+    color: #e0ebe1;
+  }
+  
+  .page__lead {
+    color: $text-color;
   }
 }
 
-/* ─── 5. FEATURE ROW CARDS (Synced with Header) ─── */
+/* ─── 6. FEATURE ROW CARDS (The three boxes) ─── */
 
 .feature__item {
   background-color: $footer-background-color !important; // Matches Header
-  border: 1px solid $border-color;
-  border-radius: 6px;
+  border: 1px solid $border-color !important;
+  border-radius: 8px;
   padding: 1.5em;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3); // Adds subtle depth
+  transition: all 0.2s ease-in-out;
 
   &:hover { 
-    border-color: $primary-color;
-    transform: translateY(-2px); // Subtle lift effect
+    border-color: $primary-color !important;
+    transform: translateY(-3px);
   }
 
-  .archive__item-title {
-    color: #e0ebe1;
-  }
-}
-
-/* ─── 6. PAGE CONTENT ─── */
-
-.page__content {
-  h1, h2, h3, h4, h5, h6 {
-    color: #e0ebe1;
-  }
-
-  strong {
-    color: #e8f0e8;
-  }
-
-  code {
-    background-color: $code-background-color;
-    border: 1px solid $border-color;
-    color: $link-color;
+  h2, .archive__item-title {
+    margin-top: 0;
+    color: #e0ebe1 !important;
   }
 }
 
-/* ─── 7. SIDEBAR ─── */
+/* ─── 7. BUTTONS ─── */
+
+.btn--primary {
+  background-color: $primary-color !important;
+  border: none !important;
+  color: #fff !important;
+  
+  &:hover {
+    background-color: #3da55e !important;
+  }
+}
+
+/* ─── 8. SIDEBAR ─── */
 
 .sidebar {
   .nav__items {
-    background-color: $footer-background-color; // Synced with Header/Cards
+    background-color: $footer-background-color;
     border: 1px solid $border-color;
   }
   
   .author__name {
     color: #e0ebe1;
   }
-}
-
-/* ─── 8. CODE BLOCKS ─── */
-
-div.highlighter-rouge,
-figure.highlight {
-  background-color: $code-background-color-dark;
-  border: 1px solid $border-color;
-  border-radius: 6px;
 }
 
 /* ─── 9. FOOTER ─── */
@@ -139,20 +131,9 @@ figure.highlight {
   color: #5a7a5e !important;
 }
 
-/* ─── 10. TABLES & SELECTION ─── */
+/* ─── 10. CLEANUP ─── */
 
 ::selection {
   background-color: $primary-color;
   color: #fff;
-}
-
-table {
-  border-color: $border-color;
-  th {
-    background-color: $footer-background-color;
-    color: #e0ebe1;
-  }
-  td {
-    border-color: $border-color;
-  }
 }
