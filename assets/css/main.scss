@@ -3,13 +3,12 @@
 ---
 
 /* ─── 1. CORE FOREST GREEN VARIABLES ─── */
-/* We remove !default to FORCE these colors over the theme defaults */
 
 $background-color: #0d1b0e;
 $text-color: #d4ddd5;
 $primary-color: #2d8a4e;
 $border-color: #1a3a1f;
-$footer-background-color: #081208;
+$footer-background-color: #081208; // This is our "Header" color
 
 $link-color: #4eaa6e;
 $link-color-hover: #6fce8e;
@@ -29,8 +28,8 @@ $danger-color: #c0392b;
 
 /* ─── 2. THEME IMPORTS ─── */
 
-@import "minimal-mistakes/skins/dark"; // Provides the base dark logic
-@import "minimal-mistakes";            // Provides the layout logic
+@import "minimal-mistakes/skins/dark"; 
+@import "minimal-mistakes";            
 
 /* ─── 3. GLOBAL OVERRIDES ─── */
 
@@ -39,24 +38,11 @@ body {
   color: $text-color;
 }
 
-/* Fixes the "White Bottom" and ensures the footer is Forest Dark */
-.page__footer {
-  background-color: $footer-background-color !important;
-  color: #7a9a7e !important;
-  border-top: 1px solid $border-color;
-  margin-top: 0; // Ensures no gap between content and footer
-  
-  a {
-    color: $link-color;
-    &:hover { color: $link-color-hover; }
-  }
+#main {
+  background-color: $background-color;
 }
 
-.page__footer-copyright {
-  color: #5a7a5e !important;
-}
-
-/* ─── 4. MASTHEAD / NAVIGATION ─── */
+/* ─── 4. MASTHEAD / NAVIGATION (Header Row) ─── */
 
 .masthead {
   background-color: $footer-background-color;
@@ -76,7 +62,26 @@ body {
   }
 }
 
-/* ─── 5. PAGE CONTENT ─── */
+/* ─── 5. FEATURE ROW CARDS (Synced with Header) ─── */
+
+.feature__item {
+  background-color: $footer-background-color !important; // Matches Header
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  padding: 1.5em;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+
+  &:hover { 
+    border-color: $primary-color;
+    transform: translateY(-2px); // Subtle lift effect
+  }
+
+  .archive__item-title {
+    color: #e0ebe1;
+  }
+}
+
+/* ─── 6. PAGE CONTENT ─── */
 
 .page__content {
   h1, h2, h3, h4, h5, h6 {
@@ -94,16 +99,11 @@ body {
   }
 }
 
-/* ─── 6. SIDEBAR FIXES ─── */
+/* ─── 7. SIDEBAR ─── */
 
 .sidebar {
-  /* Fixes the redundant title coloring and background */
-  .nav__list {
-    background-color: transparent;
-  }
-  
   .nav__items {
-    background-color: $code-background-color;
+    background-color: $footer-background-color; // Synced with Header/Cards
     border: 1px solid $border-color;
   }
   
@@ -112,7 +112,7 @@ body {
   }
 }
 
-/* ─── 7. CODE BLOCKS ─── */
+/* ─── 8. CODE BLOCKS ─── */
 
 div.highlighter-rouge,
 figure.highlight {
@@ -121,7 +121,25 @@ figure.highlight {
   border-radius: 6px;
 }
 
-/* ─── 8. TABLES & SELECTION ─── */
+/* ─── 9. FOOTER ─── */
+
+.page__footer {
+  background-color: $footer-background-color !important;
+  color: #7a9a7e !important;
+  border-top: 1px solid $border-color;
+  margin-top: 0;
+  
+  a {
+    color: $link-color;
+    &:hover { color: $link-color-hover; }
+  }
+}
+
+.page__footer-copyright {
+  color: #5a7a5e !important;
+}
+
+/* ─── 10. TABLES & SELECTION ─── */
 
 ::selection {
   background-color: $primary-color;
@@ -131,7 +149,7 @@ figure.highlight {
 table {
   border-color: $border-color;
   th {
-    background-color: $code-background-color;
+    background-color: $footer-background-color;
     color: #e0ebe1;
   }
   td {
