@@ -1,14 +1,35 @@
 remote_theme: mmistakes/minimal-mistakes
-minimal_mistakes_skin: "default" # Options: "air", "contrast", "dark", "dirt", "sunrise"
+minimal_mistakes_skin: "air"
 
-# Site Information
+# Site Settings
 title: "Taulant Koka"
 url: "https://taulantkoka.com"
+locale: "en-US"
+
+# Author Settings
 author:
   name: "Taulant Koka"
-  bio: "Data Science Researcher."
+  bio: "Data Researcher"
   location: "Germany"
+  avatar: "/assets/images/bio-photo.jpg"
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/taulantkoka"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "www.linkedin.com/in/taulant-koka-36a7971b6"
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "single"
+      author_profile: true
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "single"
+      author_profile: true
