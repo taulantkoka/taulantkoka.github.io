@@ -12,7 +12,7 @@ excerpt: >
 
 feature_row:
   - title: "Projects"
-    excerpt: "Research work, side projects, and things I've built, from published papers to weekend experiments."
+    excerpt: "Research work, side projects, and things I've built, from published papers to afternoon and weekend projects."
     url: "/projects/"
     btn_label: "Browse Projects"
     btn_class: "btn--primary"

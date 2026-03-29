@@ -18,13 +18,9 @@ My research sits somewhere between machine learning and signal processing. I lik
 
 ### How I Got Here
 
-I did my B.Sc. and M.Sc. at TU Darmstadt in Electrical Engineering. Along the way I spent time at Aalto University in Finland and at EPFL in Switzerland, where I wrote my Master's thesis at the [LCAV lab](https://www.epfl.ch/labs/lcav/) with the [Swiss Data Science Center](https://datascience.ch). That thesis ended up winning the [SEW-EURODRIVE Best Thesis Prize](https://www.sew-eurodrive.de/unternehmen/news_presse/news/news-meldung_97152.html) in 2023.
+I did my B.Sc. and M.Sc. at TU Darmstadt in Electrical Engineering. Along the way I spent time at Aalto University in Finland and at EPFL in Switzerland, where I wrote my Master's thesis at the [LCAV lab](https://www.epfl.ch/labs/lcav/) with the [Swiss Data Science Center](https://datascience.ch).
 
 After that I did a short stint at the [Paul Scherrer Institute](https://www.psi.ch/en) doing computer vision for X-ray crystallography, and then started my PhD in late 2022.
-
-### Beyond Research
-
-When I'm not working, I'm usually tinkering with side projects, reading about things unrelated to my research, or finding new rabbit holes to go down. This site is where I write about all of it.
 
 ---
 
