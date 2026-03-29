@@ -35,7 +35,7 @@ Traditional sampling theorems, from Shannon-Nyquist to Compressed Sensing, rely 
 This project addresses **Cross-Channel Unlabeled Sensing (CC-ULS)**, a sub-problem of unlabeled sensing where multi-channel signals are observed through a permuted measurement process. Specifically, we consider a setup where, at each time point, the samples across $M$ channels are shuffled by an unknown permutation matrix $\mathbf{\Pi}$.
 
 Mathematically, we model this as:
-$$ \mathbf{y} = \mathbf{\Pi}_{\mathbf{Q}} \mathbf{A} \mathbf{\beta}$$
+\[ \mathbf{y} = \mathbf{\Pi}_{\mathbf{Q}} \mathbf{A} \mathbf{\beta}\]
 where $\mathbf{A}$ is a highly structured sensing matrix. While standard Unlabeled Sensing (ULS) theory provides recovery guarantees for i.i.d. Gaussian sensing matrices, these results do not apply to the structured matrices found in signal processing, such as those involving IDFT or Vandermonde structures.
 
 ## Technical Contributions
