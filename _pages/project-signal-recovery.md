@@ -1,6 +1,7 @@
 ---
 title: "Cross-Channel Unlabeled Sensing"
 permalink: /projects/signal-recovery/
+mathjax: true
 layout: single
 sidebar:
   nav: "projects"
@@ -27,7 +28,7 @@ where $\mathbf{A}$ is a highly structured sensing matrix. While standard Unlabel
 ### 1. The Restricted Full Rank Property (RFRP)
 To establish uniqueness results, I utilize the **Restricted Full Rank Property (RFRP)**. A subspace satisfies the RFRP if its dimension is preserved under any coordinate projection that keeps at least $K$ entries. 
 
-One of the key theoretical results of this work is proving that certain structured matrices—specifically the product of an Inverse DFT matrix and a Vandermonde matrix ($W V$)—satisfy the RFRP. This proof relies on factorizing the sub-matrices into diagonal and **Cauchy matrices**, allowing us to derive closed-form expressions for their determinants.
+One of the key theoretical results of this work is proving that certain structured matrices—specifically the product of an Inverse DFT matrix and a Vandermonde matrix ($W V$), satisfy the RFRP. This proof relies on factorizing the sub-matrices into diagonal and **Cauchy matrices**, allowing us to derive closed-form expressions for their determinants.
 
 ### 2. Recovery over a Union of Subspaces
 Moving beyond my initial Master's work, my recent research expands the CC-ULS framework to signals residing in a **union of subspaces**. This extension allows the model to handle significantly more complex signal structures and provides tighter theoretical bounds ($N \geq MK$) for unique reconstruction.
