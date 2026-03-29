@@ -21,11 +21,6 @@ projects:
     children:
       - title: "Overview"
         url: /projects/
-      - title: "Scalable Variable Selection"
-        url: /projects/variable-selection/
-      - title: "Multi-Channel Signal Recovery"
+      - title: "Shuffled Multi-Channel Signal Recovery"
         url: /projects/signal-recovery/
-      - title: "Visibility Graph R-Peak Detection"
-        url: /projects/visibility-graph/
-      - title: "CV Pipeline at PSI"
-        url: /projects/psi-cv-pipeline/
+      

@@ -1,5 +1,5 @@
 ---
-title: "Robust Multi-Channel Signal Recovery"
+title: "Shuffled Multi-Channel Signal Recovery"
 permalink: /projects/signal-recovery/
 layout: single
 sidebar:
