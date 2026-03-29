@@ -1,28 +1,37 @@
 # ──────────────────────────────────────────────
-# Site Settings
+# 1. SITE METADATA
 # ──────────────────────────────────────────────
 title: "Taulant Koka"
 subtitle: "Data Science Researcher"
 name: "Taulant Koka"
 description: "Personal site of Taulant Koka — Data Science Researcher and Ph.D. candidate at TU Darmstadt. Research, projects, and writing."
+
 url: "https://taulantkoka.com"
 baseurl: ""
 repository: "taulantkoka/taulantkoka.github.io"
 
+locale: "en-US"
+
 # ──────────────────────────────────────────────
-# Theme & Skin — MINT = green theme
+# 2. THEME
 # ──────────────────────────────────────────────
 remote_theme: "mmistakes/minimal-mistakes@4.26.2"
 minimal_mistakes_skin: "dark"
 
+# Enable breadcrumbs globally (nice UX + SEO)
+breadcrumbs: true
+
+# Enable copy button on code blocks
+copy_button: true
+
 # ──────────────────────────────────────────────
-# Site Author — used for metadata only
+# 3. AUTHOR
 # ──────────────────────────────────────────────
 author:
   name: "Taulant Koka"
   bio: "Data Science Researcher · Ph.D. candidate at TU Darmstadt"
   location: "Darmstadt, Germany"
-  links:
+  links: &social_links
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/taulantkoka"
@@ -37,60 +46,53 @@ author:
       url: "mailto:koka.taulant@outlook.de"
 
 # ──────────────────────────────────────────────
-# Footer — social links live here
+# 4. FOOTER
 # ──────────────────────────────────────────────
 footer:
-  links:
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/taulantkoka"
-    - label: "LinkedIn"
-      icon: "fab fa-fw fa-linkedin"
-      url: "https://linkedin.com/in/taulant-koka-36a7971b6"
-    - label: "Google Scholar"
-      icon: "fas fa-fw fa-graduation-cap"
-      url: "https://scholar.google.com/citations?user=dbpEvYUAAAAJ&hl=de"
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope"
-      url: "mailto:koka.taulant@outlook.de"
+  links: *social_links   # reuse (no duplication)
 
 # ──────────────────────────────────────────────
-# Reading & Output
+# 5. READING & SEARCH
 # ──────────────────────────────────────────────
-locale: "en-US"
 words_per_minute: 200
 search: true
 search_full_content: true
 
 # ──────────────────────────────────────────────
-# Build / Plugins
-# ──────────────────────────────────────────────
-plugins:
-  - jekyll-paginate
-  - jekyll-sitemap
-  - jekyll-gist
-  - jekyll-feed
-  - jekyll-include-cache
-  - jekyll-seo-tag
-  - jekyll-remote-theme
-
-# ──────────────────────────────────────────────
-# Pagination (blog)
+# 6. PAGINATION
 # ──────────────────────────────────────────────
 paginate: 6
 paginate_path: /blog/page:num/
 
 # ──────────────────────────────────────────────
-# Include / Exclude
+# 7. BUILD / PLUGINS
+# ──────────────────────────────────────────────
+plugins:
+  - jekyll-remote-theme
+  - jekyll-include-cache
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-gist
+
+# ──────────────────────────────────────────────
+# 8. FILE HANDLING
 # ──────────────────────────────────────────────
 include:
   - _pages
 
+exclude:
+  - README.md
+  - LICENSE
+  - node_modules
+  - vendor
+
 # ──────────────────────────────────────────────
-# Defaults — author_profile OFF on all pages
+# 9. DEFAULTS
 # ──────────────────────────────────────────────
 defaults:
-  # Blog posts
+  # Posts
   - scope:
       path: ""
       type: posts
@@ -102,6 +104,7 @@ defaults:
       share: true
       related: true
       show_date: true
+
   # Pages
   - scope:
       path: "_pages"
@@ -111,7 +114,7 @@ defaults:
       author_profile: false
 
 # ──────────────────────────────────────────────
-# SEO / Social
+# 10. SEO / SOCIAL
 # ──────────────────────────────────────────────
 social:
   type: "Person"
@@ -120,3 +123,10 @@ social:
     - "https://github.com/taulantkoka"
     - "https://linkedin.com/in/taulant-koka-36a7971b6"
     - "https://scholar.google.com/citations?user=dbpEvYUAAAAJ&hl=de"
+
+# Optional but HIGHLY recommended
+twitter:
+  username: ""   # add if you have one
+
+# Open Graph defaults
+og_image: "/assets/images/site-preview.png"
