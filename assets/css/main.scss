@@ -1,82 +1,287 @@
 ---
+# Front matter dashes tell Jekyll to process this file
 ---
 
-/* ─── Green accent overrides (applied before skin import) ─── */
-/* The dark skin uses !default, so setting these first wins */
+/* ─── 1. DESIGN TOKENS ─── */
 
-$primary-color: #2d8a4e;
-$link-color: #4eaa6e;
-$link-color-hover: #6fce8e;
-$link-color-visited: #3d9a5e;
-$masthead-link-color-hover: #4eaa6e;
-$navicon-link-color-hover: #4eaa6e;
-$info-color: #2d8a4e;
-$success-color: #3da55e;
+$bg: #0d1b0e;
+$bg-soft: #0f2212;
+$bg-footer: #081208;
 
-/* ─── Import the built-in dark skin + full theme ─── */
+$text: #d4ddd5;
+$text-soft: #b0c8b2;
+$text-strong: #eaf2eb;
+
+$primary: #2d8a4e;
+$primary-hover: #3da55e;
+$border: #1a3a1f;
+$border-soft: #1f4a28;
+
+$link: #4eaa6e;
+$link-hover: #6fce8e;
+$link-visited: #3d9a5e;
+
+$code-bg: #0a150b;
+$code-bg-dark: #071008;
+
+/* ─── 2. THEME IMPORTS ─── */
 
 @import "minimal-mistakes/skins/dark";
 @import "minimal-mistakes";
 
-/* ─── Minimal tweaks (layout, not colors) ─── */
+/* ─── 3. BASE ─── */
+
+body {
+  background: $bg;
+  color: $text;
+}
 
 a {
+  color: $link;
   transition: color 0.2s ease;
+
+  &:hover { color: $link-hover; }
+  &:visited { color: $link-visited; }
 }
+
+::selection {
+  background: $primary;
+  color: #fff;
+}
+
+hr {
+  border-color: $border;
+}
+
+/* ─── 4. LAYOUT SURFACES ─── */
+
+.masthead,
+.greedy-nav,
+.page__footer {
+  background: $bg-footer;
+}
+
+.masthead {
+  border-bottom: 1px solid $border;
+}
+
+.page__footer {
+  border-top: 1px solid $border;
+  color: #7a9a7e;
+
+  a:hover { color: $link-hover; }
+}
+
+.page__footer-copyright {
+  color: #5a7a5e;
+}
+
+/* ─── 5. HERO ─── */
 
 .page__hero--overlay {
   padding: 6em 0;
+
+  .page__title {
+    font-size: 2.4em;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .page__lead {
+    color: #c8dcc9;
+    font-size: 1.2em;
+  }
 }
 
-/* Hero buttons — filled instead of outlined */
-.page__hero--overlay .btn,
-.page__hero--overlay .btn--light-outline {
-  background-color: $primary-color !important;
-  color: #fff !important;
-  border: 2px solid $primary-color !important;
+/* Shared button style */
+%btn-green {
+  background: $primary;
+  color: #fff;
+  border: 2px solid $primary;
   border-radius: 6px;
+  padding: 0.6em 1.4em;
   font-weight: 600;
+  font-size: 0.95em;
+  transition: all 0.2s ease;
 
   &:hover {
-    background-color: $link-color-hover !important;
-    border-color: $link-color-hover !important;
+    background: $primary-hover;
+    border-color: $primary-hover;
   }
 }
 
-/* Feature row cards — subtle border */
+.page__hero--overlay {
+  .btn,
+  .btn--light-outline {
+    @extend %btn-green;
+  }
+
+  /* Button layout fix */
+  .page__lead + p,
+  .page__hero-caption + p {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75em;
+    align-items: center;
+  }
+}
+
+/* ─── 6. BUTTONS ─── */
+
+.btn--primary {
+  @extend %btn-green;
+  border: none;
+}
+
+/* ─── 7. CARDS / FEATURES ─── */
+
 .feature__item {
-  border: 1px solid mix(#fff, $background-color, 8%);
-  border-radius: 6px;
+  border: 1px solid $border-soft;
+  border-radius: 8px;
   padding: 1.5em;
-  transition: border-color 0.2s ease;
+  background: $bg-soft;
+  transition: 0.2s ease;
 
   &:hover {
-    border-color: $primary-color;
+    border-color: $primary;
+    background: darken($bg-soft, 3%);
+  }
+
+  .archive__item-title {
+    color: #f0f5f0;
+    font-weight: 700;
+  }
+
+  .archive__item-excerpt {
+    color: #b8ccba;
+    line-height: 1.65;
+  }
+
+  .btn {
+    @extend %btn-green;
+    padding: 0.5em 1.2em;
   }
 }
 
-/* Sidebar nav — breathing room */
-.nav__list li {
-  margin-bottom: 0.3em;
+/* ─── 8. CONTENT ─── */
+
+.page__content {
+  p, li {
+    font-size: 1.05em;
+    line-height: 1.75;
+    color: #cddace;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: $text-strong;
+  }
+
+  strong {
+    color: #f0f5f0;
+  }
+
+  code {
+    background: $code-bg;
+    border: 1px solid $border;
+    color: #5dbd7e;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+  }
+}
+
+/* ─── 9. SIDEBAR ─── */
+
+.sidebar {
+  @media (min-width: 64em) {
+    padding-right: 1em;
+  }
+
+  .nav__items {
+    background: $bg-soft;
+    border: 1px solid $border-soft;
+    border-radius: 8px;
+    padding: 1.25em 1em;
+  }
+}
+
+.nav__sub-title {
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $link;
+  border-bottom: 1px solid $border-soft;
 }
 
 .nav__list a {
-  display: block;
-  padding: 0.45em 0.6em;
-  border-radius: 4px;
-  font-size: 0.9em;
-  line-height: 1.45;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  color: $text-soft;
+  padding: 0.5em 0.65em;
+  border-radius: 5px;
+  transition: 0.15s ease;
 
   &:hover {
-    background-color: rgba($primary-color, 0.1);
+    color: $link;
+    background: rgba($primary, 0.08);
   }
 }
 
 .nav__list .active {
-  border-left: 3px solid $primary-color;
-  padding-left: 0.6em;
+  border-left: 3px solid $primary;
   font-weight: 600;
-  color: $link-color;
-  background-color: rgba($primary-color, 0.08);
+  color: $link;
+  background: rgba($primary, 0.1);
+}
+
+/* ─── 10. CODE ─── */
+
+div.highlighter-rouge,
+figure.highlight {
+  background: $code-bg-dark;
+  border: 1px solid $border;
+  border-radius: 6px;
+}
+
+/* ─── 11. MISC ─── */
+
+blockquote {
+  border-left: 4px solid $primary;
+  color: $text-soft;
+}
+
+table {
+  border-color: $border;
+
+  th {
+    background: $bg-soft;
+    color: $text-strong;
+  }
+
+  td {
+    color: #cddace;
+  }
+}
+
+.page__taxonomy-item {
+  background: $bg-soft;
+  border: 1px solid $border-soft;
+  color: $link;
+
+  &:hover {
+    background: $border;
+    color: $link-hover;
+  }
+}
+
+.pagination--pager {
+  background: $bg-soft;
+  border: 1px solid $border-soft;
+
+  &:hover {
+    background: $border;
+    color: $link;
+  }
+}
+
+.search__toggle {
+  color: $text;
+  &:hover { color: $link; }
 }
