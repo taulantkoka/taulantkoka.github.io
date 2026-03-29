@@ -1,8 +1,8 @@
 ---
 title: "Cross-Channel Unlabeled Sensing"
 permalink: /projects/signal-recovery/
-mathjax: true
 layout: single
+mathjax: true
 sidebar:
   nav: "projects"
 ---

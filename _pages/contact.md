@@ -2,6 +2,7 @@
 title: "Contact"
 permalink: /contact/
 layout: single
+mathjax: true
 ---
 
 Best way to reach me is through the form below.
