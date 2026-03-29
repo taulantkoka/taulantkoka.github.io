@@ -11,7 +11,7 @@ excerpt: "A quick first post about launching my personal site and what I plan to
 
 This is my first post — welcome!
 
-I've set up this site as a space to share my research, document projects, and write about things I'm working on as an ML researcher at TU Darmstadt.
+I've set up this site as a space to share my research, document projects, and write about things I'm working as Data Science researcher at TU Darmstadt.
 
 ## What to Expect
 
