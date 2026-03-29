@@ -5,7 +5,11 @@ layout: single
 sidebar:
   nav: "projects"
 ---
-
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: { extensions: ["bm.js"] }
+  });
+</script>
 `Signal Processing` · `Optimization` · `Sampling Theory` · `Sparse Recovery`
 
 Traditional sampling theorems, from Shannon-Nyquist to Compressed Sensing, rely on a fundamental assumption: the correspondence between a sample and its index (or channel) is known and fixed. But what if this assumption breaks down?
