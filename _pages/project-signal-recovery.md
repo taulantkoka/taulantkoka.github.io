@@ -6,8 +6,6 @@ mathjax: true
 sidebar:
   nav: "projects"
 toc: true
-toc_label: "Contents"
-toc_sticky: true
 ---
 <script type="text/javascript" async
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
