@@ -330,104 +330,85 @@ table {
   hyphens: auto;            /* Prevents large gaps by breaking long words */
 }
 
-/* ─── 17. TABLE OF CONTENTS: FINAL STABILITY & COLOR FIX ─── */
-/* ─── TOC RESET (Nuke the theme defaults) ─── */
-.toc, .toc__menu, .toc__menu li, .toc__menu a {
+/* ─── 17. CONSOLIDATED TOC: NO-BLINK + PERSISTENT HEADERS ─── */
+
+/* 1. CONTAINER: Stable background and border */
+.toc {
+  background: $surface !important;
+  border: 1px solid $border !important;
+  border-radius: 8px;
+  padding: 1.25em 1em;
+  /* Firefox Stability */
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* 2. RESET: Remove all theme-default backgrounds, margins, and blinking transitions */
+.toc__menu, 
+.toc__menu li, 
+.toc__menu a {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   margin: 0 !important;
-  padding: 0 !important;
+  transition: none !important; /* Firefox hates competing transitions */
 }
 
-/* Now apply your custom styling to the anchor tags ONLY */
+/* 3. LEVEL 1: Main sections (1. 2. 3...) - ALWAYS VISIBLE */
+.toc__menu > li {
+  display: block !important;
+  margin-bottom: 0.3em !important;
+}
+
+.toc__menu > li > a {
+  font-weight: 600;
+  color: $text-strong !important;
+}
+
+/* 4. LEVEL 2+: Sub-sections - HIDDEN BY DEFAULT */
+.toc__menu li ul {
+  display: none; 
+  margin-left: 1em !important;
+  padding-left: 0.5em !important;
+  border-left: 1px solid $border;
+}
+
+/* 5. REVEAL LOGIC: Show sub-sections on Hover OR if the Parent is Active */
+.toc__menu li:hover > ul,
+.toc__menu li.is-active-li > ul,
+.toc__menu li.active > ul {
+  display: block !important;
+}
+
+/* 6. LINKS: General styling for all levels */
 .toc__menu a {
   display: block !important;
-  padding: 5px 10px !important;
+  padding: 0.3em 0.5em !important;
+  font-size: 0.9em !important;
+  line-height: 1.3;
   color: $text-soft !important;
   border-radius: 4px;
+  /* Fix Firefox sub-pixel rendering jitter */
+  will-change: transform, opacity;
 }
 
-/* This is the only place color should ever change */
-.toc__menu .is-active-link {
-  background: $primary !important; /* Your dark green */
+/* 7. THE ACTIVE LINK: Your Forest Green highlight */
+.toc__menu .is-active-link,
+.toc__menu a.active {
+  background: $primary !important;
   color: #fff !important;
+  font-weight: 700 !important;
 }
 
-.toc {
-  background: $surface !important;
-  border: 1px solid $border;
-  border-radius: 8px;
-  padding: 1.25em 1em;
-}
-
-/* 1. RESET: Kill all default theme backgrounds on TOC items */
-.toc__menu li,
-.toc__menu li.active,
-.toc__menu li.is-active-li {
-  background: transparent !important; 
-  border: none !important;
-  margin: 0;
-}
-
-/* 2. TITLE: Style the "On This Page" header */
+/* 8. TITLE: "On This Page" header */
 .toc .nav__title,
 .toc__title {
   background: transparent !important;
-  color: $text-strong !important;
+  color: $link-hover !important;
   border-bottom: 1px solid $border !important;
   padding-bottom: 0.5em;
   margin-bottom: 1em;
-}
-
-/* 3. LINKS: Default state */
-.toc__menu a {
-  color: $text-soft !important;
-  display: block;
-  padding: 0.3em 0.5em;
-  font-size: 0.9em;
-  line-height: 1.3;
-  border-radius: 4px;
-  transition: background 0.2s ease, color 0.2s ease;
-  background: transparent !important;
-}
-
-/* 4. ACTIVE STATE: The one you are currently reading */
-/* We target every possible class the theme uses for scroll-tracking */
-.toc__menu .is-active-link,
-.toc__menu .is-active,
-.toc__menu .active a {
-  background: $primary !important; /* Your Dark Green */
-  color: #fff !important;          /* White text */
-  font-weight: 600;
-}
-
-/* 5. SUB-ITEMS: Indent and clean up the grey blocks from your screenshot */
-.toc__menu ul {
-  margin-left: 0.75em;
-  padding-left: 0.5em;
-  border-left: 1px solid $border;
-  list-style: none;
-  background: transparent !important;
-}
-
-/* Optional: Only show sub-headers of the section you are currently in */
-.toc__menu ul {
-  display: none;
-}
-.toc__menu .is-active-li > ul,
-.toc__menu .active + ul,
-.toc__menu li:hover > ul {
-  display: block;
-}
-
-.toc, 
-.toc__menu a {
-  /* Force GPU rendering to stop Firefox flickering */
-  backface-visibility: hidden;
-  transform: translateZ(0); 
-  will-change: transform, opacity; 
-  
-  /* Kill all transitions - Firefox hates 'fighting' transitions */
-  transition: none !important; 
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
