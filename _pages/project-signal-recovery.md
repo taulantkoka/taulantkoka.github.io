@@ -214,23 +214,12 @@ jupyter notebook example.ipynb
 
 The following results are from 100 Monte Carlo trials per SNR level, with two sparse channels ($K_1 = K_2 = 2$ spikes each), $N = 121$ samples, and 40 shuffled positions (~33%).
 
-<a href="/figures_ccus/mc_results.svg" class="image-popup" title="Monte Carlo results: accuracy and nMSE vs SNR">
-  <img src="/figures_ccus/mc_results.svg" alt="Accuracy and nMSE vs SNR"
+<a href="/figures_ccus/plot_mc_results.svg" class="image-popup" title="Monte Carlo results: accuracy and nMSE vs SNR">
+  <img src="/figures_ccus/plot_mc_results.svg" alt="Accuracy and nMSE vs SNR"
     style="border-radius: 6px; padding: 0.5em; width: 100%; display: block;">
 </a>
 
 The left panel shows the weighted accuracy of the sample reassignment, the right panel shows the normalized reconstruction error. Both metrics transition sharply between 10–20 dB: once the SNR is high enough for the robust estimator to get a reasonable initial fit, the alternating reassignment converges quickly. Above 20 dB, accuracy exceeds 95% and nMSE drops below $10^{-3}$.
-
-### Single Trial Example
-
-A representative trial at 20 dB SNR with 33% shuffled samples:
-
-<a href="/figures_ccus/single_trial.svg" class="image-popup" title="Single trial: original, shuffled, and reconstructed signals">
-  <img src="/figures_ccus/single_trial.svg" alt="Single trial reconstruction"
-    style="border-radius: 6px; padding: 0.5em; width: 100%; display: block;">
-</a>
-
-The top panel shows the two original channel signals. The middle panel shows the observed (shuffled) signals, with swapped samples highlighted. The bottom panel shows the reconstruction after robust regression and reassignment.
 
 ## Publications
 
