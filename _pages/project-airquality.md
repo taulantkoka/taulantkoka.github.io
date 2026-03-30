@@ -164,8 +164,8 @@ The analysis reports three estimates: an OLS estimate (naive, likely biased by s
 
 ### 3.1 The 25-Year Decline
 
-![Station trend]<a href="/figures_airquality/darmstadt_NO2_station_trend.svg" class="image-popup">
-  <img src="/figures_airquality/darmstadt_NO2_station_trend.svg" alt="Station trend">
+![Station trend]<a href="_pages/figures_airquality/darmstadt_NO2_station_trend.svg" class="image-popup">
+  <img src="_pages/figures_airquality/darmstadt_NO2_station_trend.svg" alt="Station trend">
 </a>
 
 Darmstadt's traffic station (Huegelstrasse) peaked at roughly 74 ug/m3 in 2004, nearly double the EU annual limit of 40 ug/m3. By 2024, it had dropped to about 25 ug/m3, a decline of roughly 66%. The urban background station declined from about 39 to 20 ug/m3 over the same period.
@@ -174,8 +174,8 @@ The decline is not smooth. There are periods of stagnation (roughly 2005-2010) a
 
 ### 3.2 Multi-Pollutant Context
 
-![Multi-pollutant]<a href="figures_airquality/01_multi_pollutant_trends.svg" class="image-popup">
-  <img src="figures_airquality/01_multi_pollutant_trends.svg" alt="Station trend">
+![Multi-pollutant]<a href="_pages/figures_airquality/01_multi_pollutant_trends.svg" class="image-popup">
+  <img src="_pages/figures_airquality/01_multi_pollutant_trends.svg" alt="Station trend">
 </a>
 
 NO2 shows the steepest decline among the pollutants tracked. PM10 declined more gradually. Note that the annual balance plots only include NO2 and PM10, because the UBA's annual balance endpoint returns a different metric for ozone (exceedance day counts rather than annual mean concentrations), and PM2.5 monitoring at Darmstadt's urban stations only began around 2020. Ozone and PM2.5 are included in the seasonal analysis (Section 3.3), which uses hourly data where both pollutants are measured correctly.
