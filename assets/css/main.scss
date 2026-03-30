@@ -14,8 +14,8 @@ $border: #204e47;
 
 /* ─── DERIVED ─── */
 
-$text-soft: rgba($text, 0);
-$text-strong: lighten($text, 0%);
+$text-soft: rgba($text, 0.75);
+$text-strong: lighten($text, 100%);
 
 $link: $primary;
 $link-hover: lighten($primary, 12%);
