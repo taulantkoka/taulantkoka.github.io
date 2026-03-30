@@ -4,7 +4,7 @@ permalink: /projects/
 layout: single
 mathjax: true
 sidebar:
-nav: "projects"
+  nav: "projects"
 ---
 
 A mix of research projects, side projects, and things I've built. Some are published work, some are just things I found interesting enough to spend time on.
