@@ -412,3 +412,16 @@ table {
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
+
+
+.h3-ghost {
+  /* Match your H3 styles exactly */
+  display: block;
+  font-family: $sans-serif; /* Or whatever your theme uses */
+  font-size: 1.25rem;       /* Adjust to match your theme's H3 size */
+  font-weight: 700;
+  color: $text-strong;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+  line-height: 1.2;
+}

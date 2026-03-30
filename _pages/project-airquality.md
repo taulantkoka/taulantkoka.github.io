@@ -29,7 +29,7 @@ toc: true
 
 
 <h2 data-toc-skip>Do Diesel Bans Actually Work?</h3>
-<h3 data-toc-skip>A Data-Driven Analysis of 25 Years of German Air Quality</h3>
+<p class="h3-ghost">A Data-Driven Analysis of 25 Years of German Air Quality</p>
 
 **Taulant Koka · March 2026 · [GitHub: Airquality-Germany](https://github.com/taulantkoka/Airquality-Germany)**
 
@@ -37,7 +37,7 @@ toc: true
 
 ---
 
-<h3 data-toc-skip>Abstract</h3>
+<p class="h3-ghost">Abstract</p>
 
 This study analyzes 25 years of air pollution data across 78 German cities to evaluate the causal impact of diesel driving bans and Umweltzonen (low-emission zones) on nitrogen dioxide (NO2) concentrations. Using an autoregressive model with exogenous variables (ARX), Newey-West heteroskedasticity-robust standard errors, and Benjamini-Yekutieli false discovery rate correction, I find that the Darmstadt Huegelstrasse diesel ban reduced daily NO2 by **5.1 micrograms per cubic meter** (p < 0.001) at the directly affected traffic station. A national daily panel covering 50+ cities estimates the diesel ban treatment effect at **-2 to -4 micrograms per cubic meter** (p < 0.001), and a national annual panel of 78 cities over 25 years confirms this at **-4.7 micrograms per cubic meter** (p < 0.05). However, the Umweltzone effect cannot be cleanly identified: a staggered difference-in-differences yields a null result, and a regression discontinuity design using the EU 40 ug/m3 limit as instrument also fails to find a significant effect, due to endogenous treatment assignment and collinearity with national fleet modernization trends. The first COVID-19 lockdown (-2.5) and the 9-Euro-Ticket (-1.4) also produced statistically significant NO2 reductions. PM10 is largely unaffected by traffic interventions. All code and data pipelines are open source.
 

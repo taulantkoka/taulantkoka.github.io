@@ -29,13 +29,14 @@ toc: true
 
 <h2 data-toc-skip>When Your Labels Get Shuffled</h2>
 
-<h3 data-toc-skip>Recovering Multi-Channel Signals with Unknown Sample-Channel Assignments</h3>
+<p class="h3-ghost">Recovering Multi-Channel Signals with Unknown Sample-Channel Assignments</p>
 
 **Taulant Koka · 2022–2025 · [Signal Processing (Elsevier)](https://doi.org/10.1016/j.sigpro.2024.109579) · [IEEE ICASSP 2025](https://ieeexplore.ieee.org/document/10888212)**
 
 ---
 
-<h3 data-toc-skip>The Core Idea</h3>
+<p class="h3-ghost">The Core Idea</p>
+
 Every sampling theorem you've ever used, Shannon-Nyquist, compressed sensing, Prony's method, relies on a quiet assumption: you know the correct order of measurements.
 
 But what if it isn't?
