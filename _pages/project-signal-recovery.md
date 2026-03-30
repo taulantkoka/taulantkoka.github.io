@@ -96,7 +96,7 @@ The "up to relabeling" caveat is unavoidable: if you can swap all samples of two
 
 In the shared-subspace setting, all channels use the same basis $\mathbf{E}$. But in many applications, different channels have different structures. A neuron firing in bursts lives in a different subspace than one with slow oscillations.
 
-The ICASSP 2025 paper generalizes the framework to allow each channel to live in its own subspace $\mathscr{E}_m$. The condition becomes: every *pairwise sum* of subspaces $\mathscr{E}_m + \mathscr{E}_n$ must satisfy the RFRP, and $N \geq M \cdot \max_{m,n} \dim(\mathscr{E}_m + \mathscr{E}_n)$.
+The ICASSP 2025 paper generalizes the framework to allow each channel to live in its own subspace $$\mathscr{E}_m$$. The condition becomes: every *pairwise sum* of subspaces $$\mathscr{E}_m + \mathscr{E}_n$$ must satisfy the RFRP, and $$N \geq M \cdot \max_{m,n} \dim(\mathscr{E}_m + \mathscr{E}_n)$$.
 
 This is a strictly tighter bound than what you'd get by embedding everything in a single large subspace. It matters in practice because individual channel subspaces can be much smaller than their union.
 
