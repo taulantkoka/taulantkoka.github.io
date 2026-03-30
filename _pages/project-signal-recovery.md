@@ -184,7 +184,7 @@ The sharp transition around 30–40% is characteristic of combinatorial problems
 
 ## 6. What This Connects To
 
-**Unlabeled sensing** is the broader field, recovering signals when the correspondence between measurements and their indices is unknown. Most existing work assumes i.i.d. Gaussian sensing matrices. Our framework handles the structured matrices that actually arise in signal processing (DFT, Vandermonde), which is what makes the connection to continuous-time sparse signals possible.
+**Unlabeled sensing** is the broader field, recovering signals when the correspondence between measurements and their indices is unknown. Most existing work assumes i.i.d. Gaussian sensing matrices. Our framework handles the block diagonal structure of multi-channel signals, as well as structured matrices that actually arise in signal processing (DFT, Vandermonde), which is what makes the connection to continuous-time sparse signals possible.
 
 **Compressed sensing** emerges as a special case: when signals are sparse in an overcomplete dictionary, the union-of-subspaces theorem applies directly, and you get recovery guarantees for "shuffled compressed sensing" essentially for free.
 
