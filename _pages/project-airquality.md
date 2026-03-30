@@ -493,5 +493,3 @@ All data is fetched live from public APIs. No pre-downloaded datasets are requir
 ---
 
 *Data attribution: "Umweltbundesamt mit Daten der Messnetze der Laender und des Bundes"*
-
-*License: see LICENSE file*
