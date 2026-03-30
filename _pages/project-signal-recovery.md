@@ -37,11 +37,11 @@ toc: true
 
 ## The Core Idea
 
-Every sampling theorem you've ever used — Shannon-Nyquist, compressed sensing, Prony's method — relies on a quiet assumption: you know which measurement came from which source. Sample $n$ belongs to channel $m$, and that mapping is fixed.
+Every sampling theorem you've ever used, Shannon-Nyquist, compressed sensing, Prony's method, relies on a quiet assumption: you know the correct order of measurements.
 
 But what if it isn't?
 
-Think of a neuroscience experiment where you're imaging the activity of hundreds of neurons in a living organism. The animal moves. The microscope tracking isn't perfect. Suddenly, the fluorescence trace you're recording for "neuron 7" might actually contain samples from neuron 12, or neuron 3, or some mixture that changes at every time point. The data is all there — it's just been *shuffled across channels*.
+Think of a neuroscience experiment where you're imaging the activity of hundreds of neurons in a living organism. The animal moves. The microscope tracking isn't perfect, and the fluorescence trace you're recording for some "neuron 7" might actually contain samples from neuron 12, or neuron 3, or some mixture that changes at every time point. The data is all there, it's just been *shuffled across channels*.
 
 This is not a noise problem. The measurements themselves are fine. The problem is that the *labels* are wrong, and you don't know which ones.
 
