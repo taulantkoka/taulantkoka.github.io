@@ -7,29 +7,28 @@ mathjax: true
 
 ## Hey, I'm Taulant
 
-I’m a Ph.D. candidate at TU Darmstadt. My work is broadly about making sense of noisy data, whether that's from a city-wide monitoring network, a biological sensor, or a genomic sequence.
+I'm a Ph.D. candidate at [TU Darmstadt](https://www.etit.tu-darmstadt.de/rds/index.en.jsp). My work is broadly about making sense of noisy data — whether that's from a city-wide monitoring network, a biological sensor, or a genomic sequence.
 
-This page is meant to be a dynamic archive for a selection of problems and projects I’ve found particularly challenging, interesting, or both. I try to share them here in an accessible way, and give some additional information regarding thought processes that maybe didn't quite fit into a research paper.
+This page is meant to be a dynamic archive for a selection of problems and projects I've found particularly challenging, interesting, or both. I try to share them here in an accessible way, and give some additional information regarding thought processes that maybe didn't quite fit into a research paper.
 
 ### The Path Here
 
-I grew up in Germany, did my B.Sc. and M.Sc. at TU Darmstadt in Electrical Engineering and Information Technology, and took detours to Aalto University in Finland and EPFL in Switzerland along the way. At EPFL I joined the LCAV lab and wrote my thesis in collaboration with the Swiss Data Science Center (SDSC). After that I spent a few months as an intern at the SDSC Hub at the Paul Scherrer Institute, before I returned to Darmstadt to start my PhD in late 2022.
+I grew up in Germany, did my B.Sc. and M.Sc. at TU Darmstadt in Electrical Engineering and Information Technology, and took detours to [Aalto University](https://www.aalto.fi/en) in Finland and [EPFL](https://www.epfl.ch/en/) in Switzerland along the way. At EPFL I joined the [LCAV lab](https://www.epfl.ch/labs/lcav/) and wrote my thesis in collaboration with the [Swiss Data Science Center (SDSC)](https://datascience.ch). After that I spent a few months as an intern at the SDSC Hub at the [Paul Scherrer Institute](https://www.psi.ch/en), before I returned to Darmstadt to start my PhD in late 2022.
 
-### Recent Research Directions
+### Recent Research
 
-**High-Dimensional Variable Selection**---When dealing with millions of features, it is easy to make false discoveries. Currently, a large portion of my research focuses on the development of scalable variable selection with False Discovery Rate (FDR) control to ensure statistical validity. Memory and hardware constraints in general, play a crucial role, when problems start to scale into regimes that require terabytes of RAM. Maintaining the balance between statistical rigor and computational efficiency is therefore indespensable.
+**High-dimensional variable selection** — When you're dealing with millions of features, false discoveries are almost guaranteed unless you're careful. A large part of my current research is about building variable selection methods that scale to these regimes while keeping the false discovery rate under control. The tricky part isn't just the statistics — it's that naive implementations need terabytes of RAM, so the algorithmic design has to be memory-aware from the ground up.
 
-**Cross-Channel Unlabeled Sensing**---While classical sampling assumes fixed indexing, **unlabeled sensing** addresses cases where samples are "out of order." **Cross-Channel Unlabeled Sensing**, a sub-problem of unlabeled sensing we formalized during my Master's Thesis, deals with reconstructing multi-channel signals when samples are permuted across channels at each time point. Moving beyond my initial thesis work, my recent research derives recovery bounds and addresses the underlying combinatorial challenges. This is particularly relevant for whole-brain calcium imaging or multi-target tracking in general, where data association can be difficult due to crossings of trajectories.
-
+**Cross-channel unlabeled sensing** — Classical sampling theory assumes you know which measurement came from which channel. What happens when that assumption breaks? During my Master's thesis, we formalized a sub-problem called Cross-Channel Unlabeled Sensing, where multi-channel signals are observed through unknown permutations at each time point. My recent work derives recovery bounds and tackles the combinatorial structure underneath. This shows up in practice in settings like whole-brain calcium imaging, where movement can scramble which recorded trace belongs to which neuron, or in multi-target tracking, where trajectories cross and identities get mixed up.
 
 ### Projects & Interests
 
-Beyond my job as a research associate, I enjoy tinkering with public data and open-source tools:
+Beyond my day job as a research associate, I like tinkering with public data and building things:
 
-* **Air Quality in Hessen**: I am currently [analyzing public data](/projects/) to quantify the impact of "Umweltzonen" (low-emission zones) on urban air quality over the last decade.
-* **ECG Analysis**: As a side project during my Master's, I developed a visibility-graph-based method for R-peak detection in noisy ECG signals. It was integrated into [NeuroKit2](https://github.com/neuropsychology/NeuroKit), a library widely used in the neuroscience and biomedical engineering communities.
-* **Intersection with Hardware**: Additionally, I have a background in measurement and sensor technology and occasionally work on microcontroller and Arduino-based projects in my free time.
-  
+- **[Air quality in Germany](/projects/airquality/)** — I'm analyzing 25 years of public monitoring data to figure out whether diesel bans and Umweltzonen actually reduced pollution, or whether fleet modernization would have done the job anyway. What started as an afternoon project turned into a proper study covering 78 cities.
+- **ECG analysis** — During my Master's, I built a visibility-graph-based method for R-peak detection in noisy ECG signals. It got integrated into [NeuroKit2](https://github.com/neuropsychology/NeuroKit), which is probably the thing I've made that the most people actually use.
+- **Hardware** — I have a background in measurement and sensor technology and occasionally tinker with microcontroller and Arduino projects.
+
 ---
 
 [GitHub](https://github.com/taulantkoka) · [LinkedIn](https://linkedin.com/in/taulant-koka-36a7971b6) · [Google Scholar](https://scholar.google.com/citations?user=dbpEvYUAAAAJ&hl=de) · [Contact](/contact/)
