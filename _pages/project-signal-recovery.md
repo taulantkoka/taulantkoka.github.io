@@ -128,7 +128,7 @@ Here's the key algorithmic insight: **adding the shuffled signals undoes the shu
 
 Since the permutation at each time point just rearranges samples across channels, the sum $\mathbf{y}_1 + \cdots + \mathbf{y}_M = \mathbf{x}_1 + \cdots + \mathbf{x}_M$ is invariant to the permutation. This sum is itself a stream of Diracs (with all spike locations from all channels pooled together), and its parameters can be recovered via standard line spectral estimation (e.g., Prony's method).
 
-From the recovered locations, you construct the sensing matrix $\mathbf{E} = \mathbf{W}\mathbf{V}_\Sigma$ — and now the problem reduces to cross-channel unlabeled sensing with a known $\mathbf{E}$.
+From the recovered locations, you construct the sensing matrix $\mathbf{E} = \mathbf{W}\mathbf{V}_\Sigma$, and now the problem reduces to cross-channel unlabeled sensing with a known $\mathbf{E}$.
 
 ### 3.3 Why the Theory Works for This Structure
 
@@ -151,7 +151,7 @@ The theory guarantees uniqueness, but doesn't hand you an algorithm. Here's the 
   - Estimating the coefficients $\boldsymbol{\beta}$ using a **robust MM-estimator** (because any wrong sample assignments act as outliers)
   - Updating the assignment vector $\mathbf{q}$ by solving a relaxed convex program, then projecting back to binary
 
-The robust estimator is essential here. Standard least squares would break down because incorrectly assigned samples create arbitrary outliers in the residuals. The MM-estimator has a high breakdown point — it can tolerate a substantial fraction of contaminated data and still produce reasonable estimates.
+The robust estimator is essential here. Standard least squares would break down because incorrectly assigned samples create arbitrary outliers in the residuals. The MM-estimator has a high breakdown point, it can tolerate a substantial fraction of contaminated data and still produce reasonable estimates.
 
 The algorithm doesn't have convergence guarantees (the combination of robust estimation and binary projection makes the landscape nonconvex), but in practice 5 iterations are sufficient, selecting the solution with the smallest residual.
 
