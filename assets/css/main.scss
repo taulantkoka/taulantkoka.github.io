@@ -420,3 +420,14 @@ table {
 .toc__menu li:hover > ul {
   display: block;
 }
+
+.toc, 
+.toc__menu a {
+  /* Force GPU rendering to stop Firefox flickering */
+  backface-visibility: hidden;
+  transform: translateZ(0); 
+  will-change: transform, opacity; 
+  
+  /* Kill all transitions - Firefox hates 'fighting' transitions */
+  transition: none !important; 
+}
