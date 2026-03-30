@@ -330,72 +330,71 @@ table {
   hyphens: auto;            /* Prevents large gaps by breaking long words */
 }
 
-/* ─── 17. TABLE OF CONTENTS (NO BLUE BLINK FIX) ─── */
+/* ─── 17. TABLE OF CONTENTS: FINAL STABILITY & COLOR FIX ─── */
 
 .toc {
-  background: $surface !important; /* Force it to match your card color */
+  background: $surface !important;
   border: 1px solid $border;
   border-radius: 8px;
   padding: 1.25em 1em;
 }
 
-/* This kills the light blue background on the TOC title */
+/* 1. RESET: Kill all default theme backgrounds on TOC items */
+.toc__menu li,
+.toc__menu li.active,
+.toc__menu li.is-active-li {
+  background: transparent !important; 
+  border: none !important;
+  margin: 0;
+}
+
+/* 2. TITLE: Style the "On This Page" header */
 .toc .nav__title,
 .toc__title {
   background: transparent !important;
   color: $text-strong !important;
   border-bottom: 1px solid $border !important;
-  font-size: 0.85em;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
 }
 
-.toc__menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-
-  li {
-    background: transparent !important; /* Kill any inherited light blue row color */
-    border: none !important;
-  }
-}
-
-/* This targets the links inside the TOC */
+/* 3. LINKS: Default state */
 .toc__menu a {
-  background: transparent !important; /* Ensure the box stays dark */
   color: $text-soft !important;
   display: block;
-  padding: 0.4em 0.5em;
-  border-radius: 4px;
+  padding: 0.3em 0.5em;
   font-size: 0.9em;
-  transition: all 0.2s ease;
-
-  &:hover {
-    color: #fff !important;
-    background: $primary !important; /* Use your Forest Green for hover */
-  }
+  line-height: 1.3;
+  border-radius: 4px;
+  transition: background 0.2s ease, color 0.2s ease;
+  background: transparent !important;
 }
 
-/* This targets the "Active" section when you scroll */
-/* Minimal Mistakes uses both .is-active and .active */
-.toc__menu .is-active a,
-.toc__menu li.active a,
-.toc__menu a.active {
-  background: $primary !important; /* Force the box to be dark green, not light blue */
-  color: #fff !important;
+/* 4. ACTIVE STATE: The one you are currently reading */
+/* We target every possible class the theme uses for scroll-tracking */
+.toc__menu .is-active-link,
+.toc__menu .is-active,
+.toc__menu .active a {
+  background: $primary !important; /* Your Dark Green */
+  color: #fff !important;          /* White text */
   font-weight: 600;
-  box-shadow: inset 3px 0 0 $text; /* Optional: a small white line to show where you are */
 }
 
-/* Hide sub-bullets unless they are active to keep it clean */
+/* 5. SUB-ITEMS: Indent and clean up the grey blocks from your screenshot */
+.toc__menu ul {
+  margin-left: 0.75em;
+  padding-left: 0.5em;
+  border-left: 1px solid $border;
+  list-style: none;
+  background: transparent !important;
+}
+
+/* Optional: Only show sub-headers of the section you are currently in */
 .toc__menu ul {
   display: none;
-  margin-left: 1em;
-  border-left: 1px solid $border;
 }
-
-.toc__menu .is-active + ul,
-.toc__menu .active + ul {
+.toc__menu .is-active-li > ul,
+.toc__menu .active + ul,
+.toc__menu li:hover > ul {
   display: block;
 }
