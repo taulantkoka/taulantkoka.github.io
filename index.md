@@ -7,7 +7,7 @@ mathjax: true
 particles: true
 header:
   overlay_color: "#14342f"
-  overlay_filter: "0.1"
+  overlay_filter: "0"
   show_overlay_excerpt: true
 tagline: >
   Data Science Researcher · Ph.D. candidate at TU Darmstadt<br/><br/>
