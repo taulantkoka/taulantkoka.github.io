@@ -65,11 +65,15 @@ $$
 
 where $\mathbf{\Pi}$ is a structured permutation matrix built from binary diagonal blocks $$\mathbf{Q}_{mn}=\mathrm{diag}(\mathbf{q}_{mn})$$, with the constraint that each sample goes to exactly one channel: $$\sum_m \mathbf{q}_{mn} = \sum_n \mathbf{q}_{mn} = \mathbf{1}$$.
 
+<a href="/figures_ccus/shuffled_signals.svg" class="image-popup">
+  <img src="/figures_ccus/shuffled_signals.svg" alt="Shuffled Signals">
+</a>
+
 ### 1.2 Why This Is Hard
 
 At first glance, this looks hopeless. You have $N$ unknown permutations (one per time point), each choosing from $M!$ possibilities, plus the signal coefficients themselves. That's a combinatorial explosion on top of a continuous estimation problem.
 
-The key insight is that **structure in the signals constrains the permutations**. If the signals live in a known low-dimensional subspace, say each $\mathbf{x}_m = \mathbf{E}\boldsymbol{\beta}_m$ for some $N \times K$ sensing matrix $\mathbf{E}$ with $K \ll N$, then not every permutation is consistent with the observed data. The subspace acts as a fingerprint: even after shuffling, the mathematical structure of the signals leaks through.
+The key insight is that **structure in the signals constrains the permutations**. If the signals live in a known low-dimensional subspace, say each $\mathbf{x}_m = \mathbf{E}\boldsymbol{\beta}_m$ for some $N \times K$ sensing matrix $\mathbf{E}$ with $K \ll N$, then not every permutation is consistent with the observed data. The subspace acts as a fingerprint: even after shuffling, the structure of the signal's subspace geometry leaks through.
 
 ### 1.3 The Two-Channel Case: Building Intuition
 
@@ -190,4 +194,4 @@ The sharp transition around 30–40% is characteristic of combinatorial problems
 ## Publications
 
 - **T. Koka**, M. C. Tsakiris, M. Muma, B. Béjar Haro. *Shuffled multi-channel sparse signal recovery.* **Signal Processing** (Elsevier), 2024. [DOI](https://doi.org/10.1016/j.sigpro.2024.109524)
-- **T. Koka**, M. C. Tsakiris, B. Béjar Haro, M. Muma. *Cross-Channel Unlabeled Sensing over a Union of Signal Subspaces.* **IEEE ICASSP**, 2025.
+- **T. Koka**, M. C. Tsakiris, B. Béjar Haro, M. Muma. *Cross-Channel Unlabeled Sensing over a Union of Signal Subspaces.* **IEEE ICASSP**, 2025. [DOI](https://doi.org/10.1109/ICASSP49660.2025.10888212)
