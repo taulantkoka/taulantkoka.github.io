@@ -31,7 +31,7 @@ toc: true
 
 ## Recovering Multi-Channel Signals with Unknown Sample-Channel Assignments
 
-**Taulant Koka · 2022–2025 · [Signal Processing (Elsevier)](https://doi.org/10.1016/j.sigpro.2024.109524) · [IEEE ICASSP 2025](https://2025.ieeeicassp.org/)**
+**Taulant Koka · 2022–2025 · [Signal Processing (Elsevier)](https://doi.org/10.1016/j.sigpro.2024.109579) · [IEEE ICASSP 2025](https://ieeexplore.ieee.org/document/10888212)**
 
 ---
 
