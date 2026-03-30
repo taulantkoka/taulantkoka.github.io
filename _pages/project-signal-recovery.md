@@ -65,10 +65,12 @@ $$
 
 where $\mathbf{\Pi}$ is a structured permutation matrix built from binary diagonal blocks $$\mathbf{Q}_{mn}=\mathrm{diag}(\mathbf{q}_{mn})$$, with the constraint that each sample goes to exactly one channel: $$\sum_m \mathbf{q}_{mn} = \sum_n \mathbf{q}_{mn} = \mathbf{1}$$.
 
-<a href="/figures_ccus/shuffled_signals.svg" class="image-popup">
-  <img src="/figures_ccus/shuffled_signals.svg" alt="Shuffled Signals"
-    style="background: #fff; border-radius: 6px; padding: 1em; width: 100%; max-width: 900px; display: block;cursor: zoom-in;">
-</a>
+<figure>
+  <a href="/figures_ccus/shuffled_signals.svg" class="image-popup" title="Shuffled multi-channel signals">
+    <img src="/figures_ccus/shuffled_signals.svg" alt="Shuffled Signals"
+      style="background: #fff; border-radius: 6px; padding: 1em; width: 100%; display: block;">
+  </a>
+</figure>
 
 ### 1.2 Why This Is Hard
 
