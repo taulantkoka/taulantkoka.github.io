@@ -197,7 +197,7 @@ These patterns are critical context. Any analysis that does not control for time
 
 ![Traffic vs background](figures_airquality/03_traffic_vs_background.svg)
 
-The gap between traffic and background stations has narrowed substantially over 25 years, from roughly 16 ug/m3 in the early 2000s to about 5 ug/m3 in recent years. This narrowing suggests that traffic-specific interventions (including the diesel ban) have been most effective at reducing roadside pollution, while background levels have declined more slowly, driven by broader factors like fleet modernization and economic changes.
+The gap between traffic and background stations has narrowed substantially over 25 years, from roughly 16 ug/m3 in the early 2000s to about 5 ug/m3 in recent years. This narrowing suggests that traffic-specific interventions (including the diesel ban) have been most effective at reducing roadside pollution, while background levels declined more slowly, driven by broader factors like fleet modernization and economic changes.
 
 ### 3.5 Cross-City Comparison (Exploratory)
 
