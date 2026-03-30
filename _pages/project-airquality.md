@@ -169,7 +169,7 @@ The analysis reports three estimates: an OLS estimate (naive, likely biased by s
 
 <a href="{{ '/figures_airquality/darmstadt_NO2_station_trend.svg' | relative_url }}" class="image-popup"> 
   <img src="{{ '/figures_airquality/darmstadt_NO2_station_trend.svg' | relative_url }}" alt="Zoom"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 
 Darmstadt's traffic station (Huegelstrasse) peaked at roughly 74 ug/m3 in 2004, nearly double the EU annual limit of 40 ug/m3. By 2024, it had dropped to about 25 ug/m3, a decline of roughly 66%. The urban background station declined from about 39 to 20 ug/m3 over the same period.
@@ -180,7 +180,7 @@ The decline is not smooth. There are periods of stagnation (roughly 2005-2010) a
 
 <a href="/figures_airquality/01_multi_pollutant_trends.svg" class="image-popup">
   <img src="/figures_airquality/01_multi_pollutant_trends.svg" alt="Multi-pollutant"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 
 NO2 shows the steepest decline among the pollutants tracked. PM10 declined more gradually. Note that the annual balance plots only include NO2 and PM10, because the UBA's annual balance endpoint returns a different metric for ozone (exceedance day counts rather than annual mean concentrations), and PM2.5 monitoring at Darmstadt's urban stations only began around 2020. Ozone and PM2.5 are included in the seasonal analysis (Section 3.3), which uses hourly data where both pollutants are measured correctly.
@@ -189,7 +189,7 @@ NO2 shows the steepest decline among the pollutants tracked. PM10 declined more 
 
 <a href="/figures_airquality/02_seasonal_patterns.svg" class="image-popup">
   <img src="/figures_airquality/02_seasonal_patterns.svg" alt="Seasonal"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 Key patterns from 2 years of hourly data:
 
@@ -204,7 +204,7 @@ These patterns are critical context. Any analysis that does not control for time
 
 <a href="/figures_airquality/03_traffic_vs_background.svg" class="image-popup">
   <img src="/figures_airquality/03_traffic_vs_background.svg" alt="Traffic vs background"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 The gap between traffic and background stations has narrowed substantially over 25 years, from roughly 16 ug/m3 in the early 2000s to about 5 ug/m3 in recent years. This narrowing suggests that traffic-specific interventions (including the diesel ban) have been most effective at reducing roadside pollution, while background levels declined more slowly, driven by broader factors like fleet modernization and economic changes.
 
@@ -212,7 +212,7 @@ The gap between traffic and background stations has narrowed substantially over 
 
 <a href="/figures_airquality/04_cross_city_comparison.svg" class="image-popup">
   <img src="/figures_airquality/04_cross_city_comparison.svg" alt="Cross-city"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 All four Hessen cities show declining NO2 and PM10 trends. Darmstadt, which has the diesel ban, appears to show the steepest post-2019 decline. However, this raw comparison does not control for weather differences between cities or for differences in station placement. The panel model in Section 3.10 addresses these confounds.
 
@@ -222,7 +222,7 @@ All four Hessen cities show declining NO2 and PM10 trends. Darmstadt, which has 
 
 <a href="/figures_airquality/07_no2_arx_coefficients.svg" class="image-popup">
   <img src="/figures_airquality/07_no2_arx_coefficients.svg" alt="NO2 coefficients"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 **NO2 model: R-squared = 0.825, Durbin-Watson approximately 2.0**
 
@@ -256,7 +256,7 @@ The Deutschlandticket (+0.1 ug/m3, not significant) does not show a detectable e
 
 <a href="/figures_airquality/08_intervention_effects.svg" class="image-popup">
   <img src="/figures_airquality/08_intervention_effects.svg" alt="Intervention effects"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 **PM10 model: R-squared = 0.647.** The model explains about 65% of PM10 variation, notably less than for NO2. The diesel ban effect on PM10 is -1.5 ug/m3 (statistically significant but small). Sahara dust events add roughly 1.7 ug/m3. This contrast between NO2 and PM10 is informative: NO2 is predominantly produced by traffic, so traffic interventions have a large effect. PM10 comes from many sources (heating, construction, road dust, natural events), so restricting one subset of traffic makes less difference.
 
@@ -264,7 +264,7 @@ The Deutschlandticket (+0.1 ug/m3, not significant) does not show a detectable e
 
 <a href="/figures_airquality/09_no2_diagnostics.svg" class="image-popup">
   <img src="/figures_airquality/09_no2_diagnostics.svg" alt="NO2 diagnostics"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 The diagnostic plots confirm that the model is well-behaved:
 
@@ -274,7 +274,7 @@ The diagnostic plots confirm that the model is well-behaved:
 
 <a href="/figures_airquality/09_pm10_diagnostics.svg" class="image-popup">
   <img src="/figures_airquality/09_pm10_diagnostics.svg" alt="PM10 diagnostics"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 PM10 residuals show heavier tails, with positive outliers reaching +30-40 ug/m3. These extreme values likely correspond to untagged Sahara dust events or nearby construction activity that the model cannot capture with its current predictors.
 
@@ -282,7 +282,7 @@ PM10 residuals show heavier tails, with positive outliers reaching +30-40 ug/m3.
 
 <a href="/figures_airquality/11_structural_breaks.svg" class="image-popup">
   <img src="/figures_airquality/11_structural_breaks.svg" alt="Structural breaks"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 **NO2:** The Chow test at 2015 (Umweltzone introduction) is highly significant (F = 37.27, p approximately 0.000), confirming a structural break in the NO2 trend around that time. The sup-F scan shows elevated F-statistics across the entire 2014-2019 window, with all values far exceeding the 5% critical value of 3.5. The peak at 2019 should not be interpreted as evidence that the diesel ban was a "stronger" break than the Umweltzone. A single-break model tested at 2019 captures both the Umweltzone slope change and the diesel ban level shift in its post-period, mechanically inflating its F-statistic. The scan confirms that one or more major structural changes occurred during the 2014-2019 period, but it cannot decompose overlapping interventions. The multi-predictor ARX model (Section 3.6) is better suited for that.
 
@@ -296,7 +296,7 @@ PM10 residuals show heavier tails, with positive outliers reaching +30-40 ug/m3.
 
 <a href="/figures_airquality/12_counterfactual.svg" class="image-popup">
   <img src="/figures_airquality/12_counterfactual.svg" alt="Counterfactual"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 To visualize what might have happened without the interventions, I extrapolate the pre-2015 linear trend forward. This is a simplified counterfactual: it assumes that the rate of improvement before 2015 (driven mainly by gradual fleet modernization) would have continued unchanged.
 
@@ -313,7 +313,7 @@ This counterfactual has important limitations: it assumes a linear extrapolation
 
 <a href="/figures_airquality/16_residual_comparison.svg" class="image-popup">
   <img src="/figures_airquality/16_residual_comparison.svg" alt="Residual comparison"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 **Option A, Per-city weather correction:** Each city gets its own ARX model fitted using only weather and seasonal predictors (no intervention dummies). The residuals from these models represent "weather-corrected pollution": how dirty or clean the air is after removing what local weather and seasonal patterns explain. If the diesel ban works, ban cities' residuals would be expected to diverge downward after 2019 relative to non-ban cities.
 
@@ -321,7 +321,7 @@ The plot shows exactly this pattern. Before 2019, both groups' residuals fluctua
 
 <a href="/figures_airquality/17_panel_did_results.svg" class="image-popup">
   <img src="/figures_airquality/17_panel_did_results.svg" alt="Panel DiD"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 **Option B, Pooled panel DiD:** R-squared = 0.77 across 50+ cities.
 
@@ -341,19 +341,19 @@ The daily panel (Section 3.10) covers 2016 onwards. To evaluate the Umweltzone, 
 
 <a href="/figures_airquality/19_annual_all_cities.svg" class="image-popup">
   <img src="/figures_airquality/19_annual_all_cities.svg" alt="Annual trajectories"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 The raw trajectories (plot 19) immediately reveal a problem. Cities are grouped by when they got their Umweltzone: Early (2008, green), Mid (2009-10, blue), Late (2011+, red), and Never (grey). The cities that got Umweltzonen earliest had the *highest* baseline pollution (green group started at ~50 ug/m3). Cities that never got one started at ~30 ug/m3. This is not random assignment: cities got Umweltzonen precisely *because* they were polluted. This selection makes naive comparisons misleading.
 
 <a href="/figures_airquality/20_annual_weather_corrected.svg" class="image-popup">
   <img src="/figures_airquality/20_annual_weather_corrected.svg" alt="Weather-corrected"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 After removing annual temperature and wind speed effects (plot 20), the group ordering remains the same. The weather correction (R-squared = 0.05-0.10 for the pooled model) removes some year-to-year noise but does not change the fundamental picture. All groups converge toward similar levels by 2024, driven by the general trend of fleet modernization affecting all cities.
 
 <a href="/figures_airquality/21_annual_break_scan.svg" class="image-popup">
   <img src="/figures_airquality/21_annual_break_scan.svg" alt="Break scans"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 The sup-F break scan (plot 21) applied to each city individually shows heterogeneous patterns. Some UZ cities show breaks near their UZ introduction year, but many show breaks at 2008-2010 (financial crisis) or 2019-2020 (diesel bans, COVID). Control cities show similar break patterns, suggesting these breaks are driven by national-level factors (emission standards, economic cycles) rather than local Umweltzone policy.
 
@@ -361,7 +361,7 @@ The sup-F break scan (plot 21) applied to each city individually shows heterogen
 
 <a href="/figures_airquality/22_staggered_did.svg" class="image-popup">
   <img src="/figures_airquality/22_staggered_did.svg" alt="Staggered DiD"
-     style="background: #fff; border-radius: 6px; padding: 1em;">
+     style="background: #fff; border-radius: 6px;">
 </a>
 The staggered DiD model with city fixed effects, annual weather controls, and a linear trend yields a striking result: the Umweltzone coefficient is +0.6 ug/m3, *not statistically significant*. The diesel ban coefficient, by contrast, is -4.7 ug/m3 and significant. The trend alone explains -1.5 ug/m3 per year across all cities.
 
