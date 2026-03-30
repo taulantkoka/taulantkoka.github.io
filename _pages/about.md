@@ -7,15 +7,15 @@ mathjax: true
 
 ## Hey, I'm Taulant
 
-I’m a Ph.D. candidate at [TU Darmstadt](https://www.etit.tu-darmstadt.de/rds/index.en.jsp), focusing on the intersection of machine learning and signal processing. My work centers on high-dimensional variable selection. Specifically, how can I identify meaningful patterns in massive datasets while ensuring those patterns aren't just statistical artifacts.
+I’m a Ph.D. candidate at I’m a Ph.D. candidate at TU Darmstadt. My work is broadly about making sense of noisy data, whether that's from a city-wide monitoring network, a biological sensor, or a genomic sequence.
 
-I’m drawn to problems where sheer computational power isn't enough. Most of my research involves developing algorithms that can handle sparse signals and messy measurements under strict memory and reliability constraints. In practice, this means balancing theoretical guarantees with high-performance implementation in C++ and Python.
+This page is meant to be a dynamic archive for a selection of problems and projects I’ve found particularly challenging, interesting, or both. I try to share them here in an accessible way, and give some additional information regarding thought processes that maybe didn't quite fit into a research paper.
 
 ### The Path Here
 
-I grew up in Germany, did my B.Sc. and M.Sc. at TU Darmstadt in Electrical Engineering, and took detours to Aalto University in Finland and EPFL in Switzerland along the way. At EPFL I joined the LCAV lab and wrote my thesis in collaboration with the Swiss Data Science Center (SDSC). After that I spent a few months as an intern at the SDSC Hub at the Paul Scherrer Institute, before I returned to Darmstadt to start my PhD in late 2022.
+I grew up in Germany, did my B.Sc. and M.Sc. at TU Darmstadt in Electrical Engineering and Information Technology, and took detours to Aalto University in Finland and EPFL in Switzerland along the way. At EPFL I joined the LCAV lab and wrote my thesis in collaboration with the Swiss Data Science Center (SDSC). After that I spent a few months as an intern at the SDSC Hub at the Paul Scherrer Institute, before I returned to Darmstadt to start my PhD in late 2022.
 
-### What I Work On
+### Recent Research
 
 **High-Dimensional Variable Selection**---When dealing with millions of features, it is easy to make false discoveries. Currently, a large portion of my research focuses on the development of scalable variable selection with False Discovery Rate (FDR) control to ensure statistical validity. Memory and hardware constraints in general, play a crucial role, when problems start to scale into regimes that require terabytes of RAM. Maintaining the balance between statistical rigor and computational efficiency is therefore indespensable.
 
