@@ -69,13 +69,13 @@ where $\mathbf{\Pi}$ is a structured permutation matrix built from binary diagon
 
 At first glance, this looks hopeless. You have $N$ unknown permutations (one per time point), each choosing from $M!$ possibilities, plus the signal coefficients themselves. That's a combinatorial explosion on top of a continuous estimation problem.
 
-The key insight is that **structure in the signals constrains the permutations**. If the signals live in a known low-dimensional subspace — say each $\mathbf{x}_m = \mathbf{E}\boldsymbol{\beta}_m$ for some $N \times K$ sensing matrix $\mathbf{E}$ with $K \ll N$ — then not every permutation is consistent with the observed data. The subspace acts as a fingerprint: even after shuffling, the mathematical structure of the signals leaks through.
+The key insight is that **structure in the signals constrains the permutations**. If the signals live in a known low-dimensional subspace, say each $\mathbf{x}_m = \mathbf{E}\boldsymbol{\beta}_m$ for some $N \times K$ sensing matrix $\mathbf{E}$ with $K \ll N$ — then not every permutation is consistent with the observed data. The subspace acts as a fingerprint: even after shuffling, the mathematical structure of the signals leaks through.
 
 ### 1.3 The Two-Channel Case: Building Intuition
 
-To see why this works, start with just two channels. Here the permutation at each time point is binary: either the samples stay in place, or they swap. A single binary vector $\mathbf{q} \in \{0,1\}^N$ encodes the entire permutation — $q_n = 1$ means sample $n$ stays, $q_n = 0$ means it swaps.
+To see why this works, start with just two channels. Here the permutation at each time point is binary: either the samples stay in place, or they swap. A single binary vector $\mathbf{q} \in \{0,1\}^N$ encodes the entire permutation: $q_n = 1$ means sample $n$ stays, $q_n = 0$ means it swaps.
 
-If both $\mathbf{x}_1, \mathbf{x}_2 \in \mathscr{E}$ (the column space of $\mathbf{E}$), then asking "could there be a different pair of signals that produces the same shuffled output?" amounts to asking whether a certain intersection of subspaces is trivial. Specifically, if $r$ samples are *not* shuffled (i.e., $r$ entries of $\mathbf{q}$ are 1), those samples give us $r$ equations that constrain $\mathbf{x}_1' - \mathbf{x}_1''$ to lie in $\mathscr{E} \cap \ker(\rho)$, where $\rho$ is a coordinate projection. If $\mathbf{E}$ has the property that any $K$ rows are linearly independent (the **Restricted Full Rank Property**, or RFRP), then this intersection is $\{0\}$ whenever $r \geq K$ — meaning the signals are uniquely determined.
+If both $\mathbf{x}_1, \mathbf{x}_2 \in \mathscr{E}$ (the column space of $\mathbf{E}$), then asking "could there be a different pair of signals that produces the same shuffled output?" amounts to asking whether a certain intersection of subspaces is trivial. Specifically, if $r$ samples are *not* shuffled (i.e., $r$ entries of $\mathbf{q}$ are 1), those samples give us $r$ equations that constrain $\mathbf{x}_1' - \mathbf{x}_1''$ to lie in $\mathscr{E} \cap \ker(\rho)$, where $\rho$ is a coordinate projection. If $\mathbf{E}$ has the property that any $K$ rows are linearly independent (the **Restricted Full Rank Property**, or RFRP), then this intersection is $\{0\}$ whenever $r \geq K$, meaning the signals are uniquely determined.
 
 The requirement is clean: **$N \geq 2K$ samples suffice for unique recovery in the two-channel case**, provided the sensing matrix satisfies the RFRP.
 
@@ -104,7 +104,7 @@ This is a strictly tighter bound than what you'd get by embedding everything in 
 
 A particularly nice consequence: if signals are sparse in an overcomplete dictionary $\mathbf{D} \in \mathbb{C}^{N \times p}$ (with $p > N$), then each channel's subspace is spanned by whichever columns of $\mathbf{D}$ its coefficients are supported on. The union-of-subspaces theorem applies directly, and the RFRP condition reduces to requiring that $\mathbf{D}$ satisfies a $K \times K$-RFRP (any $K \times K$ submatrix has full rank), which random dictionaries satisfy with probability 1.
 
-This means **shuffled compressed sensing** — recovering sparse signals from shuffled measurements — fits naturally into the framework.
+This means **shuffled compressed sensing**, recovering sparse signals from shuffled measurements, fits naturally into the framework.
 
 ---
 
@@ -134,7 +134,7 @@ From the recovered locations, you construct the sensing matrix $\mathbf{E} = \ma
 
 The final piece: does the matrix $\mathbf{E} = \mathbf{W}\mathbf{V}$ actually satisfy the RFRP?
 
-Yes — and the proof is elegant. The key observation is that the product of an IDFT matrix and a Vandermonde matrix can be factorized as $\mathbf{W}_\mathcal{L}\mathbf{V} = \mathbf{D}_1 \mathbf{C} \mathbf{D}_2$, where $\mathbf{D}_1, \mathbf{D}_2$ are diagonal matrices and $\mathbf{C}$ is a **Cauchy matrix**. Cauchy matrices have a closed-form determinant expression, and under mild conditions on the Vandermonde nodes ($v_k^N \neq \pm 1$, which rules out only a measure-zero set), this determinant is guaranteed to be nonzero. Every $K \times K$ submatrix is invertible, so the RFRP holds.
+Yes, and the proof is elegant. The key observation is that the product of an IDFT matrix and a Vandermonde matrix can be factorized as $\mathbf{W}_\mathcal{L}\mathbf{V} = \mathbf{D}_1 \mathbf{C} \mathbf{D}_2$, where $\mathbf{D}_1, \mathbf{D}_2$ are diagonal matrices and $\mathbf{C}$ is a **Cauchy matrix**. Cauchy matrices have a closed-form determinant expression, and under mild conditions on the Vandermonde nodes ($v_k^N \neq \pm 1$, which rules out only a measure-zero set), this determinant is guaranteed to be nonzero. Every $K \times K$ submatrix is invertible, so the RFRP holds.
 
 **Theorem (Shuffled Multi-Channel Sparse Signal Recovery).**
 *Given $M$ distinct sparse signals with a total of $K$ spike locations, if $N \geq MK$ and the spike locations satisfy mild genericity conditions, both the locations and amplitudes of all channels can be uniquely recovered from the shuffled observations, up to a relabeling of channels.*
@@ -159,7 +159,7 @@ The algorithm doesn't have convergence guarantees (the combination of robust est
 
 ## 5. Validation: Whole-Brain Calcium Imaging
 
-We tested the framework on real neural data from *Drosophila* (fruit fly) whole-brain calcium imaging. In this setting, a microscope tracks fluorescence changes in hundreds of neurons as the animal moves. Movement causes mismatches between recorded traces and their true source neurons — exactly the shuffling our theory addresses.
+We tested the framework on real neural data from *Drosophila* (fruit fly) whole-brain calcium imaging. In this setting, a microscope tracks fluorescence changes in hundreds of neurons as the animal moves. Movement causes mismatches between recorded traces and their true source neurons, exactly the shuffling our theory addresses.
 
 **Setup:**
 - Baseline-corrected fluorescence traces from real *Drosophila* neurons
@@ -179,11 +179,11 @@ The sharp transition around 30–40% is characteristic of combinatorial problems
 
 ## 6. What This Connects To
 
-**Unlabeled sensing** is the broader field — recovering signals when the correspondence between measurements and their indices is unknown. Most existing work assumes i.i.d. Gaussian sensing matrices. Our framework handles the structured matrices that actually arise in signal processing (DFT, Vandermonde), which is what makes the connection to continuous-time sparse signals possible.
+**Unlabeled sensing** is the broader field, recovering signals when the correspondence between measurements and their indices is unknown. Most existing work assumes i.i.d. Gaussian sensing matrices. Our framework handles the structured matrices that actually arise in signal processing (DFT, Vandermonde), which is what makes the connection to continuous-time sparse signals possible.
 
 **Compressed sensing** emerges as a special case: when signals are sparse in an overcomplete dictionary, the union-of-subspaces theorem applies directly, and you get recovery guarantees for "shuffled compressed sensing" essentially for free.
 
-**Multi-target tracking** is another natural application. When trajectories cross, data association becomes ambiguous — you lose track of which observation belongs to which target. The framework provides conditions under which the correct associations can be recovered from the signal structure alone.
+**Multi-target tracking** is another natural application. When trajectories cross, data association becomes ambiguous, you lose track of which observation belongs to which target. The framework provides conditions under which the correct associations can be recovered from the signal structure alone.
 
 ---
 
