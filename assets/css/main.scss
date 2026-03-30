@@ -329,3 +329,57 @@ table {
   text-justify: inter-word; /* Improves the spacing logic */
   hyphens: auto;            /* Prevents large gaps by breaking long words */
 }
+
+/* ─── 17. TABLE OF CONTENTS (MATCH PROJECT NAV) ─── */
+
+.toc {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 8px;
+  padding: 1.25em 1em;
+}
+
+.toc__menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc__menu li {
+  margin-bottom: 0.35em;
+}
+
+.toc__menu a {
+  color: $text-soft;
+  display: block;
+  padding: 0.5em 0.65em;
+  border-radius: 5px;
+  font-size: 0.9em;
+  line-height: 1.45;
+  transition: 0.15s ease;
+
+  &:hover {
+    color: $link-hover;
+    background: rgba($primary, 0.1);
+  }
+}
+
+/* Active section */
+.toc__menu a.active {
+  border-left: 3px solid $primary;
+  padding-left: 0.65em;
+  font-weight: 600;
+  color: $link-hover;
+  background: rgba($primary, 0.1);
+}
+
+/* TOC title (if shown) */
+.toc__title {
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $link-hover;
+  border-bottom: 1px solid $border;
+  padding-bottom: 0.6em;
+  margin-bottom: 0.75em;
+}
