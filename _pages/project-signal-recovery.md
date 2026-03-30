@@ -212,7 +212,7 @@ jupyter notebook example.ipynb
 
 ### Monte Carlo Results
 
-The following results are from 100 Monte Carlo trials per SNR level, with two sparse channels ($K_1 = K_2 = 2$ spikes each), $N = 121$ samples, and 40 shuffled positions (~33%).
+The following results are from 100 Monte Carlo trials per SNR level, with two sparse channels ($K_1 = K_2 = 2$ spikes each), $N = 121$ samples, and 33% shuffling.
 
 <a href="/figures_ccus/plot_mc_results.svg" class="image-popup"">
   <img src="/figures_ccus/plot_mc_results.svg" alt="Accuracy and nMSE vs SNR"
