@@ -323,3 +323,9 @@ table {
 
   &:hover { color: $link; }
 }
+
+.page__lead, .page__content p {
+  text-align: justify;
+  text-justify: inter-word; /* Improves the spacing logic */
+  hyphens: auto;            /* Prevents large gaps by breaking long words */
+}
