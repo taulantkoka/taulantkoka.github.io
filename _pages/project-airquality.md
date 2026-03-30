@@ -28,7 +28,8 @@ toc: true
 </script>
 
 
-<h2 data-toc-skip>Do Diesel Bans Actually Work?</h3>
+<h2 data-toc-skip>Do Diesel Bans Actually Work?</h2>
+
 <p class="h3-ghost">A Data-Driven Analysis of 25 Years of German Air Quality</p>
 
 **Taulant Koka · March 2026 · [GitHub: Airquality-Germany](https://github.com/taulantkoka/Airquality-Germany)**
