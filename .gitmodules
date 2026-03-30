@@ -1,0 +1,6 @@
+[submodule "projects/airquality-germany"]
+	path = projects/airquality-germany
+	url = https://github.com/taulantkoka/Airquality-Germany.git
+[submodule "_repos/airquality-germany"]
+	path = _repos/airquality-germany
+	url = https://github.com/taulantkoka/Airquality-Germany.git

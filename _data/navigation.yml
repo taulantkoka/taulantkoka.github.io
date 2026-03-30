@@ -23,4 +23,6 @@ projects:
         url: /projects/
       - title: "Cross-Channel Unlabeled Sensing"
         url: /projects/signal-recovery/
+      - title: "Airquality (NO2) Germany"
+        url: /projects/airquality/
       
