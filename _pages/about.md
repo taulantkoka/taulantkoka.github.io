@@ -3,7 +3,6 @@ title: "About"
 permalink: /about/
 layout: single
 mathjax: true
-particles: true
 ---
 
 ## Hey, I'm Taulant
