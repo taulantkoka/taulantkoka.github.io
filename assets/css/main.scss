@@ -339,14 +339,18 @@ table {
   padding: 1.25em 1em;
 }
 
+
 .toc__menu {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.toc__menu li {
-  margin-bottom: 0.35em;
+.toc__menu ul {
+  display: none;
+  margin-left: 0.75em;
+  padding-left: 0.5em;
+  border-left: 1px solid $border;
 }
 
 .toc__menu a {
@@ -362,6 +366,18 @@ table {
     color: $link-hover;
     background: rgba($primary, 0.1);
   }
+}
+
+/* Remove TOC item separators */
+.toc__menu li {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Also remove any pseudo separators */
+.toc__menu li:after,
+.toc__menu li:before {
+  display: none !important;
 }
 
 /* Active section */
@@ -382,6 +398,14 @@ table {
   border-bottom: 1px solid $border;
   padding-bottom: 0.6em;
   margin-bottom: 0.75em;
+}
+
+.toc__menu li:hover > ul {
+  display: block;
+}
+
+.toc__menu .active > ul {
+  display: block;
 }
 
 .toc .nav__title {
