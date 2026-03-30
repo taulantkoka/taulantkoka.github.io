@@ -456,3 +456,24 @@ table {
   display: block !important;
   visibility: visible !important;
 }
+
+#particles-js {
+  position: fixed; /* Stays in place during scroll */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1 !important; /* Sends it behind EVERYTHING */
+  background-color: #14342f; /* Your Deep Forest Green base */
+}
+
+/* Make the main content area slightly transparent */
+/* So the particles 'peek through' the background of your project pages */
+.page, .archive, .masthead {
+  background: transparent !important;
+}
+
+#main {
+  background: rgba(20, 52, 47, 0.7) !important; /* Semi-transparent forest green */
+  backdrop-filter: blur(2px); /* Optional: slight blur for readability */
+}
