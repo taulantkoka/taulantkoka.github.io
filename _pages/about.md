@@ -17,17 +17,17 @@ I grew up in Germany, did my B.Sc. and M.Sc. at TU Darmstadt in Electrical Engin
 
 ### Recent Research
 
-**High-dimensional variable selection**--— When you're dealing with millions of features, false discoveries are almost guaranteed unless you're careful. A large part of my current research is about building variable selection methods that scale to these regimes while keeping the false discovery rate under control. The tricky part isn't just the statistics — it's that naive implementations need terabytes of RAM, so the algorithmic design has to be memory-aware from the ground up.
+**High-dimensional variable selection.** When you're dealing with millions of features, false discoveries are almost guaranteed unless you're careful. A large part of my current research is about building variable selection methods that scale to these regimes while keeping the false discovery rate under control. The tricky part isn't just the statistics — it's that naive implementations need terabytes of RAM, so the algorithmic design has to be memory-aware from the ground up.
 
-**Cross-channel unlabeled sensing**--— Classical sampling theory assumes you know which measurement came from which channel. What happens when that assumption breaks? During my Master's thesis, we formalized a problem called Cross-Channel Unlabeled Sensing, where multi-channel signals are observed through unknown permutations at each time point. My recent work derives recovery bounds and tackles the combinatorial structure underneath. This shows up in practice in settings like whole-brain calcium imaging, where movement can scramble which recorded trace belongs to which neuron, or generally in multi-target tracking, where trajectories cross and identities get mixed up.
+**Cross-channel unlabeled sensing.** Classical sampling theory assumes you know which measurement came from which channel. What happens when that assumption breaks? During my Master's thesis, we formalized a problem called Cross-Channel Unlabeled Sensing, where multi-channel signals are observed through unknown permutations at each time point. My recent work derives recovery bounds and tackles the combinatorial structure underneath. This shows up in practice in settings like whole-brain calcium imaging, where movement can scramble which recorded trace belongs to which neuron, or generally in multi-target tracking, where trajectories cross and identities get mixed up.
 
 ### Projects & Interests
 
 Beyond my day job as a research associate, I like tinkering with public data and building things:
 
-- **[Air quality in Germany](/projects/airquality/)**--— I'm analyzing 25 years of public monitoring data to figure out whether diesel bans and Umweltzonen actually reduced pollution, or whether fleet modernization would have done the job anyway. What started as an afternoon project turned into a proper study covering 78 cities.
-- **ECG analysis**--— During my Master's, I built a visibility-graph-based method for R-peak detection in noisy ECG signals. It got integrated into [NeuroKit2](https://github.com/neuropsychology/NeuroKit).
-- **Hardware**--— I have a background in measurement and sensor technology and occasionally tinker with microcontroller and Arduino projects.
+- **[Air quality in Germany](/projects/airquality/).**  I'm analyzing 25 years of public monitoring data to figure out whether diesel bans and Umweltzonen actually reduced pollution, or whether fleet modernization would have done the job anyway. What started as an afternoon project turned into a proper study covering 78 cities.
+- **ECG analysis.**  During my Master's, I built a visibility-graph-based method for R-peak detection in noisy ECG signals. It got integrated into [NeuroKit2](https://github.com/neuropsychology/NeuroKit).
+- **Hardware.**  I have a background in measurement and sensor technology and occasionally tinker with microcontroller and Arduino projects.
 
 ---
 
