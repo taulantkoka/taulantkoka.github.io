@@ -330,37 +330,47 @@ table {
   hyphens: auto;            /* Prevents large gaps by breaking long words */
 }
 
-/* ─── 17. TABLE OF CONTENTS (MATCH PROJECT NAV) ─── */
+/* ─── 17. STABLE TABLE OF CONTENTS ─── */
 
 .toc {
   background: $surface;
   border: 1px solid $border;
   border-radius: 8px;
   padding: 1.25em 1em;
+  /* Prevent the TOC from growing/shrinking too much */
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
 }
-
 
 .toc__menu {
   list-style: none;
   margin: 0;
   padding: 0;
-}
 
-.toc__menu ul {
-  display: none;
-  margin-left: 0.75em;
-  padding-left: 0.5em;
-  border-left: 1px solid $border;
+  /* Nested lists: Keep them in the layout but muted */
+  ul {
+    display: block; // Changed from none to block to stop the jumping
+    margin-left: 1em;
+    padding-left: 0.5em;
+    border-left: 1px solid $border;
+    opacity: 0.6; // Mute them when not active
+  }
+
+  /* Highlight nested list when the parent is active */
+  li.active > ul {
+    opacity: 1;
+    border-left-color: $primary;
+  }
 }
 
 .toc__menu a {
   color: $text-soft;
   display: block;
-  padding: 0.5em 0.65em;
+  padding: 0.3em 0.65em; // Tighter padding for better fit
   border-radius: 5px;
   font-size: 0.9em;
-  line-height: 1.45;
-  transition: 0.15s ease;
+  line-height: 1.4;
+  transition: all 0.15s ease;
 
   &:hover {
     color: $link-hover;
@@ -368,28 +378,15 @@ table {
   }
 }
 
-/* Remove TOC item separators */
-.toc__menu li {
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* Also remove any pseudo separators */
-.toc__menu li:after,
-.toc__menu li:before {
-  display: none !important;
-}
-
-/* Active section */
-.toc__menu a.active {
-  border-left: 3px solid $primary;
-  padding-left: 0.65em;
-  font-weight: 600;
+/* The Active Link */
+.toc__menu li.active > a {
   color: $link-hover;
+  font-weight: 600;
   background: rgba($primary, 0.1);
+  /* A subtle indicator instead of a thick border that shifts text */
+  box-shadow: inset 3px 0 0 $primary; 
 }
 
-/* TOC title (if shown) */
 .toc__title {
   font-size: 0.8em;
   text-transform: uppercase;
@@ -398,26 +395,4 @@ table {
   border-bottom: 1px solid $border;
   padding-bottom: 0.6em;
   margin-bottom: 0.75em;
-}
-
-.toc__menu li:hover > ul {
-  display: block;
-}
-
-.toc__menu .active > ul {
-  display: block;
-}
-
-.toc .nav__title {
-  background: transparent !important;
-  color: $link-hover;
-  border: none;
-  border-bottom: 1px solid $border;
-  border-radius: 0;
-  padding: 0 0 0.6em 0;
-  margin-bottom: 0.75em;
-
-  font-size: 0.8em;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
