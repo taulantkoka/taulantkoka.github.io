@@ -4,7 +4,6 @@ title: "Taulant Koka"
 permalink: /
 hidden: true
 mathjax: true
-particles: true
 title: "Taulant Koka"
 tagline: >
   Data Science Researcher · Ph.D. candidate at TU Darmstadt<br/><br/>
