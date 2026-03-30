@@ -72,7 +72,6 @@ plugins:
   - jekyll-include-cache
   - jekyll-seo-tag
   - jekyll-sitemap
-  - jekyll-feed
   - jekyll-paginate
   - jekyll-gist
 
