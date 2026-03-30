@@ -100,7 +100,11 @@ defaults:
       type: posts
     values:
       layout: single
-      mathjax: true    
+      mathjax: true   
+      kramdown:
+        math_engine: mathjax
+        syntax_highlighter: rouge
+        input: GFM # GitHub Flavored Markdown 
       author_profile: false
       read_time: true
       comments: false
@@ -115,6 +119,10 @@ defaults:
     values:
       layout: single
       mathjax: true    
+      kramdown:
+        math_engine: mathjax
+        syntax_highlighter: rouge
+        input: GFM # GitHub Flavored Markdown 
       author_profile: false
 
 # ──────────────────────────────────────────────
