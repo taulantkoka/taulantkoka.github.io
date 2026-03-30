@@ -219,7 +219,7 @@ The following results are from 100 Monte Carlo trials per SNR level, with two sp
     style="border-radius: 6px; padding: 0.5em; width: 100%; display: block;">
 </a>
 
-The left panel shows the weighted accuracy of the sample reassignment, the right panel shows the normalized reconstruction error. Both metrics transition sharply between 10–20 dB: once the SNR is high enough for the robust estimator to get a reasonable initial fit, the alternating reassignment converges quickly. Above 20 dB, accuracy exceeds 95% and nMSE drops below $10^{-3}$.
+The left panel shows the weighted accuracy of the sample reassignment, the right panel shows the normalized reconstruction error. Both metrics transition sharply between 10–20 dB: once the SNR is high enough for the robust estimator to get a reasonable initial fit, the alternating reassignment stabilizes quickly. Above 20 dB, accuracy exceeds 95% and nMSE drops below $10^{-3}$.
 
 ## Publications
 
