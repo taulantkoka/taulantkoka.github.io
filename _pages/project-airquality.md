@@ -164,7 +164,7 @@ The analysis reports three estimates: an OLS estimate (naive, likely biased by s
 
 ### 3.1 The 25-Year Decline
 
-![Station trend]<a href="{{ '/figures_airquality/darmstadt_NO2_station_trend.svg' | relative_url }}" class="image-popup"> 
+<a href="{{ '/figures_airquality/darmstadt_NO2_station_trend.svg' | relative_url }}" class="image-popup"> 
   <img src="{{ '/figures_airquality/darmstadt_NO2_station_trend.svg' | relative_url }}" alt="Station trend">
 </a>
 
@@ -174,7 +174,7 @@ The decline is not smooth. There are periods of stagnation (roughly 2005-2010) a
 
 ### 3.2 Multi-Pollutant Context
 
-![Multi-pollutant]<a href="_pages/figures_airquality/01_multi_pollutant_trends.svg" class="image-popup">
+<a href="_pages/figures_airquality/01_multi_pollutant_trends.svg" class="image-popup">
   <img src="_pages/figures_airquality/01_multi_pollutant_trends.svg" alt="Station trend">
 </a>
 
