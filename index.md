@@ -9,7 +9,6 @@ header:
   overlay_filter: "0"
 excerpt: >
   Data Science Researcher · Ph.D. candidate at TU Darmstadt<br/>
-  I work on machine learning, signal processing, and whatever catches my interest.
 
 feature_row:
   - title: "Projects"
