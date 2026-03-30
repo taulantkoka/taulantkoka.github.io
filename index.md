@@ -4,6 +4,7 @@ title: "Taulant Koka"
 permalink: /
 hidden: true
 mathjax: true
+particles: true
 header:
   overlay_color: "#14342f"
   overlay_filter: "0"
