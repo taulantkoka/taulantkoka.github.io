@@ -67,7 +67,7 @@ where $\mathbf{\Pi}$ is a structured permutation matrix built from binary diagon
 
 <a href="/figures_ccus/shuffled_signals.svg" class="image-popup">
   <img src="/figures_ccus/shuffled_signals.svg" alt="Shuffled Signals"
-    style="background: #fff; border-radius: 6px; width: 100%; min-height: 200px; display: block;cursor: zoom-in;">
+    style="background: #fff; border-radius: 6px; display: block;cursor: zoom-in;">
 </a>
 
 ### 1.2 Why This Is Hard
