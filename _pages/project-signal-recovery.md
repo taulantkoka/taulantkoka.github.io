@@ -63,7 +63,7 @@ $$
 \begin{pmatrix} \mathbf{x}_1 \\ \vdots \\ \mathbf{x}_M \end{pmatrix}
 $$
 
-where $\mathbf{\Pi}$ is a structured permutation matrix built from binary diagonal blocks $ \mathbf{Q}_{mn}=\mathrm{diag}(\mathbf{q}_{mn}) $, with the constraint that each sample goes to exactly one channel: $\sum_m \mathbf{q}_{mn} = \sum_n \mathbf{q}_{mn} = \mathbf{1}$.
+where $\mathbf{\Pi}$ is a structured permutation matrix built from binary diagonal blocks $ \mathbf{Q}_{mn}=\mathrm{diag}(\mathbf{q}_{mn}) $, with the constraint that each sample goes to exactly one channel: $$\sum_m \mathbf{q}_{mn} = \sum_n \mathbf{q}_{mn} = \mathbf{1}$$.
 
 ### 1.2 Why This Is Hard
 
