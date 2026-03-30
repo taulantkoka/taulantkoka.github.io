@@ -427,35 +427,32 @@ table {
 
 /* ─── PARTICLES HERO ADAPTATION ─── */
 /* 1. Ensure the Hero container can handle absolute layering */
+/* ─── FORCING THE TEXT TO THE FRONT ─── */
+
 .page__hero--overlay {
   position: relative !important;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 400px; /* Ensures the box doesn't collapse */
 }
 
-/* 2. The Particles: Send to the absolute back */
 #particles-js {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0 !important; /* Ground floor */
+  z-index: 1 !important; /* The 'Rug' layer */
+  pointer-events: none;   /* Crucial: allows you to click buttons through the particles */
 }
 
-/* 3. The Wrapper: Bring to the front */
 .page__hero--overlay .wrapper {
   position: relative !important;
-  z-index: 10 !important; /* Top floor */
-  pointer-events: none;    /* Ensures clicks go "through" the empty space... */
+  z-index: 10 !important; /* The 'Table' layer (Top) */
+  color: #fff !important;  /* Ensure text is white */
 }
 
-/* 4. The Content: Make sure buttons/links are actually clickable */
-.page__hero--overlay .wrapper h1,
-.page__hero--overlay .wrapper p,
-.page__hero--overlay .wrapper .btn {
-  pointer-events: auto !important; /* ...but stop on the actual buttons! */
-  color: #fff !important;          /* Force white text just in case */
+/* Ensure the title and tagline are visible and not 'hidden' by theme defaults */
+.page__title, .page__lead {
+  position: relative;
+  z-index: 11 !important;
+  display: block !important;
+  visibility: visible !important;
 }
