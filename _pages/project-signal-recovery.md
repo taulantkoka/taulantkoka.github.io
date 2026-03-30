@@ -27,16 +27,15 @@ toc: true
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
-# When Your Labels Get Shuffled {: .no_toc}
+<h2 data-toc-skip>When Your Labels Get Shuffled</h2>
 
-## Recovering Multi-Channel Signals with Unknown Sample-Channel Assignments {: .no_toc}
+<h3 data-toc-skip>Recovering Multi-Channel Signals with Unknown Sample-Channel Assignments</h3>
 
 **Taulant Koka · 2022–2025 · [Signal Processing (Elsevier)](https://doi.org/10.1016/j.sigpro.2024.109579) · [IEEE ICASSP 2025](https://ieeexplore.ieee.org/document/10888212)**
 
 ---
 
-## The Core Idea {: .no_toc}
-
+<h3 data-toc-skip>The Core Idea</h3>
 Every sampling theorem you've ever used, Shannon-Nyquist, compressed sensing, Prony's method, relies on a quiet assumption: you know the correct order of measurements.
 
 But what if it isn't?
