@@ -1,5 +1,4 @@
 ---
-
 layout: splash
 title: "Taulant Koka"
 permalink: /
