@@ -261,8 +261,8 @@ The diagnostic plots confirm that the model is well-behaved:
 - **Residual distribution:** Approximately symmetric with a standard deviation of 5.6 ug/m3. There is a light positive tail, corresponding to occasional high-pollution days that the model cannot explain (likely untagged Sahara dust, construction events, or unusual meteorological conditions).
 - **Actual vs predicted:** The scatter plot tracks the diagonal closely, with no systematic bias.
 
-<a href="/figures_airquality09_pm10_diagnostics.svg" class="image-popup">
-  <img src="/figures_airquality09_pm10_diagnostics.svg" alt="PM10 diagnostics">
+<a href="/figures_airquality/09_pm10_diagnostics.svg" class="image-popup">
+  <img src="/figures_airquality/09_pm10_diagnostics.svg" alt="PM10 diagnostics">
 </a>
 PM10 residuals show heavier tails, with positive outliers reaching +30-40 ug/m3. These extreme values likely correspond to untagged Sahara dust events or nearby construction activity that the model cannot capture with its current predictors.
 
