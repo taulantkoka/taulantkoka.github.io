@@ -330,16 +330,24 @@ table {
   hyphens: auto;            /* Prevents large gaps by breaking long words */
 }
 
-/* ─── 17. STABLE TABLE OF CONTENTS ─── */
+/* ─── 17. TABLE OF CONTENTS (NO BLUE BLINK FIX) ─── */
 
 .toc {
-  background: $surface;
+  background: $surface !important; /* Force it to match your card color */
   border: 1px solid $border;
   border-radius: 8px;
   padding: 1.25em 1em;
-  /* Prevent the TOC from growing/shrinking too much */
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
+}
+
+/* This kills the light blue background on the TOC title */
+.toc .nav__title,
+.toc__title {
+  background: transparent !important;
+  color: $text-strong !important;
+  border-bottom: 1px solid $border !important;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .toc__menu {
@@ -347,52 +355,47 @@ table {
   margin: 0;
   padding: 0;
 
-  /* Nested lists: Keep them in the layout but muted */
-  ul {
-    display: block; // Changed from none to block to stop the jumping
-    margin-left: 1em;
-    padding-left: 0.5em;
-    border-left: 1px solid $border;
-    opacity: 0.6; // Mute them when not active
-  }
-
-  /* Highlight nested list when the parent is active */
-  li.active > ul {
-    opacity: 1;
-    border-left-color: $primary;
+  li {
+    background: transparent !important; /* Kill any inherited light blue row color */
+    border: none !important;
   }
 }
 
+/* This targets the links inside the TOC */
 .toc__menu a {
-  color: $text-soft;
+  background: transparent !important; /* Ensure the box stays dark */
+  color: $text-soft !important;
   display: block;
-  padding: 0.3em 0.65em; // Tighter padding for better fit
-  border-radius: 5px;
+  padding: 0.4em 0.5em;
+  border-radius: 4px;
   font-size: 0.9em;
-  line-height: 1.4;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 
   &:hover {
-    color: $link-hover;
-    background: rgba($primary, 0.1);
+    color: #fff !important;
+    background: $primary !important; /* Use your Forest Green for hover */
   }
 }
 
-/* The Active Link */
-.toc__menu li.active > a {
-  color: $link-hover;
+/* This targets the "Active" section when you scroll */
+/* Minimal Mistakes uses both .is-active and .active */
+.toc__menu .is-active a,
+.toc__menu li.active a,
+.toc__menu a.active {
+  background: $primary !important; /* Force the box to be dark green, not light blue */
+  color: #fff !important;
   font-weight: 600;
-  background: rgba($primary, 0.1);
-  /* A subtle indicator instead of a thick border that shifts text */
-  box-shadow: inset 3px 0 0 $primary; 
+  box-shadow: inset 3px 0 0 $text; /* Optional: a small white line to show where you are */
 }
 
-.toc__title {
-  font-size: 0.8em;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: $link-hover;
-  border-bottom: 1px solid $border;
-  padding-bottom: 0.6em;
-  margin-bottom: 0.75em;
+/* Hide sub-bullets unless they are active to keep it clean */
+.toc__menu ul {
+  display: none;
+  margin-left: 1em;
+  border-left: 1px solid $border;
+}
+
+.toc__menu .is-active + ul,
+.toc__menu .active + ul {
+  display: block;
 }

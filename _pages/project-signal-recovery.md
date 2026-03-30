@@ -69,7 +69,7 @@ where $\mathbf{\Pi}$ is a structured permutation matrix built from binary diagon
 
 At first glance, this looks hopeless. You have $N$ unknown permutations (one per time point), each choosing from $M!$ possibilities, plus the signal coefficients themselves. That's a combinatorial explosion on top of a continuous estimation problem.
 
-The key insight is that **structure in the signals constrains the permutations**. If the signals live in a known low-dimensional subspace, say each $\mathbf{x}_m = \mathbf{E}\boldsymbol{\beta}_m$ for some $N \times K$ sensing matrix $\mathbf{E}$ with $K \ll N$ — then not every permutation is consistent with the observed data. The subspace acts as a fingerprint: even after shuffling, the mathematical structure of the signals leaks through.
+The key insight is that **structure in the signals constrains the permutations**. If the signals live in a known low-dimensional subspace, say each $\mathbf{x}_m = \mathbf{E}\boldsymbol{\beta}_m$ for some $N \times K$ sensing matrix $\mathbf{E}$ with $K \ll N$, then not every permutation is consistent with the observed data. The subspace acts as a fingerprint: even after shuffling, the mathematical structure of the signals leaks through.
 
 ### 1.3 The Two-Channel Case: Building Intuition
 
