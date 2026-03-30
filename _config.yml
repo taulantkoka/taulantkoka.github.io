@@ -43,9 +43,7 @@ author:
     - label: "Google Scholar"
       icon: "fas fa-fw fa-graduation-cap"
       url: "https://scholar.google.com/citations?user=dbpEvYUAAAAJ&hl=de"
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope"
-      url: "mailto:koka.taulant@outlook.de"
+
 
 # ──────────────────────────────────────────────
 # 4. FOOTER
