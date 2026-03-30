@@ -164,8 +164,9 @@ The analysis reports three estimates: an OLS estimate (naive, likely biased by s
 
 ### 3.1 The 25-Year Decline
 
+![Station trend](/figures_airquality/darmstadt_NO2_station_trend.svg)
 <a href="{{ '/figures_airquality/darmstadt_NO2_station_trend.svg' | relative_url }}" class="image-popup"> 
-  <img src="{{ '/figures_airquality/darmstadt_NO2_station_trend.svg' | relative_url }}" alt="Station trend">
+  <img src="{{ '/figures_airquality/darmstadt_NO2_station_trend.svg' | relative_url }}" alt="Zoom">
 </a>
 
 Darmstadt's traffic station (Huegelstrasse) peaked at roughly 74 ug/m3 in 2004, nearly double the EU annual limit of 40 ug/m3. By 2024, it had dropped to about 25 ug/m3, a decline of roughly 66%. The urban background station declined from about 39 to 20 ug/m3 over the same period.
