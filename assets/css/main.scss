@@ -424,3 +424,25 @@ table {
   margin-bottom: 0.5em;
   line-height: 1.2;
 }
+
+/* ─── PARTICLES HERO ADAPTATION ─── */
+
+#particles-js {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Background layer */
+}
+
+/* Ensure the text and buttons are on top and clickable */
+.page__hero--overlay .wrapper {
+  position: relative;
+  z-index: 10; /* Higher than particles */
+}
+
+/* Make sure the hero container allows absolute positioning inside it */
+.page__hero--overlay {
+  position: relative;
+}
