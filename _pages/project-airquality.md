@@ -1,6 +1,6 @@
 ---
-title: "Cross-Channel Unlabeled Sensing"
-permalink: /projects/signal-recovery/
+title: "Airquality (NO2) Germany"
+permalink: /projects/airquality/
 layout: single
 mathjax: true
 sidebar:
