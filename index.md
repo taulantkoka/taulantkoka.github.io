@@ -7,7 +7,7 @@ mathjax: true
 header:
   overlay_color: "#14342f"
 excerpt: Data Science Researcher · Ph.D. candidate at TU Darmstadt<br/><br/>
-  <small>This page is meant to be a dynamic archive for a selection of problems and projects I’ve found particularly challenging, interesting, or both. I try to share them here in an accessible way, and give some additional information regarding thought processes that maybe didn't quite fit into a research paper.</small>
+  <small>This page is meant to be a dynamic archive for a selection of problems and projects I’ve found particularly challenging, interesting, or both. I try to share them here in an accessible way, and give some additional information regarding thought processes that maybe didn't quite fit into a research paper. </small>
 
 feature_row:
   - title: "Projects"
