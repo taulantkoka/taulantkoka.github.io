@@ -331,6 +331,28 @@ table {
 }
 
 /* ─── 17. TABLE OF CONTENTS: FINAL STABILITY & COLOR FIX ─── */
+/* ─── TOC RESET (Nuke the theme defaults) ─── */
+.toc, .toc__menu, .toc__menu li, .toc__menu a {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Now apply your custom styling to the anchor tags ONLY */
+.toc__menu a {
+  display: block !important;
+  padding: 5px 10px !important;
+  color: $text-soft !important;
+  border-radius: 4px;
+}
+
+/* This is the only place color should ever change */
+.toc__menu .is-active-link {
+  background: $primary !important; /* Your dark green */
+  color: #fff !important;
+}
 
 .toc {
   background: $surface !important;
