@@ -7,7 +7,7 @@ mathjax: true
 
 ## Hey, I'm Taulant
 
-I’m a Ph.D. candidate at I’m a Ph.D. candidate at TU Darmstadt. My work is broadly about making sense of noisy data, whether that's from a city-wide monitoring network, a biological sensor, or a genomic sequence.
+I’m a Ph.D. candidate at TU Darmstadt. My work is broadly about making sense of noisy data, whether that's from a city-wide monitoring network, a biological sensor, or a genomic sequence.
 
 This page is meant to be a dynamic archive for a selection of problems and projects I’ve found particularly challenging, interesting, or both. I try to share them here in an accessible way, and give some additional information regarding thought processes that maybe didn't quite fit into a research paper.
 
@@ -24,7 +24,7 @@ I grew up in Germany, did my B.Sc. and M.Sc. at TU Darmstadt in Electrical Engin
 
 ### Projects & Interests
 
-Beyond my thesis, I enjoy tinkering with public data and open-source tools:
+Beyond my job as a research associate, I enjoy tinkering with public data and open-source tools:
 
 * **Air Quality in Hessen**: I am currently [analyzing public data](/projects/) to quantify the impact of "Umweltzonen" (low-emission zones) on urban air quality over the last decade.
 * **ECG Analysis**: As a side project during my Master's, I developed a visibility-graph-based method for R-peak detection in noisy ECG signals. It was integrated into [NeuroKit2](https://github.com/neuropsychology/NeuroKit), a library widely used in the neuroscience and biomedical engineering communities.
