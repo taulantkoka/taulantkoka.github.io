@@ -1,5 +1,6 @@
 ---
 layout: splash
+title: "Taulant Koka"
 permalink: /
 hidden: true
 mathjax: true
