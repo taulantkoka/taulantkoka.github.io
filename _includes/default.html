@@ -11,13 +11,11 @@
   </head>
 
   <body class="layout--{{ page.layout | default: layout.layout }}{% if page.classes or layout.classes %}{{ page.classes | default: layout.classes | join: ' ' | prepend: ' ' }}{% endif %}" dir="{% if site.rtl %}rtl{% else %}ltr{% endif %}">
+    
     {% if page.particles %}
       <div id="particles-js"></div>
     {% endif %}
 
-    <div class="initial-content">
-      {{ content }}
-    </div>
     {% include_cached skip-links.html locale=locale %}
     {% include_cached masthead.html locale=locale %}
 
@@ -40,6 +38,10 @@
     </div>
 
     {% include scripts.html locale=locale %}
-    {% include particles.html %}
+
+    {% if page.particles %}
+      {% include particles.html %}
+    {% endif %}
+    
   </body>
 </html>
