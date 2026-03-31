@@ -7,9 +7,7 @@ mathjax: true
 
 ## Hey, I'm Taulant
 
-I'm a Ph.D. candidate at [TU Darmstadt](https://www.etit.tu-darmstadt.de/rds/index.en.jsp). My work is broadly about making sense of noisy data, whether that's from a city-wide monitoring network, a biological sensor, or a genomic sequence.
-
-This page is meant to be a dynamic archive for a selection of problems and projects I've found particularly challenging, interesting, or both. I try to share them here in an accessible way, and give some additional information regarding thought processes that maybe didn't quite fit into a research paper.
+I'm a Ph.D. candidate at [TU Darmstadt](https://www.etit.tu-darmstadt.de/rds/index.en.jsp). My work is broadly about making sense of noisy data, whether that's from a city-wide monitoring network, a biological sensor, or a genomic sequence. I care a lot about methods that are statistically honest and computationally realistic at the same time.
 
 ### The Path Here
 
