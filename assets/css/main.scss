@@ -425,3 +425,41 @@ table {
   line-height: 1.2;
 }
 
+/* ─── THE HERO LAYER CAKE ─── */
+
+/* Layer 0: The Base (The Green Box) */
+.page__hero--overlay {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  min-height: 450px !important; /* Force the box to be tall enough */
+  overflow: hidden !important;
+}
+
+/* Layer 1: The Particles (The Rug) */
+#particles-js {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1 !important;   /* Above the background color */
+  pointer-events: none;    /* Lets you click "through" the dots to buttons */
+}
+
+/* Layer 2: The Content (The Table) */
+.page__hero--overlay .wrapper {
+  position: relative !important;
+  z-index: 10 !important;  /* Way above the particles */
+  width: 100% !important;
+  text-align: center;
+}
+
+/* Layer 3: The Text Itself (The Top) */
+.page__title, .page__lead {
+  position: relative !important;
+  z-index: 11 !important;
+  color: #ffffff !important; /* Force white text */
+  display: block !important;
+}
