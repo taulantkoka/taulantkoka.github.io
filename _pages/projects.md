@@ -12,7 +12,7 @@ A mix of research and side projects. Some are published work, some are just thin
 ---
 ### [Airquality (NO2)](/projects/airquality/)
 
-Do diesel bans actually work? A data-driven analysis of 25 years of German air quality resulting from an afternoons worth of free time.
+Do diesel bans actually work? A data-driven analysis of 25 years of German air quality.
 
 
 ---
