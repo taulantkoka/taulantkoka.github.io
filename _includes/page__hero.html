@@ -3,19 +3,23 @@
   {% if page.particles %}<div id="particles-js"></div>{% endif %}
 
   <div class="wrapper">
-    <h1 id="page-title" class="page__title" itemprop="headline" style="display: block !important; visibility: visible !important;">
+    <h1 id="page-title" class="page__title" itemprop="headline">
       {{ page.title | default: site.title }}
     </h1>
 
-    <div class="page__lead" style="display: block !important; visibility: visible !important; color: white !important;">
-      {{ page.excerpt | default: page.tagline }}
+    <div class="page__lead" style="color: #fff !important; display: block !important;">
+      {% if page.tagline %}
+        {{ page.tagline | markdownify }}
+      {% elsif page.excerpt %}
+        {{ page.excerpt | markdownify }}
+      {% endif %}
     </div>
 
     {% if page.header.actions %}
       <p>
-      {% for action in page.header.actions %}
-        <a href="{{ action.url | relative_url }}" class="btn btn--light-outline btn--large">{{ action.label | default: "Learn More" }}</a>
-      {% endfor %}
+        {% for action in page.header.actions %}
+          <a href="{{ action.url | relative_url }}" class="btn btn--light-outline btn--large">{{ action.label | default: "Learn More" }}</a>
+        {% endfor %}
       </p>
     {% endif %}
   </div>
