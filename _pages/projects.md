@@ -8,7 +8,7 @@ sidebar:
   nav: "projects"
 ---
 
-A mix of research and side projects. Some are published work, some are just things I found interesting enough to spend time on.
+A mix of research and side projects. Some are published work, some are just things I found worthwhile to spend time on.
 
 ---
 ### [Airquality (NO2)](/projects/airquality/)
