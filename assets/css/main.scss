@@ -472,25 +472,19 @@ table {
   text-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Adds legibility against moving dots */
 }
 
-/* ─── GLOBAL BACKGROUND TRANSPARENCY ─── */
+/* ─── REFINED GLOBAL BACKGROUND & NAV ─── */
 
-/* ─── GLOBAL BACKGROUND TRANSPARENCY (REFINED) ─── */
-
-/* 1. Drill through all possible theme layers */
-body, 
-.masthead, 
-.page__footer, 
-.page__hero,
-.page__hero--overlay,
-#main,
-.page,
-.page__inner-wrap,  /* <--- Added this (The main text 'sheet') */
-.archive,
-.splash {
-  background: transparent !important;
+/* 1. Fix the Navigation Bar (Masthead) */
+/* We want it to be dark and solid so it doesn't blend into the dots */
+.masthead {
+  background: $surface-dark !important; 
+  position: sticky !important;
+  top: 0;
+  z-index: 20 !important; /* Above everything */
+  border-bottom: 1px solid $border;
 }
 
-/* 2. The Particles Div - Stays fixed behind the scroll */
+/* 2. The Particles Basement */
 #particles-js {
   position: fixed !important;
   top: 0;
@@ -498,17 +492,24 @@ body,
   width: 100vw !important;
   height: 100vh !important;
   z-index: -1 !important; 
-  background-color: #14342f !important; /* Your base forest green */
+  background-color: #14342f !important;
 }
 
-/* 3. The 'Readability' Layer */
-/* This ensures your math and text are easy to read over the moving dots */
+/* 3. The 'Weird Outlines' Fix */
+/* We only want the 'frosting' effect to be subtle and not look like a broken box */
 .page__inner-wrap, 
 .archive__item,
 .sidebar {
-  background: rgba(20, 52, 47, 0.5) !important; /* Semi-transparent forest green */
-  backdrop-filter: blur(2px); /* Makes the background feel deep and organic */
-  padding: 20px;
+  background: rgba(20, 52, 47, 0.4) !important;
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba($border, 0.15); /* Much subtler border */
   border-radius: 8px;
-  border: 1px solid rgba($border, 0.3);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* 4. Transparency Drill-through */
+/* We keep the 'body' and 'main' transparent so the particles show through the gaps */
+body, #main, .page, .splash {
+  background: transparent !important;
 }
