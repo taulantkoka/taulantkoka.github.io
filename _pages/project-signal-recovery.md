@@ -214,9 +214,9 @@ jupyter notebook example.ipynb
 
 The following results are from 100 Monte Carlo trials per SNR level, with two sparse channels ($K_1 = K_2 = 2$ spikes each), $N = 121$ samples, and 33% shuffling.
 
-<a href="/figures_ccus/plot_mc_results.svg" class="image-popup"">
-  <img src="/figures_ccus/plot_mc_results.svg" alt="Accuracy and nMSE vs SNR"
-    style="border-radius: 6px; padding: 0.5em; width: 100%; display: block;">
+<a href="/figures_ccus/plot_mc_results.svg" class="image-popup">
+  <img src="/figures_ccus/plot_mc_results.svg" alt="Monte Carlo"
+    style="background: #fff; border-radius: 6px; display: block;cursor: zoom-in;">
 </a>
 
 The left panel shows the weighted accuracy (**weights**: absolute difference between correctly assigned samples) of the sample reassignment, the right panel shows the normalized reconstruction error. Both metrics transition sharply between 10–20 dB: once the SNR is high enough for the robust estimator to get a reasonable initial fit, the alternating reassignment stabilizes quickly. Above 20 dB, accuracy exceeds 95% and nMSE drops below $10^{-3}$.
