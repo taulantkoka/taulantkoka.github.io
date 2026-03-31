@@ -3,7 +3,6 @@ title: "Projects"
 permalink: /projects/
 layout: single
 mathjax: true
-particles: true
 sidebar:
   nav: "projects"
 ---
