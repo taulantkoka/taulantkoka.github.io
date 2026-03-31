@@ -454,7 +454,6 @@ table {
   width: 100% !important;
   height: 100% !important;
   z-index: 1 !important;   /* Low number = Back */
-  pointer-events: none;    /* Crucial: lets you click buttons THROUGH the dots */
 }
 
 /* Layer 2: The Content Wrapper (Front) */
