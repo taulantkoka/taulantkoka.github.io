@@ -14,7 +14,7 @@ tagline: >
 
 feature_row:
   - title: "Projects"
-    excerpt: "Research work & side projects, from published papers to afternoon and weekend projects."
+    excerpt: "Research work & side projects, from published papers to afternoon or weekend projects."
     url: "/projects/"
     btn_label: "Browse Projects"
     btn_class: "btn--primary"
