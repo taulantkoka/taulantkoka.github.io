@@ -437,29 +437,38 @@ table {
   overflow: hidden !important;
 }
 
-/* Layer 1: The Particles (The Rug) */
+/* ─── THE HERO LAYER CAKE ─── */
+
+.page__hero--overlay {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+/* Layer 1: The Particles (Background) */
 #particles-js {
   position: absolute !important;
   top: 0;
   left: 0;
   width: 100% !important;
   height: 100% !important;
-  z-index: 1 !important;   /* Above the background color */
-  pointer-events: none;    /* Lets you click "through" the dots to buttons */
+  z-index: 1 !important;   /* Low number = Back */
+  pointer-events: none;    /* Crucial: lets you click buttons THROUGH the dots */
 }
 
-/* Layer 2: The Content (The Table) */
+/* Layer 2: The Content Wrapper (Front) */
 .page__hero--overlay .wrapper {
   position: relative !important;
-  z-index: 10 !important;  /* Way above the particles */
+  z-index: 10 !important;  /* High number = Front */
   width: 100% !important;
-  text-align: center;
 }
 
-/* Layer 3: The Text Itself (The Top) */
-.page__title, .page__lead {
+/* Layer 3: The Text (Ensuring Visibility) */
+.page__title, 
+.page__lead {
   position: relative !important;
   z-index: 11 !important;
-  color: #ffffff !important; /* Force white text */
-  display: block !important;
+  color: #fff !important;   /* Force white text */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Adds legibility against moving dots */
 }
