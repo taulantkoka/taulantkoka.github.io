@@ -474,36 +474,41 @@ table {
 
 /* ─── GLOBAL BACKGROUND TRANSPARENCY ─── */
 
-/* 1. Make the major theme containers 'clear glass' */
+/* ─── GLOBAL BACKGROUND TRANSPARENCY (REFINED) ─── */
+
+/* 1. Drill through all possible theme layers */
 body, 
 .masthead, 
 .page__footer, 
 .page__hero,
 .page__hero--overlay,
 #main,
-.page {
+.page,
+.page__inner-wrap,  /* <--- Added this (The main text 'sheet') */
+.archive,
+.splash {
   background: transparent !important;
 }
 
-/* 2. The Particles Div - Must be fixed and full-screen */
+/* 2. The Particles Div - Stays fixed behind the scroll */
 #particles-js {
   position: fixed !important;
   top: 0;
   left: 0;
   width: 100vw !important;
   height: 100vh !important;
-  z-index: -1 !important; /* Send to the absolute back */
-  background-color: #14342f !important; /* Your base Forest Green */
+  z-index: -1 !important; 
+  background-color: #14342f !important; /* Your base forest green */
 }
 
-/* 3. The Content 'Frosting' */
-/* Without this, white text on moving dots is hard to read. 
-   This adds a semi-transparent layer over the particles only where the text is. */
-.initial-content, 
-.archive, 
-.single {
-  background: rgba(20, 52, 47, 0.6) !important; /* Adjust 0.6 for more/less 'peek-through' */
-  backdrop-filter: blur(2px); /* Makes math/text pop */
-  border-radius: 4px;
-  padding: 10px;
+/* 3. The 'Readability' Layer */
+/* This ensures your math and text are easy to read over the moving dots */
+.page__inner-wrap, 
+.archive__item,
+.sidebar {
+  background: rgba(20, 52, 47, 0.5) !important; /* Semi-transparent forest green */
+  backdrop-filter: blur(2px); /* Makes the background feel deep and organic */
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid rgba($border, 0.3);
 }
