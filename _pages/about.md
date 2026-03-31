@@ -27,6 +27,8 @@ Beyond my day job as a research associate, I like tinkering with public data and
 - **ECG analysis.**  During my Master's, I built a visibility-graph-based method for R-peak detection in noisy ECG signals. It got integrated into [NeuroKit2](https://github.com/neuropsychology/NeuroKit).
 - **Hardware.**  I have a background in measurement and sensor technology and occasionally tinker with microcontroller and Arduino projects.
 
+If any of this overlaps with what you're working on, feel free to reach out, I'm always happy to talk.
+
 ---
 
 [GitHub](https://github.com/taulantkoka) · [LinkedIn](https://linkedin.com/in/taulant-koka-36a7971b6) · [Google Scholar](https://scholar.google.com/citations?user=dbpEvYUAAAAJ&hl=de) · [Contact](/contact/)
