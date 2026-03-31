@@ -471,3 +471,29 @@ table {
   color: #fff !important;   /* Force white text */
   text-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Adds legibility against moving dots */
 }
+
+/* ─── GLOBAL FIXED PARTICLES ─── */
+#particles-js {
+  position: fixed;   /* Stays in place while you scroll */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1 !important; /* Sends it to the absolute bottom layer */
+  background-color: #14342f; /* Your Deep Forest Green */
+}
+
+/* Make the theme containers transparent so particles are visible */
+.masthead, 
+.page__footer, 
+#main,
+.page {
+  background: transparent !important;
+}
+
+/* Optional: Add a subtle tint to the content area for better readability 
+   if the particles feel too 'busy' behind the math/text. */
+#main {
+  background: rgba(20, 52, 47, 0.4) !important; /* 40% opacity green */
+  backdrop-filter: blur(1px); /* Softens the dots behind the text */
+}
