@@ -472,28 +472,38 @@ table {
   text-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Adds legibility against moving dots */
 }
 
-/* ─── GLOBAL FIXED PARTICLES ─── */
-#particles-js {
-  position: fixed;   /* Stays in place while you scroll */
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1 !important; /* Sends it to the absolute bottom layer */
-  background-color: #14342f; /* Your Deep Forest Green */
-}
+/* ─── GLOBAL BACKGROUND TRANSPARENCY ─── */
 
-/* Make the theme containers transparent so particles are visible */
+/* 1. Make the major theme containers 'clear glass' */
+body, 
 .masthead, 
 .page__footer, 
+.page__hero,
+.page__hero--overlay,
 #main,
 .page {
   background: transparent !important;
 }
 
-/* Optional: Add a subtle tint to the content area for better readability 
-   if the particles feel too 'busy' behind the math/text. */
-#main {
-  background: rgba(20, 52, 47, 0.4) !important; /* 40% opacity green */
-  backdrop-filter: blur(1px); /* Softens the dots behind the text */
+/* 2. The Particles Div - Must be fixed and full-screen */
+#particles-js {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: -1 !important; /* Send to the absolute back */
+  background-color: #14342f !important; /* Your base Forest Green */
+}
+
+/* 3. The Content 'Frosting' */
+/* Without this, white text on moving dots is hard to read. 
+   This adds a semi-transparent layer over the particles only where the text is. */
+.initial-content, 
+.archive, 
+.single {
+  background: rgba(20, 52, 47, 0.6) !important; /* Adjust 0.6 for more/less 'peek-through' */
+  backdrop-filter: blur(2px); /* Makes math/text pop */
+  border-radius: 4px;
+  padding: 10px;
 }
