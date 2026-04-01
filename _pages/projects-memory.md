@@ -87,7 +87,7 @@ Following Zwick, I characterise positions by $(n, k)$ where $k \leq M$ is the nu
 
 ## 5. Greedy Matching Is Optimal
  
-Before computing the optimal strategy, I need to settle a foundational question: when you know where a matching pair is, should you always take it immediately? Or could it sometimes be better to hold the pair in reserve, leaving it in memory unmatched to control the timing of who gets the last pair, as Zwick's pass does under perfect recall?
+Before computing the optimal strategy, I need to settle a foundational question: when you know where a matching pair is, should you always take it immediately? Or could it sometimes be better to hold the pair in reserve — leaving it in memory unmatched to control the timing of who gets the last pair, as Zwick's pass does under perfect recall?
  
 ### Setup
  
@@ -107,19 +107,15 @@ Compare two actions:
  
 $$V_{\text{take}} = 1 + e_{n-1,\, k-2}$$
  
-**DEFER:** Player A makes any other move (pass, 1-move, or 2-move) without taking the pair. Eventually the turn passes to Player B. Player B sees the identical memory, including $\alpha$ and $\beta$. What does Player B do?
+**DEFER:** Player A makes any other move without taking the pair. We need to consider what happens to the pair $(\alpha, \beta)$ during and after A's move. There are three cases:
  
-If Player B is rational, Player B takes the pair (by the same logic we're establishing, but we can also consider the case where B defers, which leads to mutual passing with value 0). So:
+*Case 1 — A plays a 0-move (pass).* A flips two already-known, non-matching cards. No new information enters memory, so no eviction occurs. The pair $(\alpha, \beta)$ survives in the shared memory. The turn passes to B, who sees the pair and (by the same dominance argument) takes it. A's payoff: $-1 - e_{n-1,\, k'}$ for some $k'$.
  
-- *B takes the pair:* B scores $+1$ and plays again from $(n-1, k')$. From A's perspective, A lost a point and B is now in the favourable position. A's payoff: $-1 - e_{n-1,\, k'}$ for some $k'$ (the exact $k'$ depends on what A did before deferring, but it doesn't matter for the argument).
+*Case 2 — A plays a 1-move or 2-move, and the pair survives in memory.* The new card(s) A flipped caused evictions, but neither $\alpha$ nor $\beta$ was the least recently used entry. The pair survives. When B's turn comes, B sees the pair and takes it. Same payoff as Case 1.
  
-- *B also defers:* Both players pass on a known pair. This leads to mutual passing, a stalemate with value 0.
+*Case 3 — A plays a 1-move or 2-move, and one or both pair cards get evicted.* This is the subtle case. When memory is full ($k = M$) and A flips a new card, the LRU entry is evicted from *both players'* memories. If $\alpha$ or $\beta$ happens to be the oldest entry, it gets pushed out. Now the pair is partially or fully forgotten — neither player can take it until the evicted card is rediscovered by chance. A gave up a guaranteed $+1$ and got a strictly worse board state: same $n$ (the pair is still physically on the board) but lower effective $k$ (known information was destroyed).
  
-In the best case for DEFER, A gets value $0$ (mutual stalemate). But TAKE gives $1 + e_{n-1,\, k-2}$. Since the game has at most $n-1$ pairs left, the continuation value satisfies $e_{n-1,\, k-2} > -(n-1)$, so $V_{\text{take}} > 1 - (n-1) = 2 - n$. For $n \leq 1$ this is trivially positive. For $n \geq 2$, the computed exact values (via the DP below) confirm $1 + e_{n-1,\, k-2} > 0$ for all relevant states, which can be verified by inspection of the value tables.
- 
-In the more realistic case where B takes the pair, A's payoff from DEFER is $-1 - e_{n-1,\, k'}$, which is strictly worse than $1 + e_{n-1,\, k-2}$, a swing of at least 2 points.
- 
-In all cases, TAKE dominates DEFER. $\square$
+In Cases 1–2, A's payoff from DEFER is at most $0$ (mutual stalemate) or $-1 - e_{n-1,\, k'}$ (B takes the pair). In Case 3, A's payoff is even worse: A destroyed a guaranteed point's worth of information. In all cases, TAKE gives $V_{\text{take}} = 1 + e_{n-1,\, k-2}$. Since the computed exact values (via the DP below) confirm $1 + e_{n-1,\, k-2} > 0$ for all relevant states (verifiable by inspection of the value tables), TAKE strictly dominates DEFER in every case. $\square$
  
 **Remark.** This proof *requires* shared memory. The crucial step is "Player B also knows about this pair." If players had private, unobservable memories, Player A could know a pair that Player B doesn't. Holding it in reserve, passing while secretly knowing a pair, could then be genuinely strategic, because B can't steal what B doesn't know about. The private-memory case is an interesting open problem, and likely requires game-theoretic tools for incomplete information (Bayesian Nash equilibria rather than backward induction).
  
