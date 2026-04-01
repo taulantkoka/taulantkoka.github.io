@@ -1,13 +1,13 @@
 ---
 layout: single
 title: "Impressum & Datenschutz"
-permalink: /impressum/
+permalink: /impressum-und-datenschutz/
 sitemap: false
 head_scripts:
   - '<meta name="robots" content="noindex, nofollow">'
 ---
 
-<h1>Impressum</h1>
+<h1>Impressum & Datenschutz</h1>
 <p>Angaben gemäß § 5 DDG:</p>
 <p>Taulant Koka<br/>
 Merckstr. 25 (Raum S3|06 29)<br/>
