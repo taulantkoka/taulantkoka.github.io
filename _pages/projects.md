@@ -8,6 +8,12 @@ sidebar:
 ---
 
 A mix of research and side projects. Some are published work, some are just things I found worthwhile to spend time on.
+---
+### [The Memory Game](/projects/memory/)
+
+Is there an optimal strategy to the game of Memory, when memory capacity is limited?
+
+---
 
 ---
 ### [Airquality (NO2)](/projects/airquality/)

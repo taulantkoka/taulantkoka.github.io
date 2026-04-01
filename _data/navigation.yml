@@ -21,6 +21,8 @@ projects:
     children:
       - title: "Overview"
         url: /projects/
+      - title: "The Memory Game"
+        url: /projects/memory/
       - title: "Airquality (NO2) Germany"
         url: /projects/airquality/
       - title: "Cross-Channel Unlabeled Sensing"
