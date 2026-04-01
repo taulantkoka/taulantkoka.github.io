@@ -9,19 +9,24 @@ head_scripts:
 
 Angaben gemäß § 5 DDG
 
-**Taulant Koka** Merckstr. 25  
-64283 Darmstadt  
-
-**Vertreten durch:** Taulant Koka  
-
-**Kontakt:** Telefon: +49 6151-16-22532  
-E-Mail: taulant (dot) koka (at) tu-darmstadt (dot) de  
-
-**Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:** Taulant Koka  
+**Taulant Koka** 
 Merckstr. 25  
 64283 Darmstadt  
 
-**Verbraucherstreitbeilegung / Universalschlichtungsstelle** Wir nehmen nicht an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teil und sind dazu auch nicht verpflichtet.
+**Vertreten durch:** 
+Taulant Koka  
+
+**Kontakt:** 
+Telefon: +49 6151-16-22532  
+E-Mail: taulant.koka@tu-darmstadt.de
+
+**Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:** 
+Taulant Koka  
+Merckstr. 25  
+64283 Darmstadt  
+
+**Verbraucherstreitbeilegung / Universalschlichtungsstelle** 
+Wir nehmen nicht an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teil und sind dazu auch nicht verpflichtet.
 
 ---
 
