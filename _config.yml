@@ -43,7 +43,7 @@ author:
     - label: "Google Scholar"
       icon: "fas fa-fw fa-graduation-cap"
       url: "https://scholar.google.com/citations?user=dbpEvYUAAAAJ&hl=de"
-    - label: "Impressum"
+    - label: "Impressum & Datenschutz"
       icon: "fas fa-fw fa-file-signature" # Uses a FontAwesome icon
       url: "/impressum/"
 
