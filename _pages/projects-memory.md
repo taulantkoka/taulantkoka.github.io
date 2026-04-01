@@ -115,7 +115,12 @@ $$V_{\text{take}} = 1 + e_{n-1,\, k-2}$$
  
 *Case 3: A plays a 1-move or 2-move, and one or both pair cards get evicted.* This is the subtle case. When memory is full ($k = M$) and A flips a new card, the LRU entry is evicted from *both players'* memories. If $\alpha$ or $\beta$ happens to be the oldest entry, it gets pushed out. Now the pair is partially or fully forgotten, and neither player can take it until the evicted card is rediscovered by chance. A gave up a guaranteed $+1$ and got a strictly worse board state: same $n$ (the pair is still physically on the board) but lower effective $k$ (known information was destroyed).
  
-In the best case for DEFER (Case 3), the pair is forgotten and A merely forfeits the guaranteed point: the pair remains on the board but will only be scored when rediscovered by chance, roughly a coin flip between the two players. In the worst case for DEFER (Cases 1–2), B takes the pair and A suffers a 2-point swing. Either way, TAKE gives $V_{\text{take}} = 1 + e_{n-1,\, k-2}$. Since the computed exact values (via the DP below) confirm $1 + e_{n-1,\, k-2} > 0$ for all relevant states (verifiable by inspection of the value tables), TAKE strictly dominates DEFER in every case. $\square$
+In the best case for DEFER (Case 3), the pair is forgotten and A merely forfeits the guaranteed point: the pair remains on the board but will only be scored when rediscovered by chance, roughly a coin flip between the two players. In the worst case for DEFER (Cases 1–2), B takes the pair and A suffers a 2-point swing. Either way, TAKE gives $V_{\text{take}} = 1 + e_{n-1,\, k-2}$, which is strictly positive:
+ 
+- For $k \geq 4$: the continuation state $(n-1, k-2)$ has $k - 2 \geq 2$ known cards, so the pass is available, which guarantees $e_{n-1, k-2} \geq 0$. Therefore $V_{\text{take}} \geq 1 > 0$.
+- For $k = 2$ or $k = 3$: the continuation state has $k - 2 \in \{0, 1\}$ known cards (early-game positions). We only need $e_{n-1, k-2} > -1$, a mild condition easily verified: these are states where neither player has meaningful information, and values are bounded by $|e_{n,k}| < n$ trivially.
+ 
+This argument is not circular: we prove greedy matching by induction on $n$. The base case $n = 1$ is trivial (TAKE gives $1 > 0$). For general $n$, the continuation values $e_{n-1, k-2}$ were computed for a game with $n - 1$ pairs, where greedy was already established at the previous induction step. The DP processes states by decreasing $n$, so the values needed are always available before they are used. $\square$
  
 **Remark.** This proof *requires* shared memory. The crucial step is "Player B also knows about this pair." If players had private, unobservable memories, Player A could know a pair that Player B doesn't. Holding it in reserve, passing while secretly knowing a pair, could then be genuinely strategic, because B can't steal what B doesn't know about. The private-memory case is an interesting open problem, and likely requires game-theoretic tools for incomplete information (Bayesian Nash equilibria rather than backward induction).
  
@@ -150,8 +155,8 @@ This is only worth considering if $e_{n,k} \leq 0$ (i.e., the current position i
 $$e^1_{n,k} = p \cdot (1 + e_{n-1,\, k-1}) - q \cdot e_{n,\, k+1}$$
  
 **2-move:** Flip one new card. If it matches (prob $p$), same as the 1-move. If not (prob $q$), flip a *second* new card. The second card's outcomes, among the $d = 2n - k - 1$ remaining unknown positions:
-- With probability $\frac{1}{d}$: it matches the first card (lucky match). Take the pair, play again.
-- With probability $\frac{k}{d}$: it matches a *different* singleton in memory. The opponent auto-takes that pair (both players saw the match).
+- With probability $\frac{1}{d}$: it matches the first card (lucky match). Take the pair, play again. The first card's singleton match was already removed from memory when the pair was taken, but the lucky match means both new cards leave together. Memory returns to $k$ of the original singletons minus the matched one, so the state is $(n-1, k)$ with the current player to move.
+- With probability $\frac{k}{d}$: it matches a *different* singleton in memory. The opponent auto-takes that pair (both players saw the match). A note on the memory bookkeeping here: after the auto-take, the matched singleton and the second new card are removed ($-2$), but the first new card remains in memory ($+1$). Net change: $k - 1 + 1 = k$. The state is $(n-1, k)$, opponent to move.
 - With probability $\frac{2(n-k-1)}{d}$: no match at all. Both new cards are now in memory ($k \to k+2$). Turn passes.
  
 The full 2-move formula (following Zwick–Paterson Section 3) is:
@@ -171,7 +176,15 @@ If the 1-move turns out to be optimal at this state (i.e., $e_{n,M} = e^1_{n,M}$
 $$e^1_{n,M} + q \cdot e^1_{n,M} = p \cdot (1 + e_{n-1,\, M-1})$$
 $$e^1_{n,M} = \frac{p \cdot (1 + e_{n-1,\, M-1})}{1 + q}$$
  
-**2-move at $k = M$:** Similarly, the "no match on either card" transition returns to $(n, M)$ instead of advancing to $(n, M+2)$. The self-referential equation has the same structure and is solved analogously.
+**2-move at $k = M$:** The same LRU capping applies to both new cards. The lucky-match and auto-take branches are unchanged (they reduce $n$, so they don't hit the boundary). Only the "no match on either card" branch is affected: instead of transitioning to $(n, M+2)$, both evictions keep $k$ at $M$, looping back to $(n, M)$. The full equation is:
+ 
+$$e^2_{n,M} = p \cdot (1 + e_{n-1,\, M-1}) + q \left[ \frac{1}{d}(1 + e_{n-1,\, M'}) - \frac{M}{d}(1 + e_{n-1,\, M'}) - \frac{2(n{-}M{-}1)}{d} \cdot e_{n,\, M} \right]$$
+ 
+where $d = 2n - M - 1$ and $M' = \min(M, n-1)$ (the memory state after a pair is removed). Collecting the $e_{n,M}$ terms and solving:
+ 
+$$e^2_{n,M} = \frac{p \cdot (1 + e_{n-1,\, M-1}) + q \left[ \frac{1}{d}(1 + e_{n-1,\, M'}) - \frac{M}{d}(1 + e_{n-1,\, M'}) \right]}{1 + q \cdot \frac{2(n-M-1)}{d}}$$
+ 
+All terms on the right-hand side involve states with $n - 1$ pairs, which are already computed. So the boundary is resolved in closed form, just like the 1-move case.
  
 ### 6.4 Putting It Together: Optimal Move Selection
  
