@@ -28,6 +28,7 @@ toc: true
 </script>
 
 <h2 data-toc-skip> The Optimal Strategy for Memory Under Bounded Working Memory</h2>
+**Taulant Koka · March 2026 · [GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
 
 ## 1. The Game
 
