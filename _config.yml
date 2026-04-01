@@ -76,7 +76,7 @@ plugins:
   - jekyll-sitemap
   - jekyll-paginate
   - jekyll-gist
-
+  - jekyll-feed
 # ──────────────────────────────────────────────
 # 8. FILE HANDLING
 # ──────────────────────────────────────────────
