@@ -87,7 +87,7 @@ Following Zwick, I characterise positions by $(n, k)$ where $k \leq M$ is the nu
 
 ## 5. Greedy Matching Is Optimal
  
-Before computing the optimal strategy, I need to settle a foundational question: when you know where a matching pair is, should you always take it immediately? Or could it sometimes be better to hold the pair in reserve — leaving it in memory unmatched to control the timing of who gets the last pair, as Zwick's pass does under perfect recall?
+Before computing the optimal strategy, I need to settle a foundational question: when you know where a matching pair is, should you always take it immediately? Or could it sometimes be better to hold the pair in reserve, leaving it in memory unmatched to control the timing of who gets the last pair, as Zwick's pass does under perfect recall?
  
 ### Setup
  
@@ -109,13 +109,13 @@ $$V_{\text{take}} = 1 + e_{n-1,\, k-2}$$
  
 **DEFER:** Player A makes any other move without taking the pair. We need to consider what happens to the pair $(\alpha, \beta)$ during and after A's move. There are three cases:
  
-*Case 1 — A plays a 0-move (pass).* A flips two already-known, non-matching cards. No new information enters memory, so no eviction occurs. The pair $(\alpha, \beta)$ survives in the shared memory. The turn passes to B, who sees the pair and (by the same dominance argument) takes it. A's payoff: $-1 - e_{n-1,\, k'}$ for some $k'$.
+*Case 1: A plays a 0-move (pass).* A flips two already-known, non-matching cards. No new information enters memory, so no eviction occurs. The pair $(\alpha, \beta)$ survives in the shared memory. The turn passes to B, who sees the pair and (by the same dominance argument) takes it. A's payoff: $-1 - e_{n-1,\, k'}$ for some $k'$.
  
-*Case 2 — A plays a 1-move or 2-move, and the pair survives in memory.* The new card(s) A flipped caused evictions, but neither $\alpha$ nor $\beta$ was the least recently used entry. The pair survives. When B's turn comes, B sees the pair and takes it. Same payoff as Case 1.
+*Case 2: A plays a 1-move or 2-move, and the pair survives in memory.* The new card(s) A flipped caused evictions, but neither $\alpha$ nor $\beta$ was the least recently used entry. The pair survives. When B's turn comes, B sees the pair and takes it. Same payoff as Case 1.
  
-*Case 3 — A plays a 1-move or 2-move, and one or both pair cards get evicted.* This is the subtle case. When memory is full ($k = M$) and A flips a new card, the LRU entry is evicted from *both players'* memories. If $\alpha$ or $\beta$ happens to be the oldest entry, it gets pushed out. Now the pair is partially or fully forgotten, neither player can take it until the evicted card is rediscovered by chance. A gave up a guaranteed $+1$ and got a strictly worse board state: same $n$ (the pair is still physically on the board) but lower effective $k$ (known information was destroyed).
+*Case 3: A plays a 1-move or 2-move, and one or both pair cards get evicted.* This is the subtle case. When memory is full ($k = M$) and A flips a new card, the LRU entry is evicted from *both players'* memories. If $\alpha$ or $\beta$ happens to be the oldest entry, it gets pushed out. Now the pair is partially or fully forgotten, and neither player can take it until the evicted card is rediscovered by chance. A gave up a guaranteed $+1$ and got a strictly worse board state: same $n$ (the pair is still physically on the board) but lower effective $k$ (known information was destroyed).
  
-In Cases 1–2, A's payoff from DEFER is at most $0$ (mutual stalemate) or $-1 - e_{n-1,\, k'}$ (B takes the pair). In Case 3, A's payoff is even worse: A destroyed a guaranteed point's worth of information. In all cases, TAKE gives $V_{\text{take}} = 1 + e_{n-1,\, k-2}$. Since the computed exact values (via the DP below) confirm $1 + e_{n-1,\, k-2} > 0$ for all relevant states (verifiable by inspection of the value tables), TAKE strictly dominates DEFER in every case. $\square$
+In the best case for DEFER (Case 3), the pair is forgotten and A merely forfeits the guaranteed point: the pair remains on the board but will only be scored when rediscovered by chance, roughly a coin flip between the two players. In the worst case for DEFER (Cases 1–2), B takes the pair and A suffers a 2-point swing. Either way, TAKE gives $V_{\text{take}} = 1 + e_{n-1,\, k-2}$. Since the computed exact values (via the DP below) confirm $1 + e_{n-1,\, k-2} > 0$ for all relevant states (verifiable by inspection of the value tables), TAKE strictly dominates DEFER in every case. $\square$
  
 **Remark.** This proof *requires* shared memory. The crucial step is "Player B also knows about this pair." If players had private, unobservable memories, Player A could know a pair that Player B doesn't. Holding it in reserve, passing while secretly knowing a pair, could then be genuinely strategic, because B can't steal what B doesn't know about. The private-memory case is an interesting open problem, and likely requires game-theoretic tools for incomplete information (Bayesian Nash equilibria rather than backward induction).
  
@@ -158,7 +158,7 @@ The full 2-move formula (following Zwick–Paterson Section 3) is:
  
 $$e^2_{n,k} = p \cdot (1 + e_{n-1,\, k-1}) + q \left[ \frac{1}{d}(1 + e_{n-1,\, k}) - \frac{k}{d}(1 + e_{n-1,\, k}) - \frac{2(n{-}k{-}1)}{d} \cdot e_{n,\, k+2} \right]$$
  
-### 6.3 Move Values for $k = M$ (Memory Full — The New Boundary)
+### 6.3 Move Values for $k = M$ (Memory Full: The New Boundary)
  
 This is where the bounded model departs from Zwick. When memory is full and a new card doesn't match, LRU eviction fires: the new card enters memory and the oldest entry is pushed out. The net effect: $k$ stays at $M$ instead of increasing to $M + 1$.
  
@@ -204,7 +204,7 @@ For $n = 12$ (24 cards), the optimal move at each knowledge level $k$:
 | **Zwick** $(M{=}\infty)$ | 2 | 2 | 1 | 2 | 1 | 2 | 1 | 2 | 1 | **0** | 1 | **0** | 1 |
 | **Bounded** $(M{=}7)$ | 2 | 2 | 1 | **1** | 1 | **1** | 1 | **1** | — | — | — | — | — |
  
-The strategies agree when you know 0, 1, or 2 cards. They diverge at $k = 3, 5, 7$: Zwick says flip two new cards (aggressive exploration), bounded-memory says flip only one (conservative). States $k \geq 8$ don't exist under $M = 7$, your memory can't hold that many cards.
+The strategies agree when you know 0, 1, or 2 cards. They diverge at $k = 3, 5, 7$: Zwick says flip two new cards (aggressive exploration), bounded-memory says flip only one (conservative). States $k \geq 8$ don't exist under $M = 7$, since your brain can't hold that many cards.
  
 **In practical terms:** once you know a few card positions, stop flipping two unknowns per turn. Flip one, keep what you know, match when you can. The second unknown card just pushes out something useful.
  
@@ -220,9 +220,9 @@ Expected gain for the starting player (negative = Player 2 advantage):
 | 9 | $-0.033$ | $-0.039$ | $-0.020$ | $-0.026$ | $-0.001$ |
 | $\infty$ | $-0.033$ | $-0.038$ | $-0.020$ | $-0.018$ | $-0.012$ |
  
-These are exact values computed in rational arithmetic, no simulation noise. For $n = 12$ at $M = 7$, the P2 advantage is $-0.030$, which is 52% larger than Zwick's perfect-recall value of $-0.020$. Bounded memory *amplifies* the second player's advantage.
+These are exact values computed in rational arithmetic, with no simulation noise. For $n = 12$ at $M = 7$, the P2 advantage is $-0.030$, which is 52% larger than Zwick's perfect-recall value of $-0.020$. Bounded memory *amplifies* the second player's advantage.
  
-At very low $M$, memory is too constrained for strategy to matter and Player 1's first-mover advantage dominates. At high $M \geq n$, the model recovers Zwick exactly. The P2 advantage peaks around $M \approx 5\text{–}9$, which happens to coincide with Miller's range. I don't claim this is anything more than a coincidence, the game was designed for humans, not the other way around.
+At very low $M$, memory is too constrained for strategy to matter and Player 1's first-mover advantage dominates. At high $M \geq n$, the model recovers Zwick exactly. The P2 advantage peaks around $M \approx 5\text{–}9$, which happens to coincide with Miller's range. I don't claim this is anything more than a coincidence: the game was designed for humans, not the other way around.
 
 ## 8. Simulations
 
@@ -290,7 +290,7 @@ Memory capacity dwarfs positional advantage. At $n = 24$ (48 cards), a player wi
 
 The diagonal of the P2 win rate heatmap (equal memory) shows the P2 advantage at three decimal places: 0.501, 0.504, 0.508. Real, but roughly 100$\times$ smaller than the effect of one memory slot.
 
-Note that with asymmetric memory, the two players no longer have identical memory states, the shared-memory proof (Section 5) doesn't strictly apply. Each player uses the optimal strategy for their own $M$ as a reasonable heuristic, but this is not provably optimal in the asymmetric case.
+Note that with asymmetric memory, the two players no longer have identical memory states, so the shared-memory proof (Section 5) doesn't strictly apply. Each player uses the optimal strategy for their own $M$ as a reasonable heuristic, but this is not provably optimal in the asymmetric case.
 
 ### 8.4 Draw Rate vs Capacity
 
@@ -301,15 +301,15 @@ Note that with asymmetric memory, the two players no longer have identical memor
 
 The draw rate reveals a striking non-monotonic pattern, most visible for $n = 8$ (16 cards). Draws are low at $M = 5$ (no passes in the optimal strategy, draws are only score ties), spike to over 50% at $M = 7$ (the strategy includes a pass at $k = 6$, creating sticky stalemates), then crash back to near zero at $M = 8$ (memory covers the entire board, and one player eventually sweeps everything).
 
-Why does $M = 8$ have so many fewer draws than $M = 7$ when both strategies include a pass? At $M = 8 = n$, knowledge $k$ can reach $8 = n$, at which point the current player knows every card and sweeps the board. This creates an escape hatch from stalemate: any game where $k$ reaches $n$ ends decisively. At $M = 7$, $k$ can never exceed 7, there is no escape hatch, and the stalemate at $k = 6$ is permanent.
+Why does $M = 8$ have so many fewer draws than $M = 7$ when both strategies include a pass? At $M = 8 = n$, knowledge $k$ can reach $8 = n$, at which point the current player knows every card and sweeps the board. This creates an escape hatch from stalemate: any game where $k$ reaches $n$ ends decisively. At $M = 7$, $k$ can never exceed 7, so there is no escape hatch, and the stalemate at $k = 6$ is permanent.
 
-For standard game sizes ($n \geq 16$) with human memory ($M \approx 7$), $M$ is far below $n$, passes never appear, and draws are rare. The elaborate game of parity-control from Zwick's analysis simply doesn't arise in practice, real games produce a winner most of the time.
+For standard game sizes ($n \geq 16$) with human memory ($M \approx 7$), $M$ is far below $n$, passes never appear, and draws are rare. The elaborate game of parity-control from Zwick's analysis simply doesn't arise in practice; real games produce a winner most of the time.
 
 ## 9. Play Against the Bot
 
 Theory is nice, but the best way to feel the difference between strategies is to play. The game below lets you play Memory against a bot that uses either the bounded-memory optimal strategy or Zwick's perfect-recall strategy. You can adjust the bot's memory capacity and see which cards it remembers in real time.
 
-Try this experiment: play a few games against the bounded-memory bot ($M = 7$), then switch to Zwick. Watch the bot's memory panel. With the bounded strategy, the bot flips one unknown card and keeps its memories stable. With Zwick, it flips two unknowns and old memories get evicted. The Zwick bot *looks* smarter (it explores faster) but actually performs worse, it churns through its own memory.
+Try this experiment: play a few games against the bounded-memory bot ($M = 7$), then switch to Zwick. Watch the bot's memory panel. With the bounded strategy, the bot flips one unknown card and keeps its memories stable. With Zwick, it flips two unknowns and old memories get evicted. The Zwick bot *looks* smarter (it explores faster) but actually performs worse, as it churns through its own memory.
 
 You can also switch to "Bot vs Bot" mode to run simulations directly in your browser.
 
