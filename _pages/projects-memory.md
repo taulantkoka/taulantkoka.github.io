@@ -35,6 +35,8 @@ Memory (also known as Concentration or Pairs) is a card game played with $n$ pai
 
 Despite being a children's game, Memory has a surprisingly rich strategic structure. Every card flip reveals information to *both* players, and the key decision is how to balance learning (flipping new cards) against exploiting what you already know (flipping a card whose match you remember). This raises a natural question: **does it matter who goes first?**
 
+If you want to skip the theory and just play, there's an [interactive game](#9-play-against-the-bot) at the end where you can take on the optimal strategy yourself.
+
 *A note on methodology: this is the first time I've produced a mathematical result with the help of an AI agent. The proofs, dynamic programming formulations, and simulations in this post were developed in collaboration with Claude Opus (Anthropic).*
  
 ## 2. What Zwick and Paterson Showed
@@ -61,7 +63,7 @@ This is elegant, but immediately raises the question: does any of this survive w
 
 ## 3. First Attempt: Stochastic Memory Decay
 
-My first approach, inspired by [Samuel Kilian](https://samuelkilian.de/about.html) (who's posts about the memory game peaked my interest), was to model forgetting as probabilistic decay: each turn, every remembered card has a probability $\delta$ of being forgotten. This is analytically convenient, the Zwick framework mostly carries over, and it lets you sweep continuously from perfect memory ($\delta = 0$) to complete amnesia ($\delta = 1$).
+My first approach, inspired by [Samuel Kilian](https://samuelkilian.de/about.html) (whose posts about the memory game piqued my interest), was to model forgetting as probabilistic decay: each turn, every remembered card has a probability $\delta$ of being forgotten. This is analytically convenient, the Zwick framework mostly carries over, and it lets you sweep continuously from perfect memory ($\delta = 0$) to complete amnesia ($\delta = 1$).
 
 I ran large-scale Monte Carlo simulations (up to 1 million games per parameter point) under this model. The results were interesting: at low $\delta$, the Zwick P2 advantage survives. Around $\delta \approx 0.10\text{–}0.15$, there's a phase transition where the Zwick stalemate regime collapses and the game becomes more decisive. At high $\delta$, the game converges to a coin flip.
 
@@ -141,7 +143,7 @@ $$p = \frac{k}{2n - k} \qquad q = \frac{2(n-k)}{2n-k}$$
  
 where $p$ is the probability that a randomly flipped unknown card matches one of the $k$ singletons in memory (there are $k$ target cards among the $2n - k$ unknown positions), and $q = 1 - p$.
  
-**0-move (pass):** Do nothing. The opponent faces state $(n, k)$. Value:
+**0-move (pass):** Flip two known non-matching cards. The opponent faces state $(n, k)$. Value:
 $$e^0_{n,k} = -e_{n,k}$$
 This is only worth considering if $e_{n,k} \leq 0$ (i.e., the current position is unfavourable), giving $e^0 = 0$. The pass is legal only for $k \geq 2$.
  
@@ -233,31 +235,39 @@ The exact DP gives me values and optimal moves, but to see how strategies actual
 ### 8.1 Bounded-Memory Optimum vs Zwick
 
 Both players have $M = 7$. I pit the bounded-memory optimal strategy against Zwick's perfect-recall strategy in all four matchup combinations, across board sizes from $n = 8$ (16 cards) to $n = 36$ (72 cards).
-<a href="/figures_memory/miller_vs_zwick_conditional.svg" class="image-popup">
-  <img src="/figures_memory/miller_vs_zwick_conditional.svg" alt="Miller vs Zwick"
+
+<a href="/figures_memory/bounded_vs_zwick_conditional.svg" class="image-popup">
+  <img src="/figures_memory/bounded_vs_zwick_conditional.svg" alt="Conditional win rate: Bounded vs Zwick"
      style="background: #fff; border-radius: 6px;cursor: zoom-in;">
 </a>
 
-<a href="/figures_memory/miller_vs_zwick_gain.svg" class="image-popup">
-  <img src="/figures_memory/miller_vs_zwick_gain.svg" alt="Miller vs Zwick"
+<a href="/figures_memory/bounded_vs_zwick_gain.svg" class="image-popup">
+  <img src="/figures_memory/bounded_vs_zwick_gain.svg" alt="Expected gain: Bounded vs Zwick"
      style="background: #fff; border-radius: 6px;cursor: zoom-in;">
 </a>
 
 The bounded-memory strategy dominates Zwick at every board size. The advantage is not subtle: at $n = 36$ (72 cards, a standard large game), the bounded-memory player gains about 3 full pairs over a Zwick opponent. The gain grows with board size because larger boards mean more time at $k = M$ where the strategies diverge.
 
-When both players use the same strategy, the game is essentially fair, the tiny P2 advantage is invisible in simulation. The strategy choice matters; the seat you're in doesn't.
+The strategy matrix at $n = 16$ confirms that bounded-memory optimal is a dominant strategy in the game-theoretic sense: no matter what your opponent plays, you're better off playing bounded.
+
+<a href="/figures_memory/bounded_vs_zwick_matrix.svg" class="image-popup">
+  <img src="/figures_memory/bounded_vs_zwick_matrix.svg" alt="Strategy matrix"
+     style="background: #fff; border-radius: 6px;cursor: zoom-in;">
+</a>
+
+An interesting detail: under symmetric play, both strategies give nearly fair games (P2 conditional win rate $\approx 50\%$), but the *direction* of the tiny bias differs. Bounded v Bounded slightly favours P2 (consistent with the exact DP), while Zwick v Zwick under $M = 7$ slightly favours P1. The Zwick strategy's aggressive 2-moves churn memory, destroying the parity structure that gives P2 an advantage under perfect recall. With parity gone, P1's first-mover advantage in finding lucky matches takes over.
 
 ### 8.2 Robustness to Fluctuation
 
 Real working memory capacity isn't fixed at exactly 7 every turn. Some turns you're sharp, others you lose focus. I model this by drawing the effective capacity each turn from $M_0 + \text{Uniform}(-\sigma, +\sigma)$, clamped to $[2, M_0 + \sigma]$.
 
-<a href="/figures_memory/fluctuation_miller_vs_zwick.svg" class="image-popup">
-  <img src="/figures_memory/fluctuation_miller_vs_zwick.svg" alt="bounded-memory optimum vs Zwick"
+<a href="/figures_memory/fluctuation_bounded_vs_zwick.svg" class="image-popup">
+  <img src="/figures_memory/fluctuation_bounded_vs_zwick.svg" alt="Bounded-optimal vs Zwick under fluctuation"
      style="background: #fff; border-radius: 6px;cursor: zoom-in;">
 </a>
 
 <a href="/figures_memory/fluctuation_cross_gain.svg" class="image-popup">
-  <img src="/figures_memory/fluctuation_cross_gain.svg" alt="cross-strategy gain"
+  <img src="/figures_memory/fluctuation_cross_gain.svg" alt="Cross-strategy gain under fluctuation"
      style="background: #fff; border-radius: 6px;cursor: zoom-in;">
 </a>
 
@@ -268,15 +278,15 @@ The bounded-memory strategy remains dominant across all fluctuation levels. Even
 The most practically relevant question: what happens when the two players have different memory capacities? Say, an adult ($M = 9$) playing against a child ($M = 5$). Each player uses the optimal strategy for their own capacity.
 
 <a href="/figures_memory/asymmetric_gain_heatmap.svg" class="image-popup">
-  <img src="/figures_memory/asymmetric_gain_heatmap.svg" alt="expected gain heatmap"
+  <img src="/figures_memory/asymmetric_gain_heatmap.svg" alt="Asymmetric memory: expected gain heatmap"
      style="background: #fff; border-radius: 6px;cursor: zoom-in;">
 </a>
 <a href="/figures_memory/asymmetric_p2cond_heatmap.svg" class="image-popup">
-  <img src="/figures_memory/asymmetric_p2cond_heatmap.svg" alt="P2 conditional win rate"
+  <img src="/figures_memory/asymmetric_p2cond_heatmap.svg" alt="Asymmetric memory: P2 conditional win rate"
      style="background: #fff; border-radius: 6px;cursor: zoom-in;">
 </a>
 <a href="/figures_memory/asymmetric_memory_advantage.svg" class="image-popup">
-  <img src="/figures_memory/asymmetric_memory_advantage.svg" alt="[Asymmetric memory: advantage curve"
+  <img src="/figures_memory/asymmetric_memory_advantage.svg" alt="Asymmetric memory: advantage curve"
      style="background: #fff; border-radius: 6px;cursor: zoom-in;">
 </a>
 
@@ -284,18 +294,28 @@ Memory capacity dwarfs positional advantage. At $n = 24$ (48 cards), a player wi
 
 The diagonal of the P2 win rate heatmap (equal memory) shows the P2 advantage at three decimal places: 0.501, 0.504, 0.508. Real, but roughly 100$\times$ smaller than the effect of one memory slot.
 
+Note that with asymmetric memory, the two players no longer have identical memory states — the shared-memory proof (Section 5) doesn't strictly apply. Each player uses the optimal strategy for their own $M$ as a reasonable heuristic, but this is not provably optimal in the asymmetric case.
+
 ### 8.4 Draw Rate vs Capacity
 
 <a href="/figures_memory/draw_rate_vs_capacity.svg" class="image-popup">
-  <img src="/figures_memory/draw_rate_vs_capacity.svg" alt="[Asymmetric memory: advantage curve"
+  <img src="/figures_memory/draw_rate_vs_capacity.svg" alt="Draw rate and P2 advantage vs memory capacity"
      style="background: #fff; border-radius: 6px;cursor: zoom-in;">
 </a>
 
-The draw rate reveals the transition between two regimes. For small boards ($n = 8$), draws spike sharply at $M \approx n$ as the optimal strategy begins to include passes and Zwick-style stalemates emerge. For standard game sizes ($n \geq 16$) with human memory ($M \approx 7$), passes never appear and draws are rare. The elaborate game of parity-control of Zwick's analysis simply doesn't arise in practice, real games produce a winner most of the time.
+The draw rate reveals a striking non-monotonic pattern, most visible for $n = 8$ (16 cards). Draws are low at $M = 5$ (no passes in the optimal strategy, draws are only score ties), spike to over 50% at $M = 7$ (the strategy includes a pass at $k = 6$, creating sticky stalemates), then crash back to near zero at $M = 8$ (memory covers the entire board, and one player eventually sweeps everything).
+
+Why does $M = 8$ have so many fewer draws than $M = 7$ when both strategies include a pass? At $M = 8 = n$, knowledge $k$ can reach $8 = n$, at which point the current player knows every card and sweeps the board. This creates an escape hatch from stalemate: any game where $k$ reaches $n$ ends decisively. At $M = 7$, $k$ can never exceed 7 — there is no escape hatch, and the stalemate at $k = 6$ is permanent.
+
+For standard game sizes ($n \geq 16$) with human memory ($M \approx 7$), $M$ is far below $n$, passes never appear, and draws are rare. The elaborate game of parity-control from Zwick's analysis simply doesn't arise in practice — real games produce a winner most of the time.
 
 ## 9. Play Against the Bot
 
-Theory is nice, but the best way to feel the difference...
+Theory is nice, but the best way to feel the difference between strategies is to play. The game below lets you play Memory against a bot that uses either the bounded-memory optimal strategy or Zwick's perfect-recall strategy. You can adjust the bot's memory capacity and see which cards it remembers in real time.
+
+Try this experiment: play a few games against the bounded-memory bot ($M = 7$), then switch to Zwick. Watch the bot's memory panel. With the bounded strategy, the bot flips one unknown card and keeps its memories stable. With Zwick, it flips two unknowns and old memories get evicted. The Zwick bot *looks* smarter (it explores faster) but actually performs worse — it churns through its own memory.
+
+You can also switch to "Bot vs Bot" mode to run simulations directly in your browser.
 
 <iframe src="/assets/memory_game.html" width="100%" height="750" style="border:none; border-radius:8px; overflow:hidden;"></iframe>
 
@@ -303,7 +323,7 @@ Theory is nice, but the best way to feel the difference...
 
 1. **Greedy matching is optimal** under shared memory, a simple dominance argument.
 
-2. **The optimal strategy is simple:** flip two new cards only at the very start; once you know a few positions, flip only one and match when you can. Never pass. This is what Sötemann (2025) found empirically and called "defensive" play. I proved it's the exact optimum under bounded memory and showed *why*: the second flip churns memory when capacity is the bottleneck.
+2. **The optimal strategy is simple:** flip two new cards only at the very start; once you know a few positions, flip only one and match when you can. Never pass. This is what Kilian (2025) found empirically and called "defensive" play. I proved it's the exact optimum under bounded memory and showed *why*: the second flip churns memory when capacity is the bottleneck.
 
 3. **The bounded-memory strategy dominates Zwick's** by a growing margin as board size increases, and this holds under capacity fluctuation.
 
@@ -319,4 +339,4 @@ The private-memory case (where each player has their own unobservable memory) re
 
 - Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information. *Psychological Review*, 63(2), 81–97.
 - Zwick, U. & Paterson, M. S. (1993). The memory game. *Theoretical Computer Science*, 110(1), 169–196.
-- Sötemann, M. (2025). Who starts the game of memory? Blog post. https://stotsi.com/posts/memory/
+- Kilian, S. (2025). Who starts the game of memory? Blog post. [samuelkilian.de](https://samuelkilian.de/about.html)
