@@ -9,7 +9,6 @@ head_scripts:
   - '<meta name="robots" content="noindex, nofollow">'
 ---
 
-<h1>Impressum</h1>
 <p>Taulant Koka<br/>
 Merckstr. 25<br/>
 64283 Darmstadt<br/>
