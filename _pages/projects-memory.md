@@ -83,19 +83,19 @@ Let $s$ be any full game state under shared bounded memory with deterministic LR
 $$
 P=\{\alpha,\beta\}.
 $$
-Let $T_P(s)$ denote the successor state obtained by flipping $\alpha,\beta$ immediately, removing that pair, scoring $+1$, and granting the same player the bonus turn. Then
+Then taking $P$ immediately is an optimal move. That is, for every legal action $a$ that does **not** take $P$,
 $$
-V(s)\;=\;1+V\!\bigl(T_P(s)\bigr),
+Q(s,\text{take }P)\;\ge\;Q(s,a),
 $$
-and in particular, for every legal action $a$ that does **not** take $P$ immediately,
+where $Q(s,a)$ denotes the value of taking action $a$ in state $s$ and then playing optimally thereafter, and $V(s) = \max_a Q(s,a)$ is the value of $s$ to the player to move. It follows that taking $P$ is optimal, so
 $$
-Q(s,\text{take }P)\;\ge\;Q(s,a).
+V(s) = Q(s,\text{take }P) = 1 + V\!\bigl(T_P(s)\bigr),
 $$
-Equivalently: any legal move that leaves a publicly known pair on the board is weakly dominated by taking it at once.
+where $T_P(s)$ is the state after removing the pair and granting the bonus turn. Equivalently: any legal move that leaves a publicly known pair on the board is weakly dominated by taking it at once.
 
-As usual, $V(s)$ denotes the value of the full state $s$ to the player to move, and $Q(s,a)$ denotes the value of taking action $a$ in state $s$ and then playing optimally thereafter.
+This is a weak-dominance statement, not a strict one. If you know two pairs simultaneously, taking either one first may give the same value. What cannot happen is that deferring a publicly known pair is *strictly better* than taking it immediately.
 
-Note: this is a weak-dominance statement, not a strict one. If you know two pairs simultaneously, taking either one first may give the same value. What cannot happen is that deferring a publicly known pair is *strictly better* than taking it immediately.
+*(After the corollary below, the full state $s$ reduces to a pair $(n,k)$, and $V(s)$ becomes the value function $e_{n,k}$ used in Zwick's notation and in the DP of Section 6.)*
 
 ### Proof
 
@@ -155,15 +155,7 @@ $$
 
 There are three cases.
 
-**Case 1: $B$ takes $P$ at time $\tau$.** Then the deferred line has allowed the opponent to score a publicly known pair that $A$ could have taken immediately. Hence
-$$
-Q(s,a)\;\le\;-1+\text{(continuation value on the remaining board)},
-$$
-whereas the immediate-take line already secured
-$$
-Q(s,\text{take }P)=1+V(s^+).
-$$
-Since $s^+$ is weakly better informed on the remaining board by the lemma, immediate take is strictly better:
+**Case 1: $B$ takes $P$ at time $\tau$.** Then the deferred line has allowed the opponent to score a publicly known pair that $A$ could have taken immediately. Relative to the immediate-take line, $A$ is down one pair and, by the lemma, is not better informed about the remaining board. Hence
 $$
 Q(s,\text{take }P)\;>\;Q(s,a).
 $$
@@ -219,7 +211,7 @@ $$
 
 The specific labels of the remembered cards are exchangeable under relabeling of pair identities. Moreover, when a known card is used as the idle flip in a 1-move or as part of a 0-move, the resulting continuation value depends only on the updated count.
 
-Thus the DP closes on $(n,k)$.
+Thus the DP closes on $(n,k)$, and $V(s) = e_{n,k}$ where $(n,k)$ is the reduced state corresponding to $s$.
 
 ## 6. The Optimal Strategy
 
@@ -228,9 +220,7 @@ $$
 \{(n,k):0\le k\le \min(n,M)\}.
 $$
 
-### 6.1 Value function
-
-Let $e_{n,k}$ denote the expected score advantage for the player to move from reduced state $(n,k)$.
+From here on I follow Zwick's notation and write $e_{n,k}$ for the value of reduced state $(n,k)$ to the player to move.
 
 The boundary conditions are
 $$
