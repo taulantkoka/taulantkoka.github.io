@@ -136,39 +136,49 @@ With greedy matching established, I can compute the optimal 0/1/2-move strategy 
 From here on I follow Zwick's notation and write $e_{n,k}$ for the value of reduced state $(n,k)$ to the player to move. A positive $e_{n,k}$ means the current player expects to outscore the opponent from this point; negative means the opponent is favoured. This is the same $V(s)$ from Section 5, restricted to reduced states. If you want to skip the formulas and go straight to the computed strategies, jump to [Section 7](#7-results).
 
 The boundary conditions are
-\\[
+
+$$
 e_{0,0}=0,
-\\]
+$$
+
 and, whenever $n\le M$,
-\\[
+
+$$
 e_{n,n}=n,
-\\]
+$$
+
 because every unknown card pairs with a remembered singleton, so the player to move can sweep all remaining pairs.
 
 At each nonterminal state,
-\\[
+
+$$
 e_{n,k}=\max\lbracee^0_{n,k},e^1_{n,k},e^2_{n,k}\rbrace,
-\\]
+$$
+
 subject to legality of the moves.
 
 ### 6.1 Move values for $k<M$
 
 Define
-\\[
+
+$$
 p:=\frac{k}{2n-k},
 \qquad
 q:=\frac{2(n-k)}{2n-k}=1-p.
-\\]
+$$
 
 Here $p$ is the probability that a new unknown card matches one of the $k$ remembered singletons, and $q$ is the probability that it does not.
 
 **0-move (pass).** A pass hands the same state to the opponent, so
-\\\[
+
+$$
 e^0_{n,k}=-e_{n,k}.
-\\\]
+$$
+
 Therefore, in the Bellman equation, allowing a pass is equivalent to including $0$ among the candidate values. The pass is only legal for $k\ge 2$.
 
 **1-move.** If the first new card matches memory (probability $p$), you score 1, remove the pair, and move again from $(n-1,k-1)$. If it does not match (probability $q$), it enters memory and the opponent moves from $(n,k+1)$. Hence
+
 $$
 e^1_{n,k}
 =
@@ -184,6 +194,7 @@ $$
 A note on the auto-take branch. The minus sign in $-\frac{k}{d}(1+e_{n-1,k})$ reflects the fact that the *opponent* scores this pair: the opponent gains $+1$ and then faces state $(n-1,k)$ with value $e_{n-1,k}$ from the opponent's perspective, which is $-e_{n-1,k}$ from yours. Hence $-(1+e_{n-1,k})$. As for the memory bookkeeping: after the auto-take, the matched singleton and the second new card are removed ($-2$), but the first new card remains ($+1$). Net change: $k - 1 + 1 = k$. So the auto-take state is $(n-1,k)$, not $(n-1,k-1)$.
 
 Therefore
+
 $$
 e^2_{n,k}
 =
@@ -201,6 +212,7 @@ $$
 Now suppose memory is full.
 
 **1-move at $k=M$.** A first-card miss no longer moves to $(n,M+1)$; instead LRU eviction keeps memory size fixed, so the miss branch loops back to $(n,M)$:
+
 $$
 e^1_{n,M}
 =
@@ -208,6 +220,7 @@ p\bigl(1+e_{n-1,M-1}\bigr)-q\,e_{n,M}.
 $$
 
 If the 1-move is optimal at $(n,M)$, then $e_{n,M}=e^1_{n,M}$, so
+
 $$
 e^1_{n,M}
 =
@@ -227,6 +240,7 @@ The successor states are:
 - double miss: memory is still full and the game returns to $(n,M)$ with the opponent to move.
 
 Therefore
+
 $$
 e^2_{n,M}
 =
@@ -240,6 +254,7 @@ q\left[
 $$
 
 Collecting the $e_{n,M}$ term:
+
 $$
 e^2_{n,M}
 =
@@ -257,6 +272,7 @@ This is the new boundary equation that replaces Zwick's deep-$k$ perfect-memory 
 ### 6.3 Optimal move selection
 
 At each state,
+
 $$
 e_{n,k}
 =
