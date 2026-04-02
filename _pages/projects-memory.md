@@ -103,25 +103,26 @@ More precisely: in the bounded-memory model with deterministic LRU eviction, sup
 
 ### Proof
  
-I need a bit of notation. Write $s = (B, \pi, L)$ for a full game state, where $B$ is the set of unmatched cards, $\pi$ is the player to move, and $L$ is the ordered shared LRU memory list. Write $Q(s, a)$ for the expected payoff of taking action $a$ in state $s$ and then playing optimally, and $V(s) = \max_a Q(s,a)$ for the value of $s$.
- 
-*(After the corollary at the end of this section, the full state $s$ reduces to a pair $(n,k)$, and $V(s)$ becomes the value function $e_{n,k}$ used in Zwick's notation and in the DP of Section 6.)*
- 
-Assume $\pi=A$, and that $L$ contains both $\alpha,\beta$ of the matching pair $P=\{\alpha,\beta\}$.
- 
-Fix an arbitrary strategy $\sigma_B$ for player $B$. Let $a$ be any legal action by $A$ that does not take $P$ immediately. We compare:
- 
-- the **deferred** continuation starting from $(s,a,\sigma_B)$;
-- the **immediate-take** continuation starting from first taking $P$, i.e. from the state
-  \\[
-  s^+ \;:=\; T_P(s),
-  \\]
-  and then playing optimally against the same $\sigma_B$.
- 
-So
-\\[
+Write \(s=(B,\pi,L)\) for a full game state, where \(B\) is the set of unmatched cards, \(\pi\) is the player to move, and \(L\) is the ordered shared LRU memory list. For any legal action \(a\), let \(Q(s,a)\) be the value to the player to move of taking action \(a\) in state \(s\) and then playing optimally thereafter, and let
+\[
+V(s)=\max_a Q(s,a).
+\]
+
+Assume \(\pi=A\), and that \(L\) contains both \(\alpha,\beta\) of the matching pair \(P=\{\alpha,\beta\}\).
+
+Let \(a\) be any legal action by \(A\) that does not take \(P\) immediately. We compare:
+
+- the **deferred** line, in which \(A\) plays \(a\) from \(s\);
+- the **immediate-take** line, in which \(A\) first takes \(P\), moving to
+  \[
+  s^+ := T_P(s),
+  \]
+  and then both players play optimally.
+
+Thus
+\[
 Q(s,\text{take }P)=1+V(s^+).
-\\]
+\]
  
 The key observation is that $s^+$ is obtained from $s$ by deleting $\alpha,\beta$ from both the board and the shared memory.
 
@@ -229,9 +230,9 @@ e_{n,n}=n,
 because every unknown card pairs with a remembered singleton, so the player to move can sweep all remaining pairs.
 
 At each nonterminal state,
-\\[
+$$
 e_{n,k}=\max\{e^0_{n,k},e^1_{n,k},e^2_{n,k}\},
-\\]
+$$
 subject to legality of the moves.
 
 ### 6.1 Move values for $k<M$
