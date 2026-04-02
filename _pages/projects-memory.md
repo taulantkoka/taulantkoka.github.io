@@ -2,7 +2,6 @@
 title: "The Memory Game"
 permalink: /projects/memory/
 layout: single
-mathjax: true
 sidebar:
   nav: "projects"
 toc: true
@@ -28,7 +27,6 @@ toc: true
 </script>
 
 <h2 data-toc-skip> The Optimal Strategy for Memory Under Bounded Working Memory</h2>
-**Taulant Koka · April 2026 · [GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
 
 ## 1. The Game
 
@@ -72,7 +70,7 @@ But the model bothered me. Probabilistic decay means you might remember a card y
 
 ## 4. From Miller's Law to a Tractable Model
 
-This pointed me toward one of the most robust findings in cognitive psychology. In 1956, George Miller showed that human working memory has a capacity of approximately $7 \pm 2$ items (Miller, 1956). In the 70 years since, the "magical number seven" has been refined and debated, but the core insight, that working memory has a hard capacity limit, has held up remarkably well.
+This pointed me toward George Miller's famous 1956 paper on the "magical number seven, plus or minus two" (Miller, 1956). Later work has revised the effective capacity downward, with Cowan (2001) arguing for closer to 4 chunks under stricter definitions, and the exact number depends heavily on chunking and task design. For this project I use $M = 7$ as a convenient human-scale benchmark, not as a literal psychological constant. The important point is not the precise number but the qualitative fact: working memory has a hard capacity limit, and it is much smaller than a typical Memory board.
 
 Of course, real human memory is more complex than a fixed-size buffer. Decay, interference, attention, emotional salience, rehearsal, they all play a role. A fully realistic model would need to account for all of these, and would almost certainly be intractable.
 
@@ -90,42 +88,51 @@ Following Zwick, I characterise positions by $(n, k)$ where $k \leq M$ is the nu
  
 Before computing the optimal strategy, I need to settle a foundational question: when you know where a matching pair is, should you always take it immediately? Or could it sometimes be better to hold the pair in reserve, leaving it in memory unmatched to control the timing of who gets the last pair, as Zwick's pass does under perfect recall?
  
-### Setup
+### Theorem
  
-I measure the game from the perspective of the player whose turn it is, using a **value function** $e_{n,k}$ that represents the expected score difference (current player's pairs minus opponent's pairs) from state $(n, k)$ under optimal play by both sides. A positive $e_{n,k}$ means the current player is favoured; negative means the opponent is favoured.
+*Under shared bounded memory with deterministic LRU eviction, suppose that at the start of a player's turn the shared memory contains both positions of some matching pair $P = \{\alpha, \beta\}$. Then there is an optimal move that flips $\alpha$ and $\beta$ immediately. Equivalently: any legal move that leaves $P$ on the board is weakly dominated by taking $P$ at once.*
  
-To be precise: if Player A and Player B play optimally from state $(n, k)$ with A to move, and A ends up with $S_A$ pairs and B with $S_B$ pairs from this point forward, then $e_{n,k} = \mathbb{E}[S_A - S_B]$.
+Note: the claim is weak dominance, not strict. If you know two pairs simultaneously, taking either one first yields the same value. What cannot happen is that deferring a known pair is *strictly better* than taking it.
  
-### The Dominance Argument
+### Proof
  
-**Theorem.** *Under shared bounded memory with LRU eviction, immediately matching any known pair is strictly optimal.*
+I work at the level of the full game state: the set of unmatched cards on the board, whose turn it is, and the ordered shared memory list $L$ (from least recently used to most recently used). Assume it is Player A's turn, and $L$ contains both positions $\alpha, \beta$ of a matching pair $P$. Fix any legal action $a$ that does not take $P$ immediately. I will construct another strategy for A that starts by taking $P$ first and does at least as well against every strategy of B.
  
-**Proof.** Suppose it is Player A's turn, and both players' shared memory contains a known matching pair, cards at positions $\alpha$ and $\beta$ with the same value. Since memory is shared, Player B also knows about this pair.
+**Step 1: Coupling two plays on the same board.** Fix the underlying shuffled board and fix an arbitrary strategy for B. Compare two plays from the same initial state:
  
-Compare two actions:
+- *Deferred play:* A begins with action $a$, leaving $P$ on the board.
+- *Immediate-take play:* A first flips $\alpha, \beta$, scores the pair, keeps the turn, and then on the bonus turn follows the same intended move $a$ on the remaining board (which is well-defined since $a$ does not involve $\alpha$ or $\beta$, as those were not flipped in the deferred play either).
  
-**TAKE:** Player A flips $\alpha$ and $\beta$. They match. Player A scores $+1$ and gets another turn. The game continues from state $(n-1, k-2)$ with Player A still to move. Player A's expected payoff from here is:
+In the immediate-take play, the board is the same as in the deferred play except that pair $P$ has been removed, and the memory list is the same except that $\alpha, \beta$ have been deleted.
  
-$$V_{\text{take}} = 1 + e_{n-1,\, k-2}$$
+**Step 2: LRU monotonicity lemma.** The key technical ingredient:
  
-**DEFER:** Player A makes any other move without taking the pair. We need to consider what happens to the pair $(\alpha, \beta)$ during and after A's move. There are three cases:
+*Lemma (LRU monotonicity).* Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations, none of which is a deleted entry. After every prefix of that sequence, $L'$ is exactly the list obtained from $L$ by deleting some subset of the originally deleted entries. In particular, every non-deleted card remembered in $L$ is also remembered in $L'$, in the same relative LRU order.
  
-*Case 1: A plays a 0-move (pass).* A flips two already-known, non-matching cards. No new information enters memory, so no eviction occurs. The pair $(\alpha, \beta)$ survives in the shared memory. The turn passes to B, who sees the pair and (by the same dominance argument) takes it. A's payoff: $-1 - e_{n-1,\, k'}$ for some $k'$.
+*Proof of lemma.* By induction on the number of observations. The invariant holds initially by construction. Suppose it holds before the next observation $x$.
  
-*Case 2: A plays a 1-move or 2-move, and the pair survives in memory.* The new card(s) A flipped caused evictions, but neither $\alpha$ nor $\beta$ was the least recently used entry. The pair survives. When B's turn comes, B sees the pair and takes it. Same payoff as Case 1.
+- If $x$ is already present in both lists, both move $x$ to the MRU end, preserving the relation.
+- If $x$ is absent from both lists, both insert it. If no eviction occurs, the relation is preserved. If eviction occurs, $L$ evicts its least-recently-used entry, while $L'$, being obtained by deleting entries from $L$, either evicts the same entry or one that was already deleted from $L$. Thus $L'$ remains obtainable from $L$ by deleting entries.
+- If $x$ is present in $L'$, then by the induction hypothesis it is also present in $L$, reducing to the first case.
+- If $x$ is present in $L$ but absent from $L'$, then $x$ must be one of the deleted entries, which is excluded by hypothesis.
  
-*Case 3: A plays a 1-move or 2-move, and one or both pair cards get evicted.* This is the subtle case. When memory is full ($k = M$) and A flips a new card, the LRU entry is evicted from *both players'* memories. If $\alpha$ or $\beta$ happens to be the oldest entry, it gets pushed out. Now the pair is partially or fully forgotten, and neither player can take it until the evicted card is rediscovered by chance. A gave up a guaranteed $+1$ and got a strictly worse board state: same $n$ (the pair is still physically on the board) but lower effective $k$ (known information was destroyed).
+Therefore the invariant holds after every step. $\square$
  
-In the best case for DEFER (Case 3), the pair is forgotten and A merely forfeits the guaranteed point: the pair remains on the board but will only be scored when rediscovered by chance, roughly a coin flip between the two players. In the worst case for DEFER (Cases 1–2), B takes the pair and A suffers a 2-point swing. Either way, TAKE gives $V_{\text{take}} = 1 + e_{n-1,\, k-2}$, which is strictly positive:
+Applying this with $\alpha, \beta$ as the deleted entries: after the immediate take and then exposing the same sequence of non-$P$ cards, the immediate-take play always has at least as much memory about the remaining board as the deferred play.
  
-- For $k \geq 4$: the continuation state $(n-1, k-2)$ has $k - 2 \geq 2$ known cards, so the pass is available, which guarantees $e_{n-1, k-2} \geq 0$. Therefore $V_{\text{take}} \geq 1 > 0$.
-- For $k = 2$ or $k = 3$: the continuation state has $k - 2 \in \{0, 1\}$ known cards (early-game positions). We only need $e_{n-1, k-2} > -1$, a mild condition easily verified: these are states where neither player has meaningful information, and values are bounded by $|e_{n,k}| < n$ trivially.
+**Step 3: Follow the two plays until $P$ is resolved.** In the deferred play, let $\tau$ be the first time one of the following happens: (1) A takes $P$, (2) B takes $P$, or (3) one of $\alpha, \beta$ is evicted from memory before $P$ is taken.
  
-This argument is not circular: we prove greedy matching by induction on $n$. The base case $n = 1$ is trivial (TAKE gives $1 > 0$). For general $n$, the continuation values $e_{n-1, k-2}$ were computed for a game with $n - 1$ pairs, where greedy was already established at the previous induction step. The DP processes states by decreasing $n$, so the values needed are always available before they are used. $\square$
+Until $\tau$, neither play flips $\alpha$ or $\beta$ except that the immediate-take play removed them at time 0. So both plays reveal the same non-$P$ cards in the same order, and by the lemma, the immediate-take play has weakly better memory about all remaining cards throughout.
  
-**Remark.** This proof *requires* shared memory. The crucial step is "Player B also knows about this pair." If players had private, unobservable memories, Player A could know a pair that Player B doesn't. Holding it in reserve, passing while secretly knowing a pair, could then be genuinely strategic, because B can't steal what B doesn't know about. The private-memory case is an interesting open problem, and likely requires game-theoretic tools for incomplete information (Bayesian Nash equilibria rather than backward induction).
+**Case 1: B takes the pair in the deferred play.** The deferred play gave the opponent a publicly known point that was available to A. In the immediate-take play, A already scored it at time 0, and memory for the rest of the board is weakly better by the lemma. Immediate take is strictly better.
  
-**Corollary.** Under optimal play, memory never holds both cards of a pair (any pair is matched the moment it's discovered). Therefore all $k$ entries in memory are unpaired singletons with distinct values. The state $(n, k)$ with $k \leq M$ is a sufficient description of the game, and backward induction on this state space yields the optimal strategy.
+**Case 2: The pair is evicted before being taken.** The deferred play failed to bank an immediately available point and weakly reduced future information by allowing eviction. In the immediate-take play, A already scored the point and has weakly better memory by the lemma. Immediate take is strictly better.
+ 
+**Case 3: A eventually takes the pair in the deferred play.** This is the non-strict case. When A finally takes $P$ in the deferred play, delete that move and compare what remains with the immediate-take play. At that point: both plays have removed the same pair $P$, both are at the same turn parity (taking a pair grants another turn in both timelines), both have seen the same non-$P$ observations, and the immediate-take play has weakly better memory by the lemma. Since the remaining board is the same (all non-$P$ cards in the same positions), every move that is legal in the deferred continuation is also legal in the immediate-take continuation, and the weakly better memory means A can replicate any decision rule the deferred play would have used. Therefore A can mimic the deferred continuation and is never worse off. Immediate take is at least as good. $\square$
+ 
+**Remark.** This proof requires shared memory. If players had private, unobservable memories, A could know a pair that B doesn't. Holding it in reserve could then be genuinely strategic, because B can't steal what B doesn't know about. The private-memory case remains an open problem.
+ 
+**Corollary.** We may restrict attention to optimal strategies that never leave a publicly known pair unmatched at a decision point. Hence the shared memory contains only unmatched singletons with distinct values, and the game state is fully described by $(n, k)$ where $n$ is the number of remaining pairs and $k \leq M$ is the number of remembered singleton positions. Backward induction on this state space yields the optimal strategy.
  
 ## 6. The Optimal Strategy
  
@@ -258,7 +265,7 @@ Both players have $M = 7$. I pit the bounded-memory optimal strategy against Zwi
 
 The bounded-memory strategy dominates Zwick at every board size. The advantage is not subtle: at $n = 36$ (72 cards, a standard large game), the bounded-memory player gains about 3 full pairs over a Zwick opponent. The gain grows with board size because larger boards mean more time at $k = M$ where the strategies diverge.
 
-The strategy matrix at $n = 16$ confirms that bounded-memory optimal is a dominant strategy in the game-theoretic sense: no matter what your opponent plays, you're better off playing bounded.
+The strategy matrix at $n = 16$ shows that bounded-memory optimal dominates Zwick within this two-strategy comparison: no matter which of the two strategies your opponent plays, you're better off playing bounded. (The DP proves optimality within the full class of 0/1/2-move strategies; the simulation confirms it specifically against Zwick.)
 
 <a href="/figures_memory/bounded_vs_zwick_matrix.svg" class="image-popup">
   <img src="/figures_memory/bounded_vs_zwick_matrix.svg" alt="Strategy matrix"
@@ -348,7 +355,7 @@ python main.py
 
 ## 11. What I Learned
 
-1. **Greedy matching is optimal** under shared memory, a simple dominance argument.
+1. **Greedy matching is optimal** under shared memory: any move that leaves a publicly known pair on the board is weakly dominated by taking it immediately. The proof uses a coupling argument and an LRU monotonicity lemma.
 
 2. **The optimal strategy is simple:** flip two new cards only at the very start; once you know a few positions, flip only one and match when you can. Never pass. This is what Kilian (2025) found empirically and called "defensive" play. I proved it's the exact optimum under bounded memory and showed *why*: the second flip churns memory when capacity is the bottleneck.
 
@@ -364,6 +371,7 @@ The private-memory case (where each player has their own unobservable memory) re
 
 ## References
 
+- Cowan, N. (2001). The magical number 4 in short-term memory: A reconsideration of mental storage capacity. *Behavioral and Brain Sciences*, 24(1), 87–114.
 - Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information. *Psychological Review*, 63(2), 81–97.
 - Zwick, U. & Paterson, M. S. (1993). The memory game. *Theoretical Computer Science*, 110(1), 169–196.
 - Kilian, S. (2025). Who starts the game of memory? Blog post. [samuelkilian.de](https://samuelkilian.de/about.html)
