@@ -169,12 +169,9 @@ So the invariant is preserved for all $r$. $\square$
 
 Apply the lemma with the deleted entries equal to $\alpha,\beta$. It follows that for any common sequence of subsequent observations of non-$P$ cards, the immediate-take state $s^+$ is never worse informed about the remaining board than the deferred state.
 
-Now let
-$$
-\tau=\inf\{t\ge 0:\text{ in the deferred line, either A takes }P,\; B\text{ takes }P,\; \text{or one of }\alpha,\beta\text{ is evicted}\}.
-$$
+Now let $$\tau$$ be the first time in the deferred play at which one of three things happens: $A$ takes $P$, $B$ takes $P$, or one of $\alpha,\beta$ is evicted from memory.
 
-There are three cases.
+The three cases can be formalized as follows:
 
 **Case 1: $B$ takes $P$ at time $\tau$.** Then the deferred line has allowed the opponent to score a publicly known pair that $A$ could have taken immediately. Relative to the immediate-take line, $A$ is down one pair and, by the lemma, is not better informed about the remaining board. Hence
 $$
