@@ -179,11 +179,12 @@ Q(s,\text{take }P)\;\ge\;Q(s,a).
 \\]
 
 In all three cases,
-$$
+\\[
 Q(s,\text{take }P)\;\ge\;Q(s,a)
-\qquad
+\\]
+\\(
 \text{for every legal }a\text{ that leaves }P\text{ on the board}.
-$$
+\\)
 So taking a publicly known pair immediately is weakly dominant. $\square$
 
 **Remark.** This proof uses the fact that memory is shared and publicly observable. With private memory, A could know a pair that B does not know about. In that setting, holding the pair in reserve could be genuinely strategic.
