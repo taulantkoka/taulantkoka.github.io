@@ -9,9 +9,10 @@ toc: true
 ---
 
 <h2 data-toc-skip>The Optimal Strategy for Memory Under Bounded Working Memory</h2>
+**Taulant Koka · April 2026 · [GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
 
 ## 1. The Game
-**Taulant Koka · April 2026 · [GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
+
 Memory (also known as Concentration or Pairs) is a card game played with $n$ pairs of identical cards ($2n$ cards total), shuffled and placed face down on a table. Players alternate turns. On each turn, a player flips two cards face up. If the two cards match, the player takes the pair and plays again. If they do not match, both cards are flipped back face down and the turn passes to the opponent. The player with the most pairs at the end wins.
 
 Despite being a children's game, Memory has a surprisingly rich strategic structure. Every card flip reveals information to *both* players, and the key decision is how to balance learning (flipping new cards) against exploiting what you already know (flipping a card whose match you remember). This raises a natural question: **does it matter who goes first?**
