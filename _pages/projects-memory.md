@@ -11,7 +11,7 @@ toc: true
 <h2 data-toc-skip>The Optimal Strategy for Memory Under Bounded Working Memory</h2>
 
 ## 1. The Game
-
+**Taulant Koka · April 2026 · [GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
 Memory (also known as Concentration or Pairs) is a card game played with $n$ pairs of identical cards ($2n$ cards total), shuffled and placed face down on a table. Players alternate turns. On each turn, a player flips two cards face up. If the two cards match, the player takes the pair and plays again. If they do not match, both cards are flipped back face down and the turn passes to the opponent. The player with the most pairs at the end wins.
 
 Despite being a children's game, Memory has a surprisingly rich strategic structure. Every card flip reveals information to *both* players, and the key decision is how to balance learning (flipping new cards) against exploiting what you already know (flipping a card whose match you remember). This raises a natural question: **does it matter who goes first?**
@@ -432,7 +432,31 @@ Try this experiment: play a few games against the bounded-memory bot ($M=7$), th
 
 <iframe src="/assets/memory_game.html" width="100%" height="750" style="border:none; border-radius:8px; overflow:hidden;"></iframe>
 
-## 10. What I Learned
+## 10. Code & Reproducibility
+
+The reference implementation is available on GitHub:
+
+**[GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
+
+The repository includes the robust MM-estimation algorithm for two-channel unshuffling, signal simulation utilities, and a fully reproducible Jupyter notebook. All experiments can be replicated from scratch.
+
+### Quick Start
+```bash
+git clone https://github.com/taulantkoka/memory-game.git
+cd memory-game
+pip install numpy matplotlib joblib
+
+# Run everything 
+python run_analysis.py
+
+# Run a single analysis
+python run_analysis.py --only 01
+
+# List available analyses
+python run_analysis.py --list
+```
+
+## 11. What I Learned
 
 1. **Greedy matching is optimal** under shared memory: leaving a publicly known pair on the board is weakly dominated by taking it immediately.
 2. **The bounded-memory optimum is simple:** flip two new cards only at the very start; once you know a few positions, flip only one and match when you can.
@@ -448,4 +472,3 @@ The private-memory version of the game remains open and looks much harder: once 
 - Cowan, N. (2001). The magical number 4 in short-term memory: A reconsideration of mental storage capacity. *Behavioral and Brain Sciences*, 24(1), 87-114.
 - Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information. *Psychological Review*, 63(2), 81-97.
 - Zwick, U., & Paterson, M. S. (1993). The memory game. *Theoretical Computer Science*, 110(1), 169-196.
-- Kilian, S. (2025). Who starts the game of memory? [Blog post](https://samuelkilian.de/about.html).
