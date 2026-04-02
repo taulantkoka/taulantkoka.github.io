@@ -469,7 +469,7 @@ $$
 
 Assume \\(\pi=A\\), and that \\(L\\) contains both \\(\alpha,\beta\\) of the matching pair \\(P=\{\alpha,\beta\}\\).
 
-Let \\(a\) be any legal action by \\(A\\) that does not take \\(P\\) immediately. We compare:
+Let \\(a\\) be any legal action by \\(A\\) that does not take \\(P\\) immediately. We compare:
 
 - the **deferred** line, in which \\(A\\) plays \\(a\\) from \\(s\\);
 - the **immediate-take** line, in which \\(A\\) first takes \\(P\\), moving to
@@ -516,34 +516,42 @@ Apply the lemma with the deleted entries equal to $\alpha,\beta$. It follows tha
 Now let \\(\tau\\) be the first time in the deferred play at which one of three things happens: $A$ takes $P$, $B$ takes $P$, or one of $\alpha,\beta$ is evicted from memory:
 
 **Case 1: $B$ takes $P$ at time \\(\tau\\).** Then the deferred line has allowed the opponent to score a publicly known pair that $A$ could have taken immediately. Relative to the immediate-take line, $A$ is down one pair and, by the lemma, is not better informed about the remaining board. Hence
-\\[
+
+$$
 Q(s,\text{take }P)\;>\;Q(s,a).
-\\]
+$$
 
 **Case 2: one of $\alpha,\beta$ is evicted before $P$ is taken.** Then the deferred line has failed to bank an immediately available point and has weakly reduced future information. The immediate-take line has already scored the point and is weakly better informed on the remaining board. So again
-\\[
+
+$$
 Q(s,\text{take }P)\;>\;Q(s,a).
-\\]
+$$
 
 **Case 3: $A$ takes $P$ at time \\(\tau\\).** At that moment, both lines have removed the same pair $P$, and the remaining board is identical. Let $s_\tau^{\mathrm{def}}$ and $s_\tau^{\mathrm{imm}}$ be the resulting full states after removal of $P$ in the deferred and immediate-take lines respectively. By the LRU monotonicity lemma,
-\\[
+
+$$
 s_\tau^{\mathrm{imm}}
 \quad\text{is weakly better informed than}\quad
 s_\tau^{\mathrm{def}}
-\\]
+$$
+
 on the remaining board. Therefore
-\\[
+
+$$
 V\!\left(s_\tau^{\mathrm{imm}}\right)\;\ge\;V\!\left(s_\tau^{\mathrm{def}}\right),
-\\]
+$$
+
 and hence
-\\[
+
+$$
 Q(s,\text{take }P)\;\ge\;Q(s,a).
-\\]
+$$
 
 In all three cases,
-\\[
+$$
 Q(s,\text{take }P)\;\ge\;Q(s,a)
-\\]
+$$
+
 \\(
 \text{for every legal }a\text{ that leaves }P\text{ on the board}.
 \\)
