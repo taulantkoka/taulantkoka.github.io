@@ -7,9 +7,6 @@ sidebar:
   nav: "projects"
 toc: true
 ---
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -229,7 +226,7 @@ and, whenever $n\le M$,
 \\[
 e_{n,n}=n,
 \\]
-because if all $n$ remaining pairs are known, the current player takes all of them.
+because every unknown card pairs with a remembered singleton, so the player to move can sweep all remaining pairs.
 
 At each nonterminal state,
 \\[
