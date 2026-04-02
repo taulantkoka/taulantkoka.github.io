@@ -198,9 +198,9 @@ We may restrict attention to optimal strategies that never leave a publicly know
 Among reduced states with $n$ remaining pairs and $k$ remembered singleton positions, the value depends only on $(n,k)$.
 
 Equivalently, if $s_1,s_2$ are reduced states with the same $n$ and $k$, then
-$$
+\\[
 V(s_1)=V(s_2).
-$$
+\\]
 
 *Sketch.* Once all remembered cards are unmatched singletons with distinct values, the only quantities that affect the transition law are:
 
@@ -215,51 +215,51 @@ Thus the DP closes on $(n,k)$, and $V(s) = e_{n,k}$ where $(n,k)$ is the reduced
 ## 6. The Optimal Strategy
 
 With greedy matching established, I can compute the optimal 0/1/2-move strategy by backward induction on the reduced state space
-$$
+\\[
 \{(n,k):0\le k\le \min(n,M)\}.
-$$
+\\]
 
 From here on I follow Zwick's notation and write $e_{n,k}$ for the value of reduced state $(n,k)$ to the player to move. A positive $e_{n,k}$ means the current player expects to outscore the opponent from this point; negative means the opponent is favoured. This is the same $V(s)$ from Section 5, restricted to reduced states. If you want to skip the formulas and go straight to the computed strategies, jump to [Section 7](#7-results).
 
 The boundary conditions are
-$$
+\\[
 e_{0,0}=0,
-$$
+\\]
 and, whenever $n\le M$,
-$$
+\\[
 e_{n,n}=n,
-$$
+\\]
 because if all $n$ remaining pairs are known, the current player takes all of them.
 
 At each nonterminal state,
-$$
+\\[
 e_{n,k}=\max\{e^0_{n,k},e^1_{n,k},e^2_{n,k}\},
-$$
+\\]
 subject to legality of the moves.
 
 ### 6.1 Move values for $k<M$
 
 Define
-$$
+\\[
 p:=\frac{k}{2n-k},
 \qquad
 q:=\frac{2(n-k)}{2n-k}=1-p.
-$$
+\\]
 
 Here $p$ is the probability that a new unknown card matches one of the $k$ remembered singletons, and $q$ is the probability that it does not.
 
 **0-move (pass).** A pass hands the same state to the opponent, so
-$$
+\\[
 e^0_{n,k}=-e_{n,k}.
-$$
+\\]
 Therefore, in the Bellman equation, allowing a pass is equivalent to including $0$ among the candidate values. The pass is only legal for $k\ge 2$.
 
 **1-move.** If the first new card matches memory (probability $p$), you score 1, remove the pair, and move again from $(n-1,k-1)$. If it does not match (probability $q$), it enters memory and the opponent moves from $(n,k+1)$. Hence
-$$
+\\[
 e^1_{n,k}
 =
 p\bigl(1+e_{n-1,k-1}\bigr)-q\,e_{n,k+1}.
-$$
+\\]
 
 **2-move.** After a first-card miss, there remain $d:=2n-k-1$ unknown positions for the second card. Conditional on that first miss:
 
@@ -270,7 +270,7 @@ $$
 A note on the auto-take branch. The minus sign in $-\frac{k}{d}(1+e_{n-1,k})$ reflects the fact that the *opponent* scores this pair: the opponent gains $+1$ and then faces state $(n-1,k)$ with value $e_{n-1,k}$ from the opponent's perspective, which is $-e_{n-1,k}$ from yours. Hence $-(1+e_{n-1,k})$. As for the memory bookkeeping: after the auto-take, the matched singleton and the second new card are removed ($-2$), but the first new card remains ($+1$). Net change: $k - 1 + 1 = k$. So the auto-take state is $(n-1,k)$, not $(n-1,k-1)$.
 
 Therefore
-$$
+\\[
 e^2_{n,k}
 =
 p\bigl(1+e_{n-1,k-1}\bigr)
@@ -280,25 +280,25 @@ q\left[
 -\frac{k}{d}\bigl(1+e_{n-1,k}\bigr)
 -\frac{2(n-k-1)}{d}e_{n,k+2}
 \right].
-$$
+\\]
 
 ### 6.2 Boundary recursion at $k=M$
 
 Now suppose memory is full.
 
 **1-move at $k=M$.** A first-card miss no longer moves to $(n,M+1)$; instead LRU eviction keeps memory size fixed, so the miss branch loops back to $(n,M)$:
-$$
+\\[
 e^1_{n,M}
 =
 p\bigl(1+e_{n-1,M-1}\bigr)-q\,e_{n,M}.
-$$
+\\]
 
 If the 1-move is optimal at $(n,M)$, then $e_{n,M}=e^1_{n,M}$, so
-$$
+\\[
 e^1_{n,M}
 =
 \frac{p\bigl(1+e_{n-1,M-1}\bigr)}{1+q}.
-$$
+\\]
 
 **2-move at $k=M$.** After a first-card miss, the new card enters memory, one old singleton is evicted, and memory now contains $M-1$ old singletons plus the first new card (still $M$ entries total).
 
@@ -313,7 +313,7 @@ The successor states are:
 - double miss: memory is still full and the game returns to $(n,M)$ with the opponent to move.
 
 Therefore
-$$
+\\[
 e^2_{n,M}
 =
 p\bigl(1+e_{n-1,M-1}\bigr)
@@ -323,10 +323,10 @@ q\left[
 -\frac{M-1}{d}\bigl(1+e_{n-1,M-1}\bigr)
 -\frac{2(n-M-1)}{d}e_{n,M}
 \right].
-$$
+\\]
 
 Collecting the $e_{n,M}$ term:
-$$
+\\[
 e^2_{n,M}
 =
 \frac{
@@ -336,14 +336,14 @@ p+\frac{q(2-M)}{d}
 }{
 1+q\frac{2(n-M-1)}{d}
 }.
-$$
+\\]
 
 This is the new boundary equation that replaces Zwick's deep-$k$ perfect-memory recursion. All terms on the right involve states with $n-1$ pairs, which have already been computed.
 
 ### 6.3 Optimal move selection
 
 At each state,
-$$
+\\[
 e_{n,k}
 =
 \begin{cases}
@@ -351,7 +351,7 @@ e^2_{n,0}, & k=0,\\[6pt]
 \max\{e^1_{n,k},\,e^2_{n,k}\}, & k=1,\\[6pt]
 \max\{0,\,e^1_{n,k},\,e^2_{n,k}\}, & k\ge 2.
 \end{cases}
-$$
+\\]
 
 The recursion is evaluated by increasing $n$ from $0$ upward, and for fixed $n$ by decreasing $k$ from $\min(n,M)$ down to $0$. At the boundary $k=M$, the self-referential equations are solved algebraically before the lower-$k$ values are filled in.
 
