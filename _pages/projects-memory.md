@@ -7,9 +7,28 @@ sidebar:
   nav: "projects"
 toc: true
 ---
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      extensions: ["bm.js", "AMSmath.js", "AMSsymbols.js"]
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
 <h2 data-toc-skip>The Optimal Strategy for Memory Under Bounded Working Memory</h2>
-
+**Taulant Koka · March 2026 · [GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
 ## 1. The Game
 
 Memory (also known as Concentration or Pairs) is a card game played with $n$ pairs of identical cards ($2n$ cards total), shuffled and placed face down on a table. Players alternate turns. On each turn, a player flips two cards face up. If the two cards match, the player takes the pair and plays again. If they do not match, both cards are flipped back face down and the turn passes to the opponent. The player with the most pairs at the end wins.
@@ -34,7 +53,7 @@ At each turn, the player chooses one of three moves:
 - **1-move:** Flip one new card. If it matches a remembered card, take the pair and play again. If not, "waste" the second flip by re-flipping a card you already know.
 - **2-move:** Flip one new card. If it matches a remembered card, take the pair. If not, flip a *second* new card. If the two new cards happen to match, take the pair. Otherwise, the turn passes.
 
-Through backward induction on the state space $(n,k)$, they computed the exact optimal strategy. The results are surprising:
+Through backward induction on the state space $(n,k)$ (solving the game by working backwards from the end, where the optimal play is obvious, to the beginning), they computed the exact optimal strategy. The results are surprising:
 
 1. **Player 2 has a slight advantage** for even $n \ge 8$, of magnitude about $1/(4n)$ pairs.
 2. **The key strategic weapon is the pass.** At high $k$, both players know where most pairs are but deliberately refrain from taking them, engaging in a delicate game of parity control.
@@ -76,6 +95,8 @@ The next section shows why, after one key structural theorem, this can be reduce
 ## 5. Greedy Matching Is Optimal
 
 Before computing the dynamic program, I need to settle a structural question: if the shared memory already contains both positions of some matching pair, is it ever optimal to leave that pair on the board?
+
+The short answer is no. Under shared memory, if you can see a pair, so can your opponent. Deferring it either hands it to your opponent (who takes it) or risks it being forgotten (evicted from memory). Neither outcome is better than just taking it now. The formal statement and proof follow; if you are happy to take this on trust, you can skip ahead to [Section 6](#6-the-optimal-strategy).
 
 ### Theorem
 
@@ -220,7 +241,7 @@ $$
 \{(n,k):0\le k\le \min(n,M)\}.
 $$
 
-From here on I follow Zwick's notation and write $e_{n,k}$ for the value of reduced state $(n,k)$ to the player to move.
+From here on I follow Zwick's notation and write $e_{n,k}$ for the value of reduced state $(n,k)$ to the player to move. A positive $e_{n,k}$ means the current player expects to outscore the opponent from this point; negative means the opponent is favoured. This is the same $V(s)$ from Section 5, restricted to reduced states. If you want to skip the formulas and go straight to the computed strategies, jump to [Section 7](#7-results).
 
 The boundary conditions are
 $$
@@ -238,7 +259,7 @@ e_{n,k}=\max\{e^0_{n,k},e^1_{n,k},e^2_{n,k}\},
 $$
 subject to legality of the moves.
 
-### 6.2 Move values for $k<M$
+### 6.1 Move values for $k<M$
 
 Define
 $$
@@ -268,7 +289,7 @@ $$
 - with probability $\frac{k}{d}$, it matches one of the remembered singletons; the opponent auto-takes that pair;
 - with probability $\frac{2(n-k-1)}{d}$, it matches neither; both new cards enter memory and the opponent moves from $(n,k+2)$.
 
-A note on memory bookkeeping for the auto-take branch: after the opponent takes the pair, the matched singleton and the second new card are removed from memory ($-2$), but the first new card remains ($+1$). Net change: $k - 1 + 1 = k$. So the auto-take state is $(n-1,k)$, not $(n-1,k-1)$.
+A note on the auto-take branch. The minus sign in $-\frac{k}{d}(1+e_{n-1,k})$ reflects the fact that the *opponent* scores this pair: the opponent gains $+1$ and then faces state $(n-1,k)$ with value $e_{n-1,k}$ from the opponent's perspective, which is $-e_{n-1,k}$ from yours. Hence $-(1+e_{n-1,k})$. As for the memory bookkeeping: after the auto-take, the matched singleton and the second new card are removed ($-2$), but the first new card remains ($+1$). Net change: $k - 1 + 1 = k$. So the auto-take state is $(n-1,k)$, not $(n-1,k-1)$.
 
 Therefore
 $$
@@ -283,7 +304,7 @@ q\left[
 \right].
 $$
 
-### 6.3 Boundary recursion at $k=M$
+### 6.2 Boundary recursion at $k=M$
 
 Now suppose memory is full.
 
@@ -341,7 +362,7 @@ $$
 
 This is the new boundary equation that replaces Zwick's deep-$k$ perfect-memory recursion. All terms on the right involve states with $n-1$ pairs, which have already been computed.
 
-### 6.4 Optimal move selection
+### 6.3 Optimal move selection
 
 At each state,
 $$
@@ -356,13 +377,13 @@ $$
 
 The recursion is evaluated by increasing $n$ from $0$ upward, and for fixed $n$ by decreasing $k$ from $\min(n,M)$ down to $0$. At the boundary $k=M$, the self-referential equations are solved algebraically before the lower-$k$ values are filled in.
 
-### 6.5 Why eviction does not bias match probabilities
+### 6.4 Why eviction does not bias match probabilities
 
 A subtle point is why the probability that a new unknown card matches remembered memory is still $k/(2n-k)$ even after evictions have occurred.
 
 The reason is that, conditional on the current reduced state, forgotten cards are indistinguishable from never-seen cards. The original shuffle is uniform, and conditioning on which singleton positions are currently remembered does not bias the distribution of values among the remaining unremembered positions. So the unseen part of the board remains exchangeable.
 
-### 6.6 Why optimal moves can change even below capacity
+### 6.5 Why optimal moves can change even below capacity
 
 A subtlety that initially confused me: the optimal move at $k=3$ can differ between Zwick and the bounded model even though $k=3<M=7$ and the local transition formula is identical. The reason is that the *values* being plugged into the formula are different.
 
@@ -488,7 +509,30 @@ Try this experiment: play a few games against the bounded-memory bot ($M=7$), th
 
 <iframe src="/assets/memory_game.html" width="100%" height="750" style="border:none; border-radius:8px; overflow:hidden;"></iframe>
 
-## 10. What I Learned
+
+## 10. Code & Reproducibility
+
+The reference implementations are all available on GitHub:
+
+**[GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
+
+### Quick Start
+```bash
+git clone https://github.com/taulantkoka/memory-game.git
+cd memory-game
+pip install numpy matplotlib joblib
+
+# Run everything (takes ~30 min at 100k games/point)
+python run_analysis.py
+
+# Run a single analysis
+python run_analysis.py --only 01
+
+# List available analyses
+python run_analysis.py --list
+```
+
+## 11. What I Learned
 
 1. **Greedy matching is optimal** under shared memory: leaving a publicly known pair on the board is weakly dominated by taking it immediately.
 2. **The bounded-memory optimum is simple:** flip two new cards only at the very start; once you know a few positions, flip only one and match when you can.
@@ -504,4 +548,3 @@ The private-memory version of the game remains open and looks much harder: once 
 - Cowan, N. (2001). The magical number 4 in short-term memory: A reconsideration of mental storage capacity. *Behavioral and Brain Sciences*, 24(1), 87-114.
 - Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information. *Psychological Review*, 63(2), 81-97.
 - Zwick, U., & Paterson, M. S. (1993). The memory game. *Theoretical Computer Science*, 110(1), 169-196.
-- Kilian, S. (2025). Who starts the game of memory? [Blog post](https://samuelkilian.de/about.html).
