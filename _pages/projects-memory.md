@@ -99,53 +99,35 @@ Before computing the dynamic program, I need to settle a structural question: if
 The short answer is no. Under shared memory, if you can see a pair, so can your opponent. Deferring it either hands it to your opponent (who takes it) or risks it being forgotten (evicted from memory). Neither outcome is better than just taking it now. The formal statement and proof follow; if you are happy to take this on trust, you can skip ahead to [Section 6](#6-the-optimal-strategy).
 
 ### Theorem
-
-Let $s$ be any full game state under shared bounded memory with deterministic LRU eviction. Suppose that at the start of the current player's turn, the shared memory contains both positions of some matching pair
-$$
-P=\{\alpha,\beta\}.
-$$
-Then taking $P$ immediately is an optimal move. That is, for every legal action $a$ that does **not** take $P$,
-$$
-Q(s,\text{take }P)\;\ge\;Q(s,a),
-$$
-where $Q(s,a)$ denotes the value of taking action $a$ in state $s$ and then playing optimally thereafter, and $V(s) = \max_a Q(s,a)$ is the value of $s$ to the player to move. It follows that taking $P$ is optimal, so
-$$
-V(s) = Q(s,\text{take }P) = 1 + V\!\bigl(T_P(s)\bigr),
-$$
-where $T_P(s)$ is the state after removing the pair and granting the bonus turn. Equivalently: any legal move that leaves a publicly known pair on the board is weakly dominated by taking it at once.
-
-This is a weak-dominance statement, not a strict one. If you know two pairs simultaneously, taking either one first may give the same value. What cannot happen is that deferring a publicly known pair is *strictly better* than taking it immediately.
-
-*(After the corollary below, the full state $s$ reduces to a pair $(n,k)$, and $V(s)$ becomes the value function $e_{n,k}$ used in Zwick's notation and in the DP of Section 6.)*
+ 
+*If both players can see a matching pair in shared memory, taking it immediately is always at least as good as any other move.*
+ 
+More precisely: in the bounded-memory model with deterministic LRU eviction, suppose the shared memory contains both positions of some matching pair $P$. Then no legal action that leaves $P$ on the board can yield a higher expected payoff than taking $P$ at once. This is weak dominance: if two pairs are visible simultaneously, taking either one first may be equally good, but deferring a known pair is never strictly better.
 
 ### Proof
-
-Work at the level of the full game state
-$$
-s=(B,\pi,L),
-$$
-where:
-- $B$ is the set of unmatched cards remaining on the board,
-- $\pi\in\{A,B\}$ is the player to move,
-- $L$ is the ordered shared LRU memory list, from least recently used to most recently used.
-
+ 
+I need a bit of notation. Write $s = (B, \pi, L)$ for a full game state, where $B$ is the set of unmatched cards, $\pi$ is the player to move, and $L$ is the ordered shared LRU memory list. Write $Q(s, a)$ for the expected payoff of taking action $a$ in state $s$ and then playing optimally, and $V(s) = \max_a Q(s,a)$ for the value of $s$.
+ 
+*(After the corollary at the end of this section, the full state $s$ reduces to a pair $(n,k)$, and $V(s)$ becomes the value function $e_{n,k}$ used in Zwick's notation and in the DP of Section 6.)*
+ 
 Assume $\pi=A$, and that $L$ contains both $\alpha,\beta$ of the matching pair $P=\{\alpha,\beta\}$.
-
+ 
 Fix an arbitrary strategy $\sigma_B$ for player $B$. Let $a$ be any legal action by $A$ that does not take $P$ immediately. We compare:
-
+ 
 - the **deferred** continuation starting from $(s,a,\sigma_B)$;
 - the **immediate-take** continuation starting from first taking $P$, i.e. from the state
   $$
   s^+ \;:=\; T_P(s),
   $$
   and then playing optimally against the same $\sigma_B$.
-
+ 
 So
 $$
 Q(s,\text{take }P)=1+V(s^+).
 $$
-
+ 
 The key observation is that $s^+$ is obtained from $s$ by deleting $\alpha,\beta$ from both the board and the shared memory.
+
 
 **Lemma (LRU monotonicity).** Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations
 $$
@@ -169,9 +151,7 @@ So the invariant is preserved for all $r$. $\square$
 
 Apply the lemma with the deleted entries equal to $\alpha,\beta$. It follows that for any common sequence of subsequent observations of non-$P$ cards, the immediate-take state $s^+$ is never worse informed about the remaining board than the deferred state.
 
-Now let $$\tau$$ be the first time in the deferred play at which one of three things happens: $A$ takes $P$, $B$ takes $P$, or one of $\alpha,\beta$ is evicted from memory.
-
-The three cases can be formalized as follows:
+Now let $$\tau$$ be the first time in the deferred play at which one of three things happens: $A$ takes $P$, $B$ takes $P$, or one of $\alpha,\beta$ is evicted from memory:
 
 **Case 1: $B$ takes $P$ at time $\tau$.** Then the deferred line has allowed the opponent to score a publicly known pair that $A$ could have taken immediately. Relative to the immediate-take line, $A$ is down one pair and, by the lemma, is not better informed about the remaining board. Hence
 $$
