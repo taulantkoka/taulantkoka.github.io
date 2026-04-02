@@ -348,7 +348,7 @@ Both players have $M=7$. I pit the bounded-memory optimal strategy against Zwick
      style="background: #fff; border-radius: 6px; cursor: zoom-in;">
 </a>
 
-The bounded-memory strategy dominates Zwick at every board size. At $n=36$ (72 cards), the bounded-memory player gains roughly 3 full pairs over a Zwick opponent. The gain grows with board size because larger boards spend more time near the full-memory boundary where the two strategies differ.
+Against opponents using Zwick’s policy, the bounded-memory-optimal policy wins across all tested board sizes. At $n=36$ (72 cards), the bounded-memory player gains roughly 3 full pairs over a Zwick opponent. The gain grows with board size because larger boards spend more time near the full-memory boundary where the two strategies differ.
 
 The strategy matrix at $n=16$ shows that bounded-memory optimal dominates Zwick within this two-strategy comparison: no matter which of the two strategies your opponent plays, you are better off playing bounded. (The DP proves optimality within the full class of 0/1/2-move strategies; the simulation confirms it specifically against Zwick.)
 

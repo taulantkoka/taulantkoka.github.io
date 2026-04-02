@@ -39,7 +39,7 @@ toc: true
 
 Every sampling theorem you've ever used, Shannon-Nyquist, compressed sensing, Prony's method, relies on a quiet assumption: you know the correct order of measurements.
 
-But what if it isn't?
+But what if you don't?
 
 Think of a neuroscience experiment where you're imaging the activity of hundreds of neurons in a living organism. The animal moves. The microscope tracking isn't perfect, and the fluorescence trace you're recording for some "neuron 7" might actually contain samples from neuron 12, or neuron 3, or some mixture that changes at every time point. The data is all there, it's just been *shuffled across channels*.
 
