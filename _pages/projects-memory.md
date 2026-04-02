@@ -344,7 +344,7 @@ git clone https://github.com/taulantkoka/memory-game.git
 cd memory-game
 pip install -r requirements.txt
 python main.py
-
+```
 
 ## 11. What I Learned
 
