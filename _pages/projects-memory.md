@@ -63,7 +63,7 @@ This is elegant, but it immediately raises the question: does any of this surviv
 
 ## 3. First Attempt: Stochastic Memory Decay
 
-My first approach, inspired by [Samuel Kilian](https://samuelkilian.de/about.html), was to model forgetting as probabilistic decay: each turn, every remembered card has a probability $\delta$ of being forgotten. This is analytically convenient, the Zwick framework mostly carries over, and it lets you sweep continuously from perfect memory ($\delta=0$) to complete amnesia ($\delta=1$).
+My first approach, inspired by [Samuel Kilian](https://www.youtube.com/shorts/MPXQDAMsmro), was to model forgetting as probabilistic decay: each turn, every remembered card has a probability $\delta$ of being forgotten. This is analytically convenient, the Zwick framework mostly carries over, and it lets you sweep continuously from perfect memory ($\delta=0$) to complete amnesia ($\delta=1$).
 
 I ran large-scale Monte Carlo simulations under this model. The results were interesting: at low $\delta$, the Zwick Player 2 advantage survives. Around $\delta \approx 0.10\text{–}0.15$, there is a phase transition where the Zwick stalemate regime collapses and the game becomes more decisive. At high $\delta$, the game converges to a coin flip.
 
