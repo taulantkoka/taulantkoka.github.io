@@ -116,23 +116,23 @@ Fix an arbitrary strategy $\sigma_B$ for player $B$. Let $a$ be any legal action
  
 - the **deferred** continuation starting from $(s,a,\sigma_B)$;
 - the **immediate-take** continuation starting from first taking $P$, i.e. from the state
-  $$
+  \\[
   s^+ \;:=\; T_P(s),
-  $$
+  \\]
   and then playing optimally against the same $\sigma_B$.
  
 So
-$$
+\\[
 Q(s,\text{take }P)=1+V(s^+).
-$$
+\\]
  
 The key observation is that $s^+$ is obtained from $s$ by deleting $\alpha,\beta$ from both the board and the shared memory.
 
 
 **Lemma (LRU monotonicity).** Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations
-$$
+\\[
 x_1,x_2,\dots,x_t,
-$$
+\\]
 none of which is one of the deleted entries. Then after every prefix $x_1,\dots,x_r$, the updated list $L'_r$ is obtained from $L_r$ by deleting some subset of the originally deleted entries. In particular:
 
 1. every non-deleted card remembered in $L_r$ is also remembered in $L'_r$;
@@ -430,9 +430,9 @@ The strategy matrix at $n=16$ shows that bounded-memory optimal dominates Zwick 
 ### 8.2 Robustness to fluctuation
 
 Real working-memory capacity is not fixed at exactly 7 every turn. I model this by drawing the effective capacity each turn from
-$$
+\\[
 M_0+\mathrm{Uniform}(-\sigma,+\sigma),
-$$
+\\]
 clamped to a feasible range.
 
 <a href="/figures_memory/fluctuation_bounded_vs_zwick.svg" class="image-popup">
