@@ -146,9 +146,9 @@ e_{n,n}=n,
 because every unknown card pairs with a remembered singleton, so the player to move can sweep all remaining pairs.
 
 At each nonterminal state,
-$$
+\\[
 e_{n,k}=\max\{e^0_{n,k},e^1_{n,k},e^2_{n,k}\},
-$$
+\\]
 subject to legality of the moves.
 
 ### 6.1 Move values for $k<M$
