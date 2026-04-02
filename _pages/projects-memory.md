@@ -1,31 +1,14 @@
-The Memory Game"
+---
+title: "The Memory Game"
 permalink: /projects/memory/
 layout: single
+mathjax: true
 sidebar:
   nav: "projects"
 toc: true
 ---
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    TeX: {
-      extensions: ["bm.js", "AMSmath.js", "AMSsymbols.js"]
-    },
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-      processEscapes: true
-    }
-  });
-</script>
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-
-<h2 data-toc-skip> The Optimal Strategy for Memory Under Bounded Working Memory</h2>
+<h2 data-toc-skip>The Optimal Strategy for Memory Under Bounded Working Memory</h2>
 
 ## 1. The Game
 
@@ -81,7 +64,7 @@ The reason this simplification works so well turns out to be mathematical rather
 
 **Key property:** since both players see every flip and both use the same deterministic eviction rule, **both players have identical memory at all times**. The memory state is common knowledge. So the game remains one of perfect information, the same class of game Zwick analysed. All that changes is the state space.
 
-Any stochastic model of forgetting—decay, random interference, attention fluctuation—would give the two players *different* memories, creating private information and turning the game into something closer to poker. That is a much harder problem. The deterministic LRU model sidesteps this and keeps backward induction available.
+Any stochastic model of forgetting (decay, random interference, attention fluctuation) would give the two players *different* memories, creating private information and turning the game into something closer to poker. That is a much harder problem. The deterministic LRU model sidesteps this and keeps backward induction available.
 
 At the level of the full game, a state consists of:
 - the unmatched cards remaining on the board,
@@ -382,6 +365,13 @@ Both players have $M=7$. I pit the bounded-memory optimal strategy against Zwick
 
 The bounded-memory strategy dominates Zwick at every board size. At $n=36$ (72 cards), the bounded-memory player gains roughly 3 full pairs over a Zwick opponent. The gain grows with board size because larger boards spend more time near the full-memory boundary where the two strategies differ.
 
+The strategy matrix at $n=16$ shows that bounded-memory optimal dominates Zwick within this two-strategy comparison: no matter which of the two strategies your opponent plays, you are better off playing bounded. (The DP proves optimality within the full class of 0/1/2-move strategies; the simulation confirms it specifically against Zwick.)
+
+<a href="/figures_memory/bounded_vs_zwick_matrix.svg" class="image-popup">
+  <img src="/figures_memory/bounded_vs_zwick_matrix.svg" alt="Strategy matrix"
+     style="background: #fff; border-radius: 6px; cursor: zoom-in;">
+</a>
+
 ### 8.2 Robustness to fluctuation
 
 Real working-memory capacity is not fixed at exactly 7 every turn. I model this by drawing the effective capacity each turn from
@@ -455,7 +445,7 @@ The private-memory version of the game remains open and looks much harder: once 
 
 ## References
 
-- Cowan, N. (2001). The magical number 4 in short-term memory: A reconsideration of mental storage capacity. *Behavioral and Brain Sciences*, 24(1), 87–114.
-- Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information. *Psychological Review*, 63(2), 81–97.
-- Zwick, U., & Paterson, M. S. (1993). The memory game. *Theoretical Computer Science*, 110(1), 169–196.
-- Kilian, S. (2025). Who starts the game of memory? Blog post.
+- Cowan, N. (2001). The magical number 4 in short-term memory: A reconsideration of mental storage capacity. *Behavioral and Brain Sciences*, 24(1), 87-114.
+- Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information. *Psychological Review*, 63(2), 81-97.
+- Zwick, U., & Paterson, M. S. (1993). The memory game. *Theoretical Computer Science*, 110(1), 169-196.
+- Kilian, S. (2025). Who starts the game of memory? [Blog post](https://samuelkilian.de/about.html).
