@@ -147,7 +147,7 @@ because every unknown card pairs with a remembered singleton, so the player to m
 
 At each nonterminal state,
 \\[
-e_{n,k}=\max\{e^0_{n,k},e^1_{n,k},e^2_{n,k}\},
+e_{n,k}=\max\lbracee^0_{n,k},e^1_{n,k},e^2_{n,k}\rbrace,
 \\]
 subject to legality of the moves.
 
@@ -163,9 +163,9 @@ q:=\frac{2(n-k)}{2n-k}=1-p.
 Here $p$ is the probability that a new unknown card matches one of the $k$ remembered singletons, and $q$ is the probability that it does not.
 
 **0-move (pass).** A pass hands the same state to the opponent, so
-\\[
+\\\[
 e^0_{n,k}=-e_{n,k}.
-\\]
+\\\]
 Therefore, in the Bellman equation, allowing a pass is equivalent to including $0$ among the candidate values. The pass is only legal for $k\ge 2$.
 
 **1-move.** If the first new card matches memory (probability $p$), you score 1, remove the pair, and move again from $(n-1,k-1)$. If it does not match (probability $q$), it enters memory and the opponent moves from $(n,k+1)$. Hence
