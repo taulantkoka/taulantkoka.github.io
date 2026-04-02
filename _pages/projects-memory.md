@@ -7,28 +7,8 @@ sidebar:
   nav: "projects"
 toc: true
 ---
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    TeX: {
-      extensions: ["bm.js", "AMSmath.js", "AMSsymbols.js", "mathscripts.js"]
-    },
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-      processEscapes: true
-    }
-  });
-</script>
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
 
 <h2 data-toc-skip>The Optimal Strategy for Memory Under Bounded Working Memory</h2>
-**Taulant Koka · April 2026 · [GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
 
 ## 1. The Game
 
@@ -95,135 +75,212 @@ The next section shows why, after one key structural theorem, this can be reduce
 
 ## 5. Greedy Matching Is Optimal
 
-Before computing the optimal strategy, I need to settle a foundational question: when you know where a matching pair is, should you always take it immediately? Or could it sometimes be better to leave the pair on the board to manipulate the timing of later turns, as Zwick's pass does under perfect recall?
+Before computing the dynamic program, I need to settle a structural question: if the shared memory already contains both positions of some matching pair, is it ever optimal to leave that pair on the board?
 
 ### Theorem
 
-*Under shared bounded memory with deterministic LRU eviction, suppose that at the start of a player's turn the shared memory contains both positions of some matching pair $P=\{\alpha,\beta\}$. Then there is an optimal move that flips $\alpha$ and $\beta$ immediately. Equivalently, any legal move that leaves $P$ on the board is weakly dominated by taking $P$ at once.*
+Let $s$ be any full game state under shared bounded memory with deterministic LRU eviction. Suppose that at the start of the current player's turn, the shared memory contains both positions of some matching pair
+$$
+P=\{\alpha,\beta\}.
+$$
+Let $T_P(s)$ denote the successor state obtained by flipping $\alpha,\beta$ immediately, removing that pair, scoring $+1$, and granting the same player the bonus turn. Then
+$$
+V(s)\;=\;1+V\!\bigl(T_P(s)\bigr),
+$$
+and in particular, for every legal action $a$ that does **not** take $P$ immediately,
+$$
+Q(s,\text{take }P)\;\ge\;Q(s,a).
+$$
+Equivalently: any legal move that leaves a publicly known pair on the board is weakly dominated by taking it at once.
 
-This is a weak-dominance statement, not a strict one: if you know two pairs simultaneously, taking either one first may give the same value. What cannot happen is that deferring a publicly known pair is *strictly better* than taking it immediately.
+As usual, $V(s)$ denotes the value of the full state $s$ to the player to move, and $Q(s,a)$ denotes the value of taking action $a$ in state $s$ and then playing optimally thereafter.
+
+Note: this is a weak-dominance statement, not a strict one. If you know two pairs simultaneously, taking either one first may give the same value. What cannot happen is that deferring a publicly known pair is *strictly better* than taking it immediately.
 
 ### Proof
 
-I work at the level of the full game state: the set of unmatched cards on the board, whose turn it is, and the ordered shared memory list $L$ from least recently used to most recently used. Assume it is Player A's turn, and $L$ contains both positions $\alpha,\beta$ of a matching pair $P$.
+Work at the level of the full game state
+$$
+s=(B,\pi,L),
+$$
+where:
+- $B$ is the set of unmatched cards remaining on the board,
+- $\pi\in\{A,B\}$ is the player to move,
+- $L$ is the ordered shared LRU memory list, from least recently used to most recently used.
 
-Fix any strategy for Player B. Compare:
-- a **deferred** line of play in which A does not take $P$ immediately, and
-- an **immediate-take** line of play in which A first flips $\alpha,\beta$, scores the pair, keeps the turn, and then continues optimally from the resulting state.
+Assume $\pi=A$, and that $L$ contains both $\alpha,\beta$ of the matching pair $P=\{\alpha,\beta\}$.
 
-The immediate-take state has the same board as the deferred state except that $P$ has been removed, and the same memory list except that $\alpha,\beta$ have been deleted.
+Fix an arbitrary strategy $\sigma_B$ for player $B$. Let $a$ be any legal action by $A$ that does not take $P$ immediately. We compare:
 
-The key technical ingredient is the following monotonicity fact.
+- the **deferred** continuation starting from $(s,a,\sigma_B)$;
+- the **immediate-take** continuation starting from first taking $P$, i.e. from the state
+  $$
+  s^+ \;:=\; T_P(s),
+  $$
+  and then playing optimally against the same $\sigma_B$.
 
-**Lemma (LRU monotonicity).** Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations, none of which is a deleted entry. After every prefix of that sequence, $L'$ is exactly the list obtained from $L$ by deleting some subset of the originally deleted entries. In particular, every non-deleted card remembered in $L$ is also remembered in $L'$, in the same relative LRU order.
+So
+$$
+Q(s,\text{take }P)=1+V(s^+).
+$$
 
-*Proof.* By induction on the number of observations. The claim is true initially by construction. Suppose it is true before the next observation $x$.
+The key observation is that $s^+$ is obtained from $s$ by deleting $\alpha,\beta$ from both the board and the shared memory.
 
-- If $x$ is already present in both lists, both move $x$ to the MRU end.
-- If $x$ is absent from both lists, both insert it. If no eviction occurs, the relation is preserved. If eviction occurs, $L$ evicts its least-recently-used entry, while $L'$, being obtained by deleting entries from $L$, either evicts the same entry or one that was already deleted.
-- If $x$ is present in $L'$ then, by the induction hypothesis, it is also present in $L$, reducing to the first case.
-- The case where $x$ is present in $L$ but absent from $L'$ cannot occur, because deleted entries are excluded from the observation sequence.
+**Lemma (LRU monotonicity).** Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations
+$$
+x_1,x_2,\dots,x_t,
+$$
+none of which is one of the deleted entries. Then after every prefix $x_1,\dots,x_r$, the updated list $L'_r$ is obtained from $L_r$ by deleting some subset of the originally deleted entries. In particular:
 
-So the invariant holds after every step. $\square$
+1. every non-deleted card remembered in $L_r$ is also remembered in $L'_r$;
+2. the relative LRU order of the non-deleted remembered cards is the same in both lists.
 
-Apply the lemma with $\alpha,\beta$ as the deleted entries. Relative to the remaining board, the immediate-take state is never worse informed than the deferred state under any common sequence of subsequent non-$P$ observations.
+*Proof of lemma.* By induction on $r$.
 
-Now let $\tau$ be the first time in the deferred line at which one of the following happens:
-1. A takes $P$;
-2. B takes $P$;
-3. one of $\alpha,\beta$ is evicted before $P$ is taken.
+For $r=0$ this is true by construction. Assume it holds at step $r$, and consider the next observation $x_{r+1}$.
+
+- If $x_{r+1}$ is already present in both lists, both move it to the MRU end.
+- If $x_{r+1}$ is absent from both lists, both insert it. If no eviction occurs, the relation is preserved. If eviction occurs, $L_r$ evicts its LRU entry; $L'_r$, being obtained from $L_r$ by deleting entries, either evicts the same entry or one already deleted.
+- If $x_{r+1}$ is present in $L'_r$, then by the induction hypothesis it is also present in $L_r$, so this reduces to the first case.
+- The case where $x_{r+1}$ is present in $L_r$ but absent from $L'_r$ cannot occur, because deleted entries are excluded from the observation sequence.
+
+So the invariant is preserved for all $r$. $\square$
+
+Apply the lemma with the deleted entries equal to $\alpha,\beta$. It follows that for any common sequence of subsequent observations of non-$P$ cards, the immediate-take state $s^+$ is never worse informed about the remaining board than the deferred state.
+
+Now let
+$$
+\tau=\inf\{t\ge 0:\text{ in the deferred line, either A takes }P,\; B\text{ takes }P,\; \text{or one of }\alpha,\beta\text{ is evicted}\}.
+$$
 
 There are three cases.
 
-**Case 1: B takes $P$ in the deferred line.** Then A has allowed the opponent to score a publicly known pair that A could have taken immediately. In the immediate-take line, A already banked that point and is weakly better informed about the remaining board. So immediate take is strictly better.
+**Case 1: $B$ takes $P$ at time $\tau$.** Then the deferred line has allowed the opponent to score a publicly known pair that $A$ could have taken immediately. Hence
+$$
+Q(s,a)\;\le\;-1+\text{(continuation value on the remaining board)},
+$$
+whereas the immediate-take line already secured
+$$
+Q(s,\text{take }P)=1+V(s^+).
+$$
+Since $s^+$ is weakly better informed on the remaining board by the lemma, immediate take is strictly better:
+$$
+Q(s,\text{take }P)\;>\;Q(s,a).
+$$
 
-**Case 2: one of $\alpha,\beta$ is evicted before $P$ is taken.** Then the deferred line has failed to bank an immediately available point and has weakly reduced future information. In the immediate-take line, A already scored the point and is weakly better informed about the rest of the board. So immediate take is strictly better.
+**Case 2: one of $\alpha,\beta$ is evicted before $P$ is taken.** Then the deferred line has failed to bank an immediately available point and has weakly reduced future information. The immediate-take line has already scored the point and is weakly better informed on the remaining board. So again
+$$
+Q(s,\text{take }P)\;>\;Q(s,a).
+$$
 
-**Case 3: A eventually takes $P$ in the deferred line.** At that moment, both lines have removed the same pair $P$, and the remaining board is identical. By the lemma, the immediate-take line is weakly better informed about the remaining non-$P$ cards. Therefore optimal continuation from the immediate-take position is worth at least as much as continuation from the deferred position. So immediate take is weakly better.
+**Case 3: $A$ takes $P$ at time $\tau$.** At that moment, both lines have removed the same pair $P$, and the remaining board is identical. Let $s_\tau^{\mathrm{def}}$ and $s_\tau^{\mathrm{imm}}$ be the resulting full states after removal of $P$ in the deferred and immediate-take lines respectively. By the LRU monotonicity lemma,
+$$
+s_\tau^{\mathrm{imm}}
+\quad\text{is weakly better informed than}\quad
+s_\tau^{\mathrm{def}}
+$$
+on the remaining board. Therefore
+$$
+V\!\left(s_\tau^{\mathrm{imm}}\right)\;\ge\;V\!\left(s_\tau^{\mathrm{def}}\right),
+$$
+and hence
+$$
+Q(s,\text{take }P)\;\ge\;Q(s,a).
+$$
 
-In all cases, deferring a publicly known pair cannot improve A's value. Hence there is an optimal strategy that takes any publicly known pair immediately. $\square$
+In all three cases,
+$$
+Q(s,\text{take }P)\;\ge\;Q(s,a)
+\qquad
+\text{for every legal }a\text{ that leaves }P\text{ on the board}.
+$$
+So taking a publicly known pair immediately is weakly dominant. $\square$
 
 **Remark.** This proof uses the fact that memory is shared and publicly observable. With private memory, A could know a pair that B does not know about. In that setting, holding the pair in reserve could be genuinely strategic.
 
-### Corollary: reduced states contain only singletons
+### Corollary
 
-We may therefore restrict attention to strategies that never leave a publicly known pair unmatched at a decision point. In reduced states, the shared memory contains only unmatched singleton positions, one from each of $k$ distinct pairs.
-
-This makes a smaller state description possible.
+We may restrict attention to optimal strategies that never leave a publicly known pair unmatched at a decision point. Hence, in reduced states, the shared memory contains only unmatched singletons, one from each of $k$ distinct pairs.
 
 ### Lemma (symmetry of reduced states)
 
-In a reduced state with $n$ remaining pairs and $k$ remembered singleton positions, the value depends only on $(n,k)$, not on the identities of the remembered cards or their particular LRU order.
+Among reduced states with $n$ remaining pairs and $k$ remembered singleton positions, the value depends only on $(n,k)$.
 
-*Sketch of justification.* Once all remembered cards are unmatched singletons with distinct values, the only strategically relevant facts are:
-1. how many remembered singletons there are;
-2. the probability that a new flip matches one of them;
-3. how many remembered singletons remain after each outcome.
+Equivalently, if $s_1,s_2$ are reduced states with the same $n$ and $k$, then
+$$
+V(s_1)=V(s_2).
+$$
 
-The specific labels of the remembered cards are exchangeable under relabeling of pair identities. Moreover, when a known card is used as the "wasted" second flip in a 1-move or as part of a 0-move, moving one remembered singleton to the MRU end does not create a strategically distinct class of states: all remembered singletons play the same role under relabeling, and the resulting continuation value depends only on the updated count. Thus reduced states may be indexed by $(n,k)$.
+*Sketch.* Once all remembered cards are unmatched singletons with distinct values, the only quantities that affect the transition law are:
 
-So, after greedy matching, backward induction on the state space $(n,k)$ is sufficient.
+- the number $k$ of remembered singleton positions;
+- the number $2n-k$ of unknown positions;
+- the number of remembered singleton positions removed or added in each branch.
+
+The specific labels of the remembered cards are exchangeable under relabeling of pair identities. Moreover, when a known card is used as the idle flip in a 1-move or as part of a 0-move, the resulting continuation value depends only on the updated count.
+
+Thus the DP closes on $(n,k)$.
 
 ## 6. The Optimal Strategy
 
-With greedy matching established, I can compute the optimal 0/1/2-move strategy by backward induction on the reduced state space $(n,k)$ with $0 \le k \le \min(n,M)$.
+With greedy matching established, I can compute the optimal 0/1/2-move strategy by backward induction on the reduced state space
+$$
+\{(n,k):0\le k\le \min(n,M)\}.
+$$
 
 ### 6.1 Value function
 
-Let $e_{n,k}$ be the expected score advantage for the player to move.
+Let $e_{n,k}$ denote the expected score advantage for the player to move from reduced state $(n,k)$.
 
-The base case is
+The boundary conditions are
 $$
-e_{0,0}=0.
+e_{0,0}=0,
 $$
+and, whenever $n\le M$,
+$$
+e_{n,n}=n,
+$$
+because if all $n$ remaining pairs are known, the current player takes all of them.
 
-If $k=n \le M$, then all remaining pairs are known and the current player takes all of them:
+At each nonterminal state,
 $$
-e_{n,n}=n.
+e_{n,k}=\max\{e^0_{n,k},e^1_{n,k},e^2_{n,k}\},
 $$
-
-At each state the player chooses the move that maximises expected value.
+subject to legality of the moves.
 
 ### 6.2 Move values for $k<M$
 
-For $k<M$, the local transitions are identical to Zwick–Paterson. Let
+Define
 $$
-p=\frac{k}{2n-k},
+p:=\frac{k}{2n-k},
 \qquad
-q=\frac{2(n-k)}{2n-k}=1-p.
+q:=\frac{2(n-k)}{2n-k}=1-p.
 $$
 
-Here $p$ is the probability that a randomly flipped unknown card matches one of the $k$ remembered singletons.
+Here $p$ is the probability that a new unknown card matches one of the $k$ remembered singletons, and $q$ is the probability that it does not.
 
-**0-move (pass).** A pass hands the same state to the opponent, so its value is
+**0-move (pass).** A pass hands the same state to the opponent, so
 $$
 e^0_{n,k}=-e_{n,k}.
 $$
-Equivalently, in the optimality equation, allowing a pass is the same as including $0$ among the candidate values. The pass is only legal for $k\ge 2$.
+Therefore, in the Bellman equation, allowing a pass is equivalent to including $0$ among the candidate values. The pass is only legal for $k\ge 2$.
 
-**1-move.**
-- With probability $p$, the new card matches a remembered singleton. You score 1, remove that pair, and move again from $(n-1,k-1)$.
-- With probability $q$, the new card does not match. It enters memory, so the opponent moves from $(n,k+1)$.
-
-Therefore
+**1-move.** If the first new card matches memory (probability $p$), you score 1, remove the pair, and move again from $(n-1,k-1)$. If it does not match (probability $q$), it enters memory and the opponent moves from $(n,k+1)$. Hence
 $$
 e^1_{n,k}
 =
-p\bigl(1+e_{n-1,k-1}\bigr)
--
-q\,e_{n,k+1}.
+p\bigl(1+e_{n-1,k-1}\bigr)-q\,e_{n,k+1}.
 $$
 
-**2-move.** Flip one new card. If it matches a remembered singleton (probability $p$), this is the same as the matching branch of the 1-move. If not (probability $q$), flip a second new card. Among the
-$$
-d=2n-k-1
-$$
-remaining unknown positions:
-- with probability $\frac1d$, it matches the first new card (lucky match);
-- with probability $\frac{k}{d}$, it matches one of the remembered singletons (and the opponent immediately takes that pair on the next turn);
-- with probability $\frac{2(n-k-1)}{d}$, it matches neither.
+**2-move.** After a first-card miss, there remain $d:=2n-k-1$ unknown positions for the second card. Conditional on that first miss:
 
-The resulting formula is
+- with probability $\frac1d$, the second card matches the first new card (lucky match); you take the pair and play again from $(n-1,k)$;
+- with probability $\frac{k}{d}$, it matches one of the remembered singletons; the opponent auto-takes that pair;
+- with probability $\frac{2(n-k-1)}{d}$, it matches neither; both new cards enter memory and the opponent moves from $(n,k+2)$.
+
+A note on memory bookkeeping for the auto-take branch: after the opponent takes the pair, the matched singleton and the second new card are removed from memory ($-2$), but the first new card remains ($+1$). Net change: $k - 1 + 1 = k$. So the auto-take state is $(n-1,k)$, not $(n-1,k-1)$.
+
+Therefore
 $$
 e^2_{n,k}
 =
@@ -231,50 +288,42 @@ p\bigl(1+e_{n-1,k-1}\bigr)
 +
 q\left[
 \frac1d\bigl(1+e_{n-1,k}\bigr)
--
-\frac{k}{d}\bigl(1+e_{n-1,k}\bigr)
--
-\frac{2(n-k-1)}{d}e_{n,k+2}
+-\frac{k}{d}\bigl(1+e_{n-1,k}\bigr)
+-\frac{2(n-k-1)}{d}e_{n,k+2}
 \right].
 $$
 
-### 6.3 Move values for $k=M$ (memory full)
+### 6.3 Boundary recursion at $k=M$
 
-This is where bounded memory changes the recursion. When memory is full and a new card does not match, LRU eviction fires: the new card enters memory and the least recently used singleton is evicted. So the number of remembered cards stays at $M$.
+Now suppose memory is full.
 
-**1-move at $k=M$.** A miss loops back to $(n,M)$ rather than moving to $(n,M+1)$:
+**1-move at $k=M$.** A first-card miss no longer moves to $(n,M+1)$; instead LRU eviction keeps memory size fixed, so the miss branch loops back to $(n,M)$:
 $$
 e^1_{n,M}
 =
-p\bigl(1+e_{n-1,M-1}\bigr)
--
-q\,e_{n,M}.
+p\bigl(1+e_{n-1,M-1}\bigr)-q\,e_{n,M}.
 $$
 
-If the 1-move is optimal at this state, then $e_{n,M}=e^1_{n,M}$, so
+If the 1-move is optimal at $(n,M)$, then $e_{n,M}=e^1_{n,M}$, so
 $$
 e^1_{n,M}
 =
 \frac{p\bigl(1+e_{n-1,M-1}\bigr)}{1+q}.
 $$
 
-**2-move at $k=M$.** Suppose the first new card misses. It enters memory, one old singleton is evicted, and memory now consists of:
-- $M-1$ old singletons,
-- plus the first new card.
+**2-move at $k=M$.** After a first-card miss, the new card enters memory, one old singleton is evicted, and memory now contains $M-1$ old singletons plus the first new card (still $M$ entries total).
 
-So there are still $M$ remembered cards in total, but only $M-1$ of the old singletons remain available for the second card to match.
+For the second card:
+- lucky match probability is still $\frac1d$;
+- auto-take probability becomes $\frac{M-1}{d}$, because only $M-1$ old singletons remain available to be matched;
+- the no-match probability is $\frac{2(n-M-1)}{d}$, where $d=2n-M-1$.
 
-Now the second card has three possibilities:
+The successor states are:
+- lucky match: the pair is removed, leaving the $M-1$ old singletons. State: $(n-1,M-1)$.
+- auto-take: the matched singleton and second card leave, the first new card stays. Memory holds $M-2$ old singletons plus the first new card $= M-1$ entries. State: $(n-1,M-1)$.
+- double miss: memory is still full and the game returns to $(n,M)$ with the opponent to move.
 
-- **Lucky match:** it matches the first new card. The pair is removed, so what remains in memory is just the $M-1$ old singletons. The next state is $(n-1,M-1)$.
-- **Auto-take:** it matches one of the remaining old singletons. That pair is removed, while the first new card stays in memory. Again the next state is $(n-1,M-1)$.
-- **No match:** after the second miss and the resulting eviction, memory is still full and the game returns to $(n,M)$ with the opponent to move.
-
-Let
-$$
-d=2n-M-1.
-$$
-Then
+Therefore
 $$
 e^2_{n,M}
 =
@@ -282,28 +331,25 @@ p\bigl(1+e_{n-1,M-1}\bigr)
 +
 q\left[
 \frac1d\bigl(1+e_{n-1,M-1}\bigr)
--
-\frac{M-1}{d}\bigl(1+e_{n-1,M-1}\bigr)
--
-\frac{2(n-M-1)}{d}e_{n,M}
+-\frac{M-1}{d}\bigl(1+e_{n-1,M-1}\bigr)
+-\frac{2(n-M-1)}{d}e_{n,M}
 \right].
 $$
 
-Collecting the $e_{n,M}$ terms gives
+Collecting the $e_{n,M}$ term:
 $$
 e^2_{n,M}
 =
 \frac{
 \left(
 p+\frac{q(2-M)}{d}
-\right)
-\bigl(1+e_{n-1,M-1}\bigr)
+\right)\bigl(1+e_{n-1,M-1}\bigr)
 }{
 1+q\frac{2(n-M-1)}{d}
 }.
 $$
 
-All terms on the right involve states with $n-1$ pairs, which have already been computed.
+This is the new boundary equation that replaces Zwick's deep-$k$ perfect-memory recursion. All terms on the right involve states with $n-1$ pairs, which have already been computed.
 
 ### 6.4 Optimal move selection
 
@@ -313,12 +359,12 @@ e_{n,k}
 =
 \begin{cases}
 e^2_{n,0}, & k=0,\\[6pt]
-\max\bigl(e^1_{n,k},e^2_{n,k}\bigr), & k=1,\\[6pt]
-\max\bigl(0,e^1_{n,k},e^2_{n,k}\bigr), & k\ge 2.
+\max\{e^1_{n,k},\,e^2_{n,k}\}, & k=1,\\[6pt]
+\max\{0,\,e^1_{n,k},\,e^2_{n,k}\}, & k\ge 2.
 \end{cases}
 $$
 
-The recursion is computed by decreasing $n$, and within each $n$ by decreasing $k$ from $\min(n,M)$ down to $0$. At the boundary $k=M$, the self-referential equations are solved algebraically before proceeding to lower $k$.
+The recursion is evaluated by increasing $n$ from $0$ upward, and for fixed $n$ by decreasing $k$ from $\min(n,M)$ down to $0$. At the boundary $k=M$, the self-referential equations are solved algebraically before the lower-$k$ values are filled in.
 
 ### 6.5 Why eviction does not bias match probabilities
 
@@ -452,31 +498,7 @@ Try this experiment: play a few games against the bounded-memory bot ($M=7$), th
 
 <iframe src="/assets/memory_game.html" width="100%" height="750" style="border:none; border-radius:8px; overflow:hidden;"></iframe>
 
-## 10. Code & Reproducibility
-
-The reference implementation is available on GitHub:
-
-**[GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
-
-The repository includes the robust MM-estimation algorithm for two-channel unshuffling, signal simulation utilities, and a fully reproducible Jupyter notebook. All experiments can be replicated from scratch.
-
-### Quick Start
-```bash
-git clone https://github.com/taulantkoka/memory-game.git
-cd memory-game
-pip install numpy matplotlib joblib
-
-# Run everything 
-python run_analysis.py
-
-# Run a single analysis
-python run_analysis.py --only 01
-
-# List available analyses
-python run_analysis.py --list
-```
-
-## 11. What I Learned
+## 10. What I Learned
 
 1. **Greedy matching is optimal** under shared memory: leaving a publicly known pair on the board is weakly dominated by taking it immediately.
 2. **The bounded-memory optimum is simple:** flip two new cards only at the very start; once you know a few positions, flip only one and match when you can.
@@ -492,3 +514,4 @@ The private-memory version of the game remains open and looks much harder: once 
 - Cowan, N. (2001). The magical number 4 in short-term memory: A reconsideration of mental storage capacity. *Behavioral and Brain Sciences*, 24(1), 87-114.
 - Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information. *Psychological Review*, 63(2), 81-97.
 - Zwick, U., & Paterson, M. S. (1993). The memory game. *Theoretical Computer Science*, 110(1), 169-196.
+- Kilian, S. (2025). Who starts the game of memory? [Blog post](https://samuelkilian.de/about.html).
