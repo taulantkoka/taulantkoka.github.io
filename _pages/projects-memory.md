@@ -96,14 +96,14 @@ Before computing the dynamic program, I need to settle a structural question: if
 
 The short answer is no. Under shared memory, if you can see a pair, so can your opponent. Deferring it either hands it to your opponent (who takes it) or risks it being forgotten (evicted from memory). Neither outcome is better than just taking it now.
 
-### Theorem 1
+### Theorem
 
 *If both players can see a matching pair in shared memory, taking it immediately is always at least as good as any other move.*
 
 More precisely: in the bounded-memory model with deterministic LRU eviction, suppose the shared memory contains both positions of some matching pair $P$. Then no legal action that leaves $P$ on the board can yield a higher expected payoff than taking $P$ at once. This is weak dominance: if two pairs are visible simultaneously, taking either one first may be equally good, but deferring a known pair is never strictly better.
 
 <details markdown="1" class="notice">
-<summary>Proof of Theorem 1</summary>
+<summary>Proof</summary>
 
 Write $s=(B,\pi,L)$ for a full game state, where $B$ is the set of unmatched cards, $\pi$ is the player to move, and $L$ is the ordered shared LRU memory list. For any legal action $a$, let $Q(s,a)$ be the value to the player to move of taking action $a$ in state $s$ and then playing optimally thereafter, and let
 
@@ -286,7 +286,7 @@ $$
 
 When memory is full, a miss no longer adds a card to memory. Instead, LRU eviction fires: the new card enters and the oldest singleton is pushed out. The key consequence: **a miss loops back to $(n, M)$ instead of advancing to $(n, M+1)$.** This creates self-referential equations that can be solved in closed form.
 
-For the 2-move, the eviction also changes the bookkeeping: after the first miss evicts an old singleton, only $M-1$ old singletons remain for the second card to match. Both the lucky-match and auto-take branches lead to $(n-1, M-1)$, not $(n-1, M)$.
+For the 2-move, eviction also changes the bookkeeping: after the first miss evicts an old singleton, only $M-1$ old singletons remain for the second card to match. Both the lucky-match and auto-take branches lead to $(n-1, M-1)$, **not** $(n-1, M)$.
 
 <details markdown="1" class="notice">
 <summary>Full boundary formulas at k = M</summary>
