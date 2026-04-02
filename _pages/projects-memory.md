@@ -152,7 +152,7 @@ because every unknown card pairs with a remembered singleton, so the player to m
 At each nonterminal state,
 
 $$
-e_{n,k}=\max\lbracee^0_{n,k},e^1_{n,k},e^2_{n,k}\rbrace,
+e_{n,k}=\max\lbrace e^0_{n,k},e^1_{n,k},e^2_{n,k}\rbrace,
 $$
 
 subject to legality of the moves.
