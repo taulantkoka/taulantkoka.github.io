@@ -101,7 +101,108 @@ The short answer is no. Under shared memory, if you can see a pair, so can your 
  
 More precisely: in the bounded-memory model with deterministic LRU eviction, suppose the shared memory contains both positions of some matching pair $P$. Then no legal action that leaves $P$ on the board can yield a higher expected payoff than taking $P$ at once. This is weak dominance: if two pairs are visible simultaneously, taking either one first may be equally good, but deferring a known pair is never strictly better.
 
-Proof in the appendix: [Proof of Theorem 1](#proof-of-theorem-1).
+<details markdown="1" class="notice">
+<summary>Proof of Theorem 1</summary>
+ 
+Write \\(s=(B,\pi,L)\\) for a full game state, where \\(B\\) is the set of unmatched cards, \\(\pi\\) is the player to move, and \\(L\\) is the ordered shared LRU memory list. For any legal action \\(a\\), let \\(Q(s,a)\\) be the value to the player to move of taking action \\(a\\) in state \\(s\\) and then playing optimally thereafter, and let
+
+$$
+V(s)=\max_a Q(s,a).
+$$
+
+Assume \\(\pi=A\\), and that \\(L\\) contains both \\(\alpha,\beta\\) of the matching pair \\(P=\{\alpha,\beta\}\\).
+
+Let \\(a\\) be any legal action by \\(A\\) that does not take \\(P\\) immediately. We compare:
+
+- the **deferred** line, in which \\(A\\) plays \\(a\\) from \\(s\\);
+- the **immediate-take** line, in which \\(A\\) first takes \\(P\\), moving to
+
+  $$
+  s^+ := T_P(s),
+  $$
+  
+  and then both players play optimally.
+
+Thus
+
+$$
+Q(s,\text{take }P)=1+V(s^+).
+$$
+ 
+The key observation is that $s^+$ is obtained from $s$ by deleting $\alpha,\beta$ from both the board and the shared memory.
+
+
+**Lemma (LRU monotonicity).** Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations
+
+$$
+x_1,x_2,\dots,x_t,
+$$
+
+none of which is one of the deleted entries. Then after every prefix $x_1,\dots,x_r$, the updated list $L'_r$ is obtained from $L_r$ by deleting some subset of the originally deleted entries. In particular:
+
+1. every non-deleted card remembered in $L_r$ is also remembered in $L'_r$;
+2. the relative LRU order of the non-deleted remembered cards is the same in both lists.
+
+*Proof of lemma.* By induction on $r$.
+
+For $r=0$ this is true by construction. Assume it holds at step $r$, and consider the next observation $x_{r+1}$.
+
+- If $x_{r+1}$ is already present in both lists, both move it to the MRU end.
+- If $x_{r+1}$ is absent from both lists, both insert it. If no eviction occurs, the relation is preserved. If eviction occurs, $L_r$ evicts its LRU entry; $L'_r$, being obtained from $L_r$ by deleting entries, either evicts the same entry or one already deleted.
+- If $x_{r+1}$ is present in $L'_r$, then by the induction hypothesis it is also present in $L_r$, so this reduces to the first case.
+- The case where $x_{r+1}$ is present in $L_r$ but absent from $L'_r$ cannot occur, because deleted entries are excluded from the observation sequence.
+
+So the invariant is preserved for all $r$. $\square$
+
+Apply the lemma with the deleted entries equal to $\alpha,\beta$. It follows that for any common sequence of subsequent observations of non-$P$ cards, the immediate-take state $s^+$ is never worse informed about the remaining board than the deferred state.
+
+Now let \\(\tau\\) be the first time in the deferred play at which one of three things happens: $A$ takes $P$, $B$ takes $P$, or one of $\alpha,\beta$ is evicted from memory:
+
+**Case 1: $B$ takes $P$ at time \\(\tau\\).** Then the deferred line has allowed the opponent to score a publicly known pair that $A$ could have taken immediately. Relative to the immediate-take line, $A$ is down one pair and, by the lemma, is not better informed about the remaining board. Hence
+
+$$
+Q(s,\text{take }P)\;>\;Q(s,a).
+$$
+
+**Case 2: one of $\alpha,\beta$ is evicted before $P$ is taken.** Then the deferred line has failed to bank an immediately available point and has weakly reduced future information. The immediate-take line has already scored the point and is weakly better informed on the remaining board. So again
+
+$$
+Q(s,\text{take }P)\;>\;Q(s,a).
+$$
+
+**Case 3: $A$ takes $P$ at time \\(\tau\\).** At that moment, both lines have removed the same pair $P$, and the remaining board is identical. Let $s_\tau^{\mathrm{def}}$ and $s_\tau^{\mathrm{imm}}$ be the resulting full states after removal of $P$ in the deferred and immediate-take lines respectively. By the LRU monotonicity lemma,
+
+$$
+s_\tau^{\mathrm{imm}}
+\quad\text{is weakly better informed than}\quad
+s_\tau^{\mathrm{def}}
+$$
+
+on the remaining board. Therefore
+
+$$
+V\!\left(s_\tau^{\mathrm{imm}}\right)\;\ge\;V\!\left(s_\tau^{\mathrm{def}}\right),
+$$
+
+and hence
+
+$$
+Q(s,\text{take }P)\;\ge\;Q(s,a).
+$$
+
+In all three cases,
+$$
+Q(s,\text{take }P)\;\ge\;Q(s,a)
+$$
+
+\\(
+\text{for every legal }a\text{ that leaves }P\text{ on the board}.
+\\)
+So taking a publicly known pair immediately is weakly dominant. $\square$
+
+**Remark.** This proof uses the fact that memory is shared and publicly observable. With private memory, A could know a pair that B does not know about. In that setting, holding the pair in reserve could be genuinely strategic.
+
+</details>
 
 ### Corollary
 
@@ -459,102 +560,3 @@ The private-memory version of the game remains open and looks much harder: once 
 
 ## Appendix: Proofs
 
-### Proof of Theorem 1
- 
-Write \\(s=(B,\pi,L)\\) for a full game state, where \\(B\\) is the set of unmatched cards, \\(\pi\\) is the player to move, and \\(L\\) is the ordered shared LRU memory list. For any legal action \\(a\\), let \\(Q(s,a)\\) be the value to the player to move of taking action \\(a\\) in state \\(s\\) and then playing optimally thereafter, and let
-
-$$
-V(s)=\max_a Q(s,a).
-$$
-
-Assume \\(\pi=A\\), and that \\(L\\) contains both \\(\alpha,\beta\\) of the matching pair \\(P=\{\alpha,\beta\}\\).
-
-Let \\(a\\) be any legal action by \\(A\\) that does not take \\(P\\) immediately. We compare:
-
-- the **deferred** line, in which \\(A\\) plays \\(a\\) from \\(s\\);
-- the **immediate-take** line, in which \\(A\\) first takes \\(P\\), moving to
-
-  $$
-  s^+ := T_P(s),
-  $$
-  
-  and then both players play optimally.
-
-Thus
-
-$$
-Q(s,\text{take }P)=1+V(s^+).
-$$
- 
-The key observation is that $s^+$ is obtained from $s$ by deleting $\alpha,\beta$ from both the board and the shared memory.
-
-
-**Lemma (LRU monotonicity).** Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations
-
-$$
-x_1,x_2,\dots,x_t,
-$$
-
-none of which is one of the deleted entries. Then after every prefix $x_1,\dots,x_r$, the updated list $L'_r$ is obtained from $L_r$ by deleting some subset of the originally deleted entries. In particular:
-
-1. every non-deleted card remembered in $L_r$ is also remembered in $L'_r$;
-2. the relative LRU order of the non-deleted remembered cards is the same in both lists.
-
-*Proof of lemma.* By induction on $r$.
-
-For $r=0$ this is true by construction. Assume it holds at step $r$, and consider the next observation $x_{r+1}$.
-
-- If $x_{r+1}$ is already present in both lists, both move it to the MRU end.
-- If $x_{r+1}$ is absent from both lists, both insert it. If no eviction occurs, the relation is preserved. If eviction occurs, $L_r$ evicts its LRU entry; $L'_r$, being obtained from $L_r$ by deleting entries, either evicts the same entry or one already deleted.
-- If $x_{r+1}$ is present in $L'_r$, then by the induction hypothesis it is also present in $L_r$, so this reduces to the first case.
-- The case where $x_{r+1}$ is present in $L_r$ but absent from $L'_r$ cannot occur, because deleted entries are excluded from the observation sequence.
-
-So the invariant is preserved for all $r$. $\square$
-
-Apply the lemma with the deleted entries equal to $\alpha,\beta$. It follows that for any common sequence of subsequent observations of non-$P$ cards, the immediate-take state $s^+$ is never worse informed about the remaining board than the deferred state.
-
-Now let \\(\tau\\) be the first time in the deferred play at which one of three things happens: $A$ takes $P$, $B$ takes $P$, or one of $\alpha,\beta$ is evicted from memory:
-
-**Case 1: $B$ takes $P$ at time \\(\tau\\).** Then the deferred line has allowed the opponent to score a publicly known pair that $A$ could have taken immediately. Relative to the immediate-take line, $A$ is down one pair and, by the lemma, is not better informed about the remaining board. Hence
-
-$$
-Q(s,\text{take }P)\;>\;Q(s,a).
-$$
-
-**Case 2: one of $\alpha,\beta$ is evicted before $P$ is taken.** Then the deferred line has failed to bank an immediately available point and has weakly reduced future information. The immediate-take line has already scored the point and is weakly better informed on the remaining board. So again
-
-$$
-Q(s,\text{take }P)\;>\;Q(s,a).
-$$
-
-**Case 3: $A$ takes $P$ at time \\(\tau\\).** At that moment, both lines have removed the same pair $P$, and the remaining board is identical. Let $s_\tau^{\mathrm{def}}$ and $s_\tau^{\mathrm{imm}}$ be the resulting full states after removal of $P$ in the deferred and immediate-take lines respectively. By the LRU monotonicity lemma,
-
-$$
-s_\tau^{\mathrm{imm}}
-\quad\text{is weakly better informed than}\quad
-s_\tau^{\mathrm{def}}
-$$
-
-on the remaining board. Therefore
-
-$$
-V\!\left(s_\tau^{\mathrm{imm}}\right)\;\ge\;V\!\left(s_\tau^{\mathrm{def}}\right),
-$$
-
-and hence
-
-$$
-Q(s,\text{take }P)\;\ge\;Q(s,a).
-$$
-
-In all three cases,
-$$
-Q(s,\text{take }P)\;\ge\;Q(s,a)
-$$
-
-\\(
-\text{for every legal }a\text{ that leaves }P\text{ on the board}.
-\\)
-So taking a publicly known pair immediately is weakly dominant. $\square$
-
-**Remark.** This proof uses the fact that memory is shared and publicly observable. With private memory, A could know a pair that B does not know about. In that setting, holding the pair in reserve could be genuinely strategic.
