@@ -461,34 +461,40 @@ The private-memory version of the game remains open and looks much harder: once 
 
 ### Proof of Theorem 1
  
-Write \(s=(B,\pi,L)\) for a full game state, where \(B\) is the set of unmatched cards, \(\pi\) is the player to move, and \(L\) is the ordered shared LRU memory list. For any legal action \(a\), let \(Q(s,a)\) be the value to the player to move of taking action \(a\) in state \(s\) and then playing optimally thereafter, and let
-\[
+Write \\(s=(B,\pi,L)\\) for a full game state, where \\(B\\) is the set of unmatched cards, \\(\pi\\) is the player to move, and \\(L\\) is the ordered shared LRU memory list. For any legal action \\(a\\), let \\(Q(s,a)\\) be the value to the player to move of taking action \\(a\\) in state \\(s\\) and then playing optimally thereafter, and let
+
+$$
 V(s)=\max_a Q(s,a).
-\]
+$$
 
-Assume \(\pi=A\), and that \(L\) contains both \(\alpha,\beta\) of the matching pair \(P=\{\alpha,\beta\}\).
+Assume \\(\pi=A\\), and that \\(L\\) contains both \\(\alpha,\beta\\) of the matching pair \\(P=\{\alpha,\beta\}\\).
 
-Let \(a\) be any legal action by \(A\) that does not take \(P\) immediately. We compare:
+Let \\(a\) be any legal action by \\(A\\) that does not take \\(P\\) immediately. We compare:
 
-- the **deferred** line, in which \(A\) plays \(a\) from \(s\);
-- the **immediate-take** line, in which \(A\) first takes \(P\), moving to
-  \[
+- the **deferred** line, in which \\(A\\) plays \\(a\\) from \\(s\\);
+- the **immediate-take** line, in which \\(A\\) first takes \\(P\\), moving to
+
+  $$
   s^+ := T_P(s),
-  \]
+  $$
+  
   and then both players play optimally.
 
 Thus
-\[
+
+$$
 Q(s,\text{take }P)=1+V(s^+).
-\]
+$$
  
 The key observation is that $s^+$ is obtained from $s$ by deleting $\alpha,\beta$ from both the board and the shared memory.
 
 
 **Lemma (LRU monotonicity).** Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations
-\\[
+
+$$
 x_1,x_2,\dots,x_t,
-\\]
+$$
+
 none of which is one of the deleted entries. Then after every prefix $x_1,\dots,x_r$, the updated list $L'_r$ is obtained from $L_r$ by deleting some subset of the originally deleted entries. In particular:
 
 1. every non-deleted card remembered in $L_r$ is also remembered in $L'_r$;
