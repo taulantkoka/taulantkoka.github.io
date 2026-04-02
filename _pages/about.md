@@ -15,7 +15,7 @@ I grew up in Germany, did my B.Sc. and M.Sc. at TU Darmstadt in Electrical Engin
 
 ### Recent Research
 
-**High-dimensional variable selection.** When you're dealing with millions of features, false discoveries are almost guaranteed unless you're careful. A large part of my current research is about building variable selection methods that scale to these regimes while keeping the false discovery rate under control. The tricky part isn't just the statistics — it's that naive implementations need terabytes of RAM, so the algorithmic design has to be memory-aware from the ground up.
+**High-dimensional variable selection.** When you're dealing with millions of features, false discoveries are almost guaranteed unless you're careful. A large part of my current research is about building variable selection methods that scale to these regimes while keeping the false discovery rate under control. The tricky part is keeping the statistical guarantees, while reducing the computational load to a point that is feasible even at very large scales (e.g., biobanks).
 
 **Cross-channel unlabeled sensing.** Classical sampling theory assumes you know which measurement came from which channel. What happens when that assumption breaks? During my Master's thesis, we formalized a problem called Cross-Channel Unlabeled Sensing, where multi-channel signals are observed through unknown permutations at each time point. My recent work derives recovery bounds and tackles the combinatorial structure underneath. This shows up in practice in settings like whole-brain calcium imaging, where movement can scramble which recorded trace belongs to which neuron, or generally in multi-target tracking, where trajectories cross and identities get mixed up.
 
