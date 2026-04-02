@@ -329,7 +329,24 @@ You can also switch to "Bot vs Bot" mode to run simulations directly in your bro
 
 <iframe src="/assets/memory_game.html" width="100%" height="750" style="border:none; border-radius:8px; overflow:hidden;"></iframe>
 
-## 10. What I Learned
+## 10. Code & Reproducibility
+
+All code used for the dynamic programming computations, simulations, and the interactive game is available on GitHub:
+
+**[GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
+
+The repository includes the exact DP solver for the bounded-memory model, optimal strategy tables, Monte Carlo simulation scripts, and the browser-based game used in this post. All figures and numerical results can be reproduced from scratch using the provided code.
+
+### Quick Start
+
+```bash
+git clone https://github.com/taulantkoka/memory-game.git
+cd memory-game
+pip install -r requirements.txt
+python main.py
+
+
+## 11. What I Learned
 
 1. **Greedy matching is optimal** under shared memory, a simple dominance argument.
 
