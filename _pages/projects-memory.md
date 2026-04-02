@@ -441,7 +441,7 @@ The private-memory version of the game remains open and looks much harder: once 
 - Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information. *Psychological Review*, 63(2), 81-97.
 - Zwick, U., & Paterson, M. S. (1993). The memory game. *Theoretical Computer Science*, 110(1), 169-196.
 
-
+## Appendix: Proofs
 
 ### Proof of Theorem 1
  
