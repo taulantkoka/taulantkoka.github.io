@@ -34,7 +34,7 @@ Despite being a children's game, Memory has a surprisingly rich strategic struct
 
 If you want to skip the theory and just play, there's an [interactive game](#9-play-against-the-bot) at the end where you can take on the optimal strategy yourself.
 
-*A note on methodology: this is the first time I've produced a mathematical result with the help of an AI agent. The proofs, dynamic programming formulations, and simulations in this post were developed in collaboration with Claude Opus (Anthropic).*
+*A note on methodology: this is the first time I've produced a mathematical result with the help of an AI agent. I used Claude Opus as a mathematical collaborator to explore conjectures, draft proofs, and sanity-check recurrences; I selected the model, verified the arguments, and implemented the analysis.*
 
 ## 2. What Zwick and Paterson Showed
 
@@ -95,97 +95,13 @@ Before computing the dynamic program, I need to settle a structural question: if
 
 The short answer is no. Under shared memory, if you can see a pair, so can your opponent. Deferring it either hands it to your opponent (who takes it) or risks it being forgotten (evicted from memory). Neither outcome is better than just taking it now. The formal statement and proof follow; if you are happy to take this on trust, you can skip ahead to [Section 6](#6-the-optimal-strategy).
 
-### Theorem
+### Theorem 1
  
 *If both players can see a matching pair in shared memory, taking it immediately is always at least as good as any other move.*
  
 More precisely: in the bounded-memory model with deterministic LRU eviction, suppose the shared memory contains both positions of some matching pair $P$. Then no legal action that leaves $P$ on the board can yield a higher expected payoff than taking $P$ at once. This is weak dominance: if two pairs are visible simultaneously, taking either one first may be equally good, but deferring a known pair is never strictly better.
 
-### Proof
- 
-Write \(s=(B,\pi,L)\) for a full game state, where \(B\) is the set of unmatched cards, \(\pi\) is the player to move, and \(L\) is the ordered shared LRU memory list. For any legal action \(a\), let \(Q(s,a)\) be the value to the player to move of taking action \(a\) in state \(s\) and then playing optimally thereafter, and let
-\[
-V(s)=\max_a Q(s,a).
-\]
-
-Assume \(\pi=A\), and that \(L\) contains both \(\alpha,\beta\) of the matching pair \(P=\{\alpha,\beta\}\).
-
-Let \(a\) be any legal action by \(A\) that does not take \(P\) immediately. We compare:
-
-- the **deferred** line, in which \(A\) plays \(a\) from \(s\);
-- the **immediate-take** line, in which \(A\) first takes \(P\), moving to
-  \[
-  s^+ := T_P(s),
-  \]
-  and then both players play optimally.
-
-Thus
-\[
-Q(s,\text{take }P)=1+V(s^+).
-\]
- 
-The key observation is that $s^+$ is obtained from $s$ by deleting $\alpha,\beta$ from both the board and the shared memory.
-
-
-**Lemma (LRU monotonicity).** Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations
-\\[
-x_1,x_2,\dots,x_t,
-\\]
-none of which is one of the deleted entries. Then after every prefix $x_1,\dots,x_r$, the updated list $L'_r$ is obtained from $L_r$ by deleting some subset of the originally deleted entries. In particular:
-
-1. every non-deleted card remembered in $L_r$ is also remembered in $L'_r$;
-2. the relative LRU order of the non-deleted remembered cards is the same in both lists.
-
-*Proof of lemma.* By induction on $r$.
-
-For $r=0$ this is true by construction. Assume it holds at step $r$, and consider the next observation $x_{r+1}$.
-
-- If $x_{r+1}$ is already present in both lists, both move it to the MRU end.
-- If $x_{r+1}$ is absent from both lists, both insert it. If no eviction occurs, the relation is preserved. If eviction occurs, $L_r$ evicts its LRU entry; $L'_r$, being obtained from $L_r$ by deleting entries, either evicts the same entry or one already deleted.
-- If $x_{r+1}$ is present in $L'_r$, then by the induction hypothesis it is also present in $L_r$, so this reduces to the first case.
-- The case where $x_{r+1}$ is present in $L_r$ but absent from $L'_r$ cannot occur, because deleted entries are excluded from the observation sequence.
-
-So the invariant is preserved for all $r$. $\square$
-
-Apply the lemma with the deleted entries equal to $\alpha,\beta$. It follows that for any common sequence of subsequent observations of non-$P$ cards, the immediate-take state $s^+$ is never worse informed about the remaining board than the deferred state.
-
-Now let \\(\tau\\) be the first time in the deferred play at which one of three things happens: $A$ takes $P$, $B$ takes $P$, or one of $\alpha,\beta$ is evicted from memory:
-
-**Case 1: $B$ takes $P$ at time \\(\tau\\).** Then the deferred line has allowed the opponent to score a publicly known pair that $A$ could have taken immediately. Relative to the immediate-take line, $A$ is down one pair and, by the lemma, is not better informed about the remaining board. Hence
-\\[
-Q(s,\text{take }P)\;>\;Q(s,a).
-\\]
-
-**Case 2: one of $\alpha,\beta$ is evicted before $P$ is taken.** Then the deferred line has failed to bank an immediately available point and has weakly reduced future information. The immediate-take line has already scored the point and is weakly better informed on the remaining board. So again
-\\[
-Q(s,\text{take }P)\;>\;Q(s,a).
-\\]
-
-**Case 3: $A$ takes $P$ at time \\(\tau\\).** At that moment, both lines have removed the same pair $P$, and the remaining board is identical. Let $s_\tau^{\mathrm{def}}$ and $s_\tau^{\mathrm{imm}}$ be the resulting full states after removal of $P$ in the deferred and immediate-take lines respectively. By the LRU monotonicity lemma,
-\\[
-s_\tau^{\mathrm{imm}}
-\quad\text{is weakly better informed than}\quad
-s_\tau^{\mathrm{def}}
-\\]
-on the remaining board. Therefore
-\\[
-V\!\left(s_\tau^{\mathrm{imm}}\right)\;\ge\;V\!\left(s_\tau^{\mathrm{def}}\right),
-\\]
-and hence
-\\[
-Q(s,\text{take }P)\;\ge\;Q(s,a).
-\\]
-
-In all three cases,
-\\[
-Q(s,\text{take }P)\;\ge\;Q(s,a)
-\\]
-\\(
-\text{for every legal }a\text{ that leaves }P\text{ on the board}.
-\\)
-So taking a publicly known pair immediately is weakly dominant. $\square$
-
-**Remark.** This proof uses the fact that memory is shared and publicly observable. With private memory, A could know a pair that B does not know about. In that setting, holding the pair in reserve could be genuinely strategic.
+Proof in the appendix: [Proof of Theorem 1](#proof-of-theorem-1).
 
 ### Corollary
 
@@ -253,11 +169,11 @@ e^0_{n,k}=-e_{n,k}.
 Therefore, in the Bellman equation, allowing a pass is equivalent to including $0$ among the candidate values. The pass is only legal for $k\ge 2$.
 
 **1-move.** If the first new card matches memory (probability $p$), you score 1, remove the pair, and move again from $(n-1,k-1)$. If it does not match (probability $q$), it enters memory and the opponent moves from $(n,k+1)$. Hence
-\\[
+$$
 e^1_{n,k}
 =
 p\bigl(1+e_{n-1,k-1}\bigr)-q\,e_{n,k+1}.
-\\]
+$$
 
 **2-move.** After a first-card miss, there remain $d:=2n-k-1$ unknown positions for the second card. Conditional on that first miss:
 
@@ -268,7 +184,7 @@ p\bigl(1+e_{n-1,k-1}\bigr)-q\,e_{n,k+1}.
 A note on the auto-take branch. The minus sign in $-\frac{k}{d}(1+e_{n-1,k})$ reflects the fact that the *opponent* scores this pair: the opponent gains $+1$ and then faces state $(n-1,k)$ with value $e_{n-1,k}$ from the opponent's perspective, which is $-e_{n-1,k}$ from yours. Hence $-(1+e_{n-1,k})$. As for the memory bookkeeping: after the auto-take, the matched singleton and the second new card are removed ($-2$), but the first new card remains ($+1$). Net change: $k - 1 + 1 = k$. So the auto-take state is $(n-1,k)$, not $(n-1,k-1)$.
 
 Therefore
-\\[
+$$
 e^2_{n,k}
 =
 p\bigl(1+e_{n-1,k-1}\bigr)
@@ -278,25 +194,25 @@ q\left[
 -\frac{k}{d}\bigl(1+e_{n-1,k}\bigr)
 -\frac{2(n-k-1)}{d}e_{n,k+2}
 \right].
-\\]
+$$
 
 ### 6.2 Boundary recursion at $k=M$
 
 Now suppose memory is full.
 
 **1-move at $k=M$.** A first-card miss no longer moves to $(n,M+1)$; instead LRU eviction keeps memory size fixed, so the miss branch loops back to $(n,M)$:
-\\[
+$$
 e^1_{n,M}
 =
 p\bigl(1+e_{n-1,M-1}\bigr)-q\,e_{n,M}.
-\\]
+$$
 
 If the 1-move is optimal at $(n,M)$, then $e_{n,M}=e^1_{n,M}$, so
-\\[
+$$
 e^1_{n,M}
 =
 \frac{p\bigl(1+e_{n-1,M-1}\bigr)}{1+q}.
-\\]
+$$
 
 **2-move at $k=M$.** After a first-card miss, the new card enters memory, one old singleton is evicted, and memory now contains $M-1$ old singletons plus the first new card (still $M$ entries total).
 
@@ -311,7 +227,7 @@ The successor states are:
 - double miss: memory is still full and the game returns to $(n,M)$ with the opponent to move.
 
 Therefore
-\\[
+$$
 e^2_{n,M}
 =
 p\bigl(1+e_{n-1,M-1}\bigr)
@@ -321,10 +237,10 @@ q\left[
 -\frac{M-1}{d}\bigl(1+e_{n-1,M-1}\bigr)
 -\frac{2(n-M-1)}{d}e_{n,M}
 \right].
-\\]
+$$
 
 Collecting the $e_{n,M}$ term:
-\\[
+$$
 e^2_{n,M}
 =
 \frac{
@@ -334,14 +250,14 @@ p+\frac{q(2-M)}{d}
 }{
 1+q\frac{2(n-M-1)}{d}
 }.
-\\]
+$$
 
 This is the new boundary equation that replaces Zwick's deep-$k$ perfect-memory recursion. All terms on the right involve states with $n-1$ pairs, which have already been computed.
 
 ### 6.3 Optimal move selection
 
 At each state,
-\\[
+$$
 e_{n,k}
 =
 \begin{cases}
@@ -349,7 +265,7 @@ e^2_{n,0}, & k=0,\\[6pt]
 \max\{e^1_{n,k},\,e^2_{n,k}\}, & k=1,\\[6pt]
 \max\{0,\,e^1_{n,k},\,e^2_{n,k}\}, & k\ge 2.
 \end{cases}
-\\]
+$$
 
 The recursion is evaluated by increasing $n$ from $0$ upward, and for fixed $n$ by decreasing $k$ from $\min(n,M)$ down to $0$. At the boundary $k=M$, the self-referential equations are solved algebraically before the lower-$k$ values are filled in.
 
@@ -524,3 +440,91 @@ The private-memory version of the game remains open and looks much harder: once 
 - Cowan, N. (2001). The magical number 4 in short-term memory: A reconsideration of mental storage capacity. *Behavioral and Brain Sciences*, 24(1), 87-114.
 - Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information. *Psychological Review*, 63(2), 81-97.
 - Zwick, U., & Paterson, M. S. (1993). The memory game. *Theoretical Computer Science*, 110(1), 169-196.
+
+
+
+### Proof of Theorem 1
+ 
+Write \(s=(B,\pi,L)\) for a full game state, where \(B\) is the set of unmatched cards, \(\pi\) is the player to move, and \(L\) is the ordered shared LRU memory list. For any legal action \(a\), let \(Q(s,a)\) be the value to the player to move of taking action \(a\) in state \(s\) and then playing optimally thereafter, and let
+\[
+V(s)=\max_a Q(s,a).
+\]
+
+Assume \(\pi=A\), and that \(L\) contains both \(\alpha,\beta\) of the matching pair \(P=\{\alpha,\beta\}\).
+
+Let \(a\) be any legal action by \(A\) that does not take \(P\) immediately. We compare:
+
+- the **deferred** line, in which \(A\) plays \(a\) from \(s\);
+- the **immediate-take** line, in which \(A\) first takes \(P\), moving to
+  \[
+  s^+ := T_P(s),
+  \]
+  and then both players play optimally.
+
+Thus
+\[
+Q(s,\text{take }P)=1+V(s^+).
+\]
+ 
+The key observation is that $s^+$ is obtained from $s$ by deleting $\alpha,\beta$ from both the board and the shared memory.
+
+
+**Lemma (LRU monotonicity).** Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations
+\\[
+x_1,x_2,\dots,x_t,
+\\]
+none of which is one of the deleted entries. Then after every prefix $x_1,\dots,x_r$, the updated list $L'_r$ is obtained from $L_r$ by deleting some subset of the originally deleted entries. In particular:
+
+1. every non-deleted card remembered in $L_r$ is also remembered in $L'_r$;
+2. the relative LRU order of the non-deleted remembered cards is the same in both lists.
+
+*Proof of lemma.* By induction on $r$.
+
+For $r=0$ this is true by construction. Assume it holds at step $r$, and consider the next observation $x_{r+1}$.
+
+- If $x_{r+1}$ is already present in both lists, both move it to the MRU end.
+- If $x_{r+1}$ is absent from both lists, both insert it. If no eviction occurs, the relation is preserved. If eviction occurs, $L_r$ evicts its LRU entry; $L'_r$, being obtained from $L_r$ by deleting entries, either evicts the same entry or one already deleted.
+- If $x_{r+1}$ is present in $L'_r$, then by the induction hypothesis it is also present in $L_r$, so this reduces to the first case.
+- The case where $x_{r+1}$ is present in $L_r$ but absent from $L'_r$ cannot occur, because deleted entries are excluded from the observation sequence.
+
+So the invariant is preserved for all $r$. $\square$
+
+Apply the lemma with the deleted entries equal to $\alpha,\beta$. It follows that for any common sequence of subsequent observations of non-$P$ cards, the immediate-take state $s^+$ is never worse informed about the remaining board than the deferred state.
+
+Now let \\(\tau\\) be the first time in the deferred play at which one of three things happens: $A$ takes $P$, $B$ takes $P$, or one of $\alpha,\beta$ is evicted from memory:
+
+**Case 1: $B$ takes $P$ at time \\(\tau\\).** Then the deferred line has allowed the opponent to score a publicly known pair that $A$ could have taken immediately. Relative to the immediate-take line, $A$ is down one pair and, by the lemma, is not better informed about the remaining board. Hence
+\\[
+Q(s,\text{take }P)\;>\;Q(s,a).
+\\]
+
+**Case 2: one of $\alpha,\beta$ is evicted before $P$ is taken.** Then the deferred line has failed to bank an immediately available point and has weakly reduced future information. The immediate-take line has already scored the point and is weakly better informed on the remaining board. So again
+\\[
+Q(s,\text{take }P)\;>\;Q(s,a).
+\\]
+
+**Case 3: $A$ takes $P$ at time \\(\tau\\).** At that moment, both lines have removed the same pair $P$, and the remaining board is identical. Let $s_\tau^{\mathrm{def}}$ and $s_\tau^{\mathrm{imm}}$ be the resulting full states after removal of $P$ in the deferred and immediate-take lines respectively. By the LRU monotonicity lemma,
+\\[
+s_\tau^{\mathrm{imm}}
+\quad\text{is weakly better informed than}\quad
+s_\tau^{\mathrm{def}}
+\\]
+on the remaining board. Therefore
+\\[
+V\!\left(s_\tau^{\mathrm{imm}}\right)\;\ge\;V\!\left(s_\tau^{\mathrm{def}}\right),
+\\]
+and hence
+\\[
+Q(s,\text{take }P)\;\ge\;Q(s,a).
+\\]
+
+In all three cases,
+\\[
+Q(s,\text{take }P)\;\ge\;Q(s,a)
+\\]
+\\(
+\text{for every legal }a\text{ that leaves }P\text{ on the board}.
+\\)
+So taking a publicly known pair immediately is weakly dominant. $\square$
+
+**Remark.** This proof uses the fact that memory is shared and publicly observable. With private memory, A could know a pair that B does not know about. In that setting, holding the pair in reserve could be genuinely strategic.
