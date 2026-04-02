@@ -93,7 +93,7 @@ The next section shows why, after one key structural theorem, this can be reduce
 
 Before computing the dynamic program, I need to settle a structural question: if the shared memory already contains both positions of some matching pair, is it ever optimal to leave that pair on the board?
 
-The short answer is no. Under shared memory, if you can see a pair, so can your opponent. Deferring it either hands it to your opponent (who takes it) or risks it being forgotten (evicted from memory). Neither outcome is better than just taking it now. The formal statement and proof follow; if you are happy to take this on trust, you can skip ahead to [Section 6](#6-the-optimal-strategy).
+The short answer is no. Under shared memory, if you can see a pair, so can your opponent. Deferring it either hands it to your opponent (who takes it) or risks it being forgotten (evicted from memory). Neither outcome is better than just taking it now. The formal statement appears below, and the full proof is moved to the appendix. If you are happy to take this on trust, you can skip ahead to [Section 6](#6-the-optimal-strategy).
 
 ### Theorem 1
  
