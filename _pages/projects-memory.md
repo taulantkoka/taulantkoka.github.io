@@ -34,7 +34,7 @@ Despite being a children's game, Memory has a surprisingly rich strategic struct
 
 If you want to skip the theory and just play, there's an [interactive game](#9-play-against-the-bot) at the end where you can take on the optimal strategy yourself.
 
-*A note on methodology: this is the first time I've produced a mathematical result with the help of an AI agent. I used Claude Opus as a mathematical collaborator to explore conjectures, draft proofs, and sanity-check recurrences; I selected the model, verified the arguments, and implemented the analysis.*
+*A note on methodology: this is the first time I’ve produced a mathematical result with the help of an AI agent. I used Claude Opus as a mathematical collaborator to explore conjectures, draft proof sketches, and sanity-check recurrences. The arguments were developed iteratively: I refined and corrected proof ideas, carried out parts of the derivations myself, and verified the final analysis and implementation.*
 
 ## 2. What Zwick and Paterson Showed
 
