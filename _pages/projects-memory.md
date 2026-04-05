@@ -63,7 +63,7 @@ This is elegant, but it immediately raises the question: does any of this surviv
 
 My first approach, inspired by [Samuel Kilian](https://www.youtube.com/shorts/MPXQDAMsmro), was to model forgetting as probabilistic decay: each turn, every remembered card has a probability $\delta$ of being forgotten. This is analytically convenient, the Zwick framework mostly carries over, and it lets you sweep continuously from perfect memory ($\delta=0$) to complete amnesia ($\delta=1$).
 
-I ran large-scale Monte Carlo simulations under this model. The results were interesting: at low $\delta$, the Zwick Player 2 advantage survives. Around $\delta \approx 0.10\text{–}0.15$, there is a phase transition where the Zwick stalemate regime collapses and the game becomes more decisive. At high $\delta$, the game converges to a coin flip.
+I ran large-scale Monte Carlo simulations under this model. The results were interesting: at low $\delta$, the Zwick Player 2 advantage survives. Around $\delta \approx 0.10\text{--}0.15$, there is a phase transition where the Zwick stalemate regime collapses and the game becomes more decisive. At high $\delta$, the game converges to a coin flip.
 
 But the model bothered me. Probabilistic decay means you might remember a card you saw 20 turns ago while forgetting one you saw 2 turns ago. That does not match my experience of how memory works in this game. You either correctly remember where a card is or you do not. And when your brain is full and you see something new, something old gets pushed out. The bottleneck feels more like *capacity* than *reliability*.
 
@@ -284,9 +284,11 @@ $$
 
 ### 6.2 The boundary: what changes when memory is full ($k = M$)
 
-When memory is full, a miss no longer adds a card to memory. Instead, LRU eviction fires: the new card enters and the oldest singleton is pushed out. The key consequence: **a miss loops back to $(n, M)$ instead of advancing to $(n, M+1)$.** This creates self-referential equations that can be solved in closed form.
+When memory is full, a miss no longer increases the number of remembered cards. Instead, the new card enters memory and the least recently used singleton is evicted. The key consequence: **a miss loops back to $(n, M)$ instead of advancing to $(n, M+1)$.** This creates self-referential equations that can be solved in closed form.
 
 For the 2-move, eviction also changes the bookkeeping: after the first miss evicts an old singleton, only $M-1$ old singletons remain for the second card to match. Both the lucky-match and auto-take branches lead to $(n-1, M-1)$, **not** $(n-1, M)$.
+
+Crucially, the eviction also changes the **number of unknown positions** available for the second flip. Before the first flip there are $2n-M$ unknowns. The first flip reveals one unknown (making it known) but eviction simultaneously pushes one known card back into the unknown pool. The net effect: the number of unknowns stays at $d := 2n - M$ for the second card, rather than dropping to $2n - M - 1$ as it would without eviction.
 
 <details markdown="1" class="notice">
 <summary>Full boundary formulas at k = M</summary>
@@ -307,12 +309,14 @@ e^1_{n,M}
 \frac{p\bigl(1+e_{n-1,M-1}\bigr)}{1+q}.
 $$
 
-**2-move at $k=M$.** After a first-card miss, the new card enters memory and one old singleton is evicted. Memory now holds $M-1$ old singletons plus the first new card ($M$ entries total).
+**2-move at $k=M$.** After a first-card miss, the new card enters memory and one old singleton is evicted. Memory now holds $M-1$ old singletons plus the first new card ($M$ entries total). Meanwhile, the evicted card has re-entered the unknown pool, so the number of unknown positions remains $d=2n-M$.
 
-For the second card (with $d=2n-M-1$):
+For the second card (with $d=2n-M$):
 - lucky match (prob $\frac1d$): pair removed, $M-1$ old singletons remain. State: $(n-1,M-1)$.
 - auto-take (prob $\frac{M-1}{d}$): matched singleton and second card leave, first card stays. State: $(n-1,M-1)$.
-- double miss (prob $\frac{2(n-M-1)}{d}$): memory still full, loops back to $(n,M)$.
+- double miss (prob $\frac{2(n-M)}{d}$): memory still full, loops back to $(n,M)$.
+
+As a sanity check, the numerators sum to $1 + (M-1) + 2(n-M) = 2n - M = d$. $\checkmark$
 
 $$
 e^2_{n,M}
@@ -322,7 +326,7 @@ p\bigl(1+e_{n-1,M-1}\bigr)
 q\left[
 \frac1d\bigl(1+e_{n-1,M-1}\bigr)
 -\frac{M-1}{d}\bigl(1+e_{n-1,M-1}\bigr)
--\frac{2(n-M-1)}{d}e_{n,M}
+-\frac{2(n-M)}{d}e_{n,M}
 \right].
 $$
 
@@ -336,7 +340,7 @@ e^2_{n,M}
 p+\frac{q(2-M)}{d}
 \right)\bigl(1+e_{n-1,M-1}\bigr)
 }{
-1+q\frac{2(n-M-1)}{d}
+1+q\frac{2(n-M)}{d}
 }.
 $$
 
@@ -377,16 +381,46 @@ Concretely, $e_{12,3}$ depends on $e_{12,5}$, which depends on $e_{12,7}$. In Zw
 
 ### Move tables
 
-For $n=12$ (24 cards), the optimal move at each knowledge level $k$ is:
+The tables below show the optimal move at each knowledge level $k$ for several board sizes. Bold entries mark positions where the bounded-memory strategy differs from Zwick.
+
+**$n = 8$ (16 cards):**
+
+| | $k{=}0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ |
+|---|---|---|---|---|---|---|---|---|---|
+| **Zwick** $(M{=}\infty)$ | 2 | 2 | 1 | 2 | 1 | 2 | 1 | **0** | 1 |
+| **Bounded** $(M{=}7)$ | 2 | 2 | 1 | 2 | 1 | **0** | 1 | **1** | --- |
+
+**$n = 10$ (20 cards):**
+
+| | $k{=}0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ | $9$ | $10$ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| **Zwick** $(M{=}\infty)$ | 2 | 2 | 1 | 2 | 1 | 2 | 1 | 2 | 1 | **0** | 1 |
+| **Bounded** $(M{=}7)$ | 2 | 2 | 1 | 2 | 1 | **1** | 1 | **1** | --- | --- | --- |
+
+**$n = 12$ (24 cards):**
 
 | | $k{=}0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ | $9$ | $10$ | $11$ | $12$ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | **Zwick** $(M{=}\infty)$ | 2 | 2 | 1 | 2 | 1 | 2 | 1 | 2 | 1 | **0** | 1 | **0** | 1 |
-| **Bounded** $(M{=}7)$ | 2 | 2 | 1 | **1** | 1 | **1** | 1 | **1** | — | — | — | — | — |
+| **Bounded** $(M{=}7)$ | 2 | 2 | 1 | **1** | 1 | **1** | 1 | **1** | --- | --- | --- | --- | --- |
 
-The strategies agree when you know 0, 1, or 2 cards. They diverge at $k=3,5,7$: Zwick says flip two new cards, while bounded memory says flip only one.
+**$n = 16$ (32 cards):**
 
-**In practical terms:** once you know a few card positions, stop flipping two unknowns per turn. Flip one, keep what you know, and match when you can. The second unknown card mostly churns memory.
+| | $k{=}0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ |
+|---|---|---|---|---|---|---|---|---|
+| **Zwick** $(M{=}\infty)$ | 2 | 2 | 1 | 2 | 1 | 2 | 1 | 2 |
+| **Bounded** $(M{=}7)$ | 2 | **1** | 1 | **1** | 1 | **1** | 1 | **1** |
+
+**$n = 20$ (40 cards):**
+
+| | $k{=}0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ |
+|---|---|---|---|---|---|---|---|---|
+| **Zwick** $(M{=}\infty)$ | 2 | 2 | 1 | 2 | 1 | 2 | 1 | 2 |
+| **Bounded** $(M{=}7)$ | 2 | **1** | 1 | **1** | 1 | **1** | 1 | **1** |
+
+For $n=16$ and $n=20$, the Zwick columns are truncated at $k=7$ for comparison; Zwick's full tables extend to $k=n$ with the familiar alternating 2/1 pattern and passes near the top.
+
+A clear pattern emerges as the board grows: the bounded-memory strategy converges to "flip two unknowns only at $k=0$; flip one everywhere else." The second unknown card mostly churns memory, and the cost of that churn increases with board size.
 
 ### Position values
 
@@ -395,7 +429,7 @@ Expected gain for the starting player (negative = Player 2 advantage):
 | $M$ | $n=8$ | $n=10$ | $n=12$ | $n=16$ | $n=20$ |
 |-----|-------|--------|--------|--------|--------|
 | 3 | $+0.039$ | $+0.030$ | $+0.024$ | $+0.017$ | $+0.014$ |
-| 5 | $-0.004$ | $+0.013$ | $+0.018$ | $+0.015$ | $+0.012$ |
+| 5 | $-0.005$ | $+0.013$ | $+0.018$ | $+0.015$ | $+0.012$ |
 | **7** | $-0.007$ | $-0.039$ | $\mathbf{-0.030}$ | $+0.007$ | $+0.010$ |
 | 9 | $-0.033$ | $-0.039$ | $-0.020$ | $-0.026$ | $-0.001$ |
 | $\infty$ | $-0.033$ | $-0.038$ | $-0.020$ | $-0.018$ | $-0.012$ |
