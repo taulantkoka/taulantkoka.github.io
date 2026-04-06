@@ -226,155 +226,160 @@ Thus the DP closes on $(n,k)$, and $V(s) = e_{n,k}$ where $(n,k)$ is the reduced
 </details>
 
 ## 6. The Optimal Strategy
-
+ 
 With greedy matching established, I can compute the optimal 0/1/2-move strategy by backward induction on the reduced state space $(n,k)$ with $0 \le k \le \min(n,M)$.
-
+ 
 I write $e_{n,k}$ for the value of state $(n,k)$ to the player to move. Positive means the current player is favoured; negative means the opponent is. The three candidate moves (pass, 1-move, 2-move) each produce a formula for the expected value; the player picks the best one.
-
+ 
 The boundary conditions are: $e_{0,0}=0$ (no cards left), and $e_{n,n}=n$ whenever $n \le M$ (all remaining pairs are known, so the current player sweeps them).
-
-### 6.1 The three moves (when memory is not full, $k < M$)
-
-Let $p = k/(2n-k)$ be the probability a new card matches something in memory, and $q = 1-p$.
-
-- **Pass (0-move):** hand the same state to the opponent. Value: $0$. Only legal for $k \ge 2$.
-- **1-move:** flip one new card. Match (prob $p$): score $+1$, play again from $(n{-}1, k{-}1)$. Miss (prob $q$): card enters memory, opponent faces $(n, k{+}1)$.
-- **2-move:** flip one new, then (on miss) a second new. Three sub-cases for the second card: lucky match with the first, auto-take by the opponent (matches a different singleton), or complete miss.
-
+ 
+### 6.1 The three moves (when memory isn't full, $k < M$)
+ 
+Let $p = k/(2n-k)$ be the probability that a newly flipped card matches one already in memory, and let $q = 1-p$.
+ 
+- **0-move (pass):** flip two cards you already know don't match. Nothing changes; the opponent inherits the same state. Value: $0$. Only legal when $k \ge 2$.
+- **1-move:** flip one new card. If it matches a remembered card (prob $p$), take the pair and play again from $(n{-}1, k{-}1)$. If not (prob $q$), waste your second flip on a card you already know, and the opponent faces $(n, k{+}1)$.
+- **2-move:** flip one new card. If it matches a remembered card, take the pair. If not, flip a second new card. This second card leads to one of three outcomes.
+ 
 <details markdown="1" class="notice">
 <summary>Full formulas for k < M</summary>
-
-**0-move.** A pass hands the same state to the opponent:
-
+ 
+**0-move.**
+ 
 $$
 e^0_{n,k}=-e_{n,k}.
 $$
-
-In the Bellman equation, allowing a pass is equivalent to including $0$ among the candidate values. Only legal for $k\ge 2$.
-
+ 
+Including the pass among the candidate moves is equivalent to clamping the value at zero: if both the 1-move and 2-move are negative, the player passes.
+ 
 **1-move.**
-
+ 
 $$
 e^1_{n,k}
 =
 p\bigl(1+e_{n-1,k-1}\bigr)-q\,e_{n,k+1}.
 $$
-
-**2-move.** After a first-card miss, there remain $d:=2n-k-1$ unknown positions. Conditional on that miss:
-
-- with probability $\frac1d$: lucky match with the first card. Take the pair, play again from $(n-1,k)$.
-- with probability $\frac{k}{d}$: matches a remembered singleton. The opponent auto-takes that pair.
-- with probability $\frac{2(n-k-1)}{d}$: no match. Both new cards enter memory, opponent faces $(n,k+2)$.
-
-A note on the auto-take branch. The minus sign in $-\frac{k}{d}(1+e_{n-1,k})$ reflects the fact that the *opponent* scores: the opponent gains $+1$ and faces $(n-1,k)$ from their perspective, which is $-e_{n-1,k}$ from yours. As for memory bookkeeping: the matched singleton and second new card leave ($-2$), but the first new card stays ($+1$). Net change: $k - 1 + 1 = k$. So the state is $(n-1,k)$, not $(n-1,k-1)$.
-
+ 
+On a match, you score a point and continue with one fewer pair and one fewer singleton in memory. On a miss, the new card enters memory (raising $k$ by one) and the opponent moves.
+ 
+**2-move.** Suppose the first card misses. It is now in memory, so there are $k+1$ remembered positions and $d := 2n-k-1$ remaining unknowns. The second card is drawn uniformly from these $d$ unknowns:
+ 
+- **Lucky match** (prob $\frac{1}{d}$): the second card matches the first. You take the pair and continue from $(n-1, k)$.
+- **Auto-take** (prob $\frac{k}{d}$): the second card matches a *different* remembered singleton. The opponent immediately takes that pair — scoring a point and continuing from $(n-1,k)$ in their frame, which is $-(1 + e_{n-1,k})$ in yours.
+- **Double miss** (prob $\frac{2(n-k-1)}{d}$): no match at all. Both new cards enter memory and the opponent faces $(n, k+2)$.
+ 
+A note on the auto-take bookkeeping: the matched singleton and the second new card are both removed from memory ($-2$), but the first new card stays ($+1$). Net change in $k$: zero. Hence the continuation state is $(n-1,k)$, not $(n-1,k-1)$.
+ 
+Putting it together:
+ 
 $$
 e^2_{n,k}
 =
 p\bigl(1+e_{n-1,k-1}\bigr)
 +
 q\left[
-\frac1d\bigl(1+e_{n-1,k}\bigr)
+\frac{1}{d}\bigl(1+e_{n-1,k}\bigr)
 -\frac{k}{d}\bigl(1+e_{n-1,k}\bigr)
--\frac{2(n-k-1)}{d}e_{n,k+2}
+-\frac{2(n-k-1)}{d}\,e_{n,k+2}
 \right].
 $$
-
+ 
 </details>
-
+ 
 ### 6.2 The boundary: what changes when memory is full ($k = M$)
-
-When memory is full, a miss no longer increases the number of remembered cards. Instead, the new card enters memory and the least recently used singleton is evicted. The key consequence: **a miss loops back to $(n, M)$ instead of advancing to $(n, M+1)$.** This creates self-referential equations that can be solved in closed form.
-
-For the 2-move, eviction also changes the bookkeeping: after the first miss evicts an old singleton, only $M-1$ old singletons remain for the second card to match. Both the lucky-match and auto-take branches lead to $(n-1, M-1)$, **not** $(n-1, M)$.
-
-Crucially, the eviction also changes the **number of unknown positions** available for the second flip. Before the first flip there are $2n-M$ unknowns. The first flip reveals one unknown (making it known) but eviction simultaneously pushes one known card back into the unknown pool. The net effect: the number of unknowns stays at $d := 2n - M$ for the second card, rather than dropping to $2n - M - 1$ as it would without eviction.
-
+ 
+When memory is already full, flipping a new card triggers LRU eviction: the new card enters memory and the oldest singleton is pushed out. This has two consequences.
+ 
+First, a miss no longer increases $k$. Instead of advancing to $(n, M+1)$, the state **loops back to $(n, M)$**. This makes the recurrence self-referential, but the resulting equations can be solved in closed form.
+ 
+Second, eviction changes the sample space for the 2-move's second flip. In the $k < M$ case, after the first miss, the number of unknowns drops by one (from $2n-k$ to $2n-k-1$) because one unknown became known. At the boundary, the evicted card re-enters the unknown pool at the same time, so the two effects cancel: the number of unknowns **stays at $d := 2n - M$**.
+ 
+After the first miss, memory holds $M-1$ old singletons plus the first new card. Only those $M-1$ old singletons can be matched by the second card (the evicted one is no longer remembered). So the auto-take probability drops from $M/d$ to $(M-1)/d$, and both the lucky-match and auto-take branches lead to state $(n-1, M-1)$ rather than $(n-1, M)$.
+ 
 <details markdown="1" class="notice">
 <summary>Full boundary formulas at k = M</summary>
-
-**1-move at $k=M$.** The miss loops back to $(n,M)$:
-
+ 
+**1-move at $k=M$.** A miss evicts the oldest singleton and loops back to $(n,M)$:
+ 
 $$
 e^1_{n,M}
 =
 p\bigl(1+e_{n-1,M-1}\bigr)-q\,e_{n,M}.
 $$
-
-If the 1-move is optimal, $e_{n,M}=e^1_{n,M}$, so
-
+ 
+If the 1-move turns out to be optimal at this state, then $e_{n,M}=e^1_{n,M}$ and we can solve directly:
+ 
 $$
 e^1_{n,M}
 =
 \frac{p\bigl(1+e_{n-1,M-1}\bigr)}{1+q}.
 $$
-
-**2-move at $k=M$.** After a first-card miss, the new card enters memory and one old singleton is evicted. Memory now holds $M-1$ old singletons plus the first new card ($M$ entries total). Meanwhile, the evicted card has re-entered the unknown pool, so the number of unknown positions remains $d=2n-M$.
-
-For the second card (with $d=2n-M$):
-- lucky match (prob $\frac1d$): pair removed, $M-1$ old singletons remain. State: $(n-1,M-1)$.
-- auto-take (prob $\frac{M-1}{d}$): matched singleton and second card leave, first card stays. State: $(n-1,M-1)$.
-- double miss (prob $\frac{2(n-M)}{d}$): memory still full, loops back to $(n,M)$.
-
-As a sanity check, the numerators sum to $1 + (M-1) + 2(n-M) = 2n - M = d$. $\checkmark$
-
+ 
+**2-move at $k=M$.** After a first-card miss (with eviction), the second card is drawn from $d = 2n-M$ unknowns:
+ 
+- **Lucky match** (prob $\frac{1}{d}$): the second card matches the first. Take the pair; $M-1$ old singletons remain. State: $(n-1, M-1)$.
+- **Auto-take** (prob $\frac{M-1}{d}$): the second card matches one of the $M-1$ remaining old singletons. The opponent takes that pair. State: $(n-1, M-1)$.
+- **Double miss** (prob $\frac{2(n-M)}{d}$): no match. Memory is still full; the state loops back to $(n, M)$.
+ 
+Sanity check: $1 + (M-1) + 2(n-M) = 2n - M = d$. $\checkmark$
+ 
 $$
 e^2_{n,M}
 =
 p\bigl(1+e_{n-1,M-1}\bigr)
 +
 q\left[
-\frac1d\bigl(1+e_{n-1,M-1}\bigr)
+\frac{1}{d}\bigl(1+e_{n-1,M-1}\bigr)
 -\frac{M-1}{d}\bigl(1+e_{n-1,M-1}\bigr)
--\frac{2(n-M)}{d}e_{n,M}
+-\frac{2(n-M)}{d}\,e_{n,M}
 \right].
 $$
-
-Collecting the $e_{n,M}$ term:
-
+ 
+Collecting $e_{n,M}$ on the left:
+ 
 $$
 e^2_{n,M}
 =
 \frac{
-\left(
-p+\frac{q(2-M)}{d}
-\right)\bigl(1+e_{n-1,M-1}\bigr)
+\left(p+\frac{q(2-M)}{d}\right)\bigl(1+e_{n-1,M-1}\bigr)
 }{
-1+q\frac{2(n-M)}{d}
+1+\frac{2q(n-M)}{d}
 }.
 $$
-
-All terms on the right involve $n-1$ pairs, already computed. This is the new boundary equation replacing Zwick's deep-$k$ recursion.
-
+ 
+Every term on the right involves $n-1$ pairs, which have already been computed. This closed-form boundary equation replaces Zwick's deep-$k$ recursion.
+ 
 </details>
-
+ 
 ### 6.3 Optimal move selection
-
-At each state, the player picks the best available move:
-
+ 
+At each state $(n,k)$, the player picks the move with the highest value:
+ 
 $$
 e_{n,k}
 =
 \begin{cases}
 e^2_{n,0}, & k=0,\\[4pt]
-\max\{e^1_{n,k},\,e^2_{n,k}\}, & k=1,\\[4pt]
-\max\{0,\,e^1_{n,k},\,e^2_{n,k}\}, & k\ge 2.
+\max\bigl\{e^1_{n,k},\,e^2_{n,k}\bigr\}, & k=1,\\[4pt]
+\max\bigl\{0,\,e^1_{n,k},\,e^2_{n,k}\bigr\}, & k\ge 2.
 \end{cases}
 $$
-
-The recursion is evaluated by increasing $n$, and for fixed $n$ by decreasing $k$ from $\min(n,M)$ to $0$.
-
+ 
+At $k=0$ the 1-move is not available (there is nothing in memory to match), and the pass is not available either (you need at least two known cards to waste both flips). At $k=1$ the pass is still unavailable. For $k \ge 2$ the pass (value $0$) enters the candidate set.
+ 
+The recursion is evaluated by increasing $n$, and for each $n$ by decreasing $k$ from $\min(n,M)$ down to $0$. This ordering guarantees that every value on the right-hand side has already been computed, except for the self-referential boundary terms at $k = M$, which are resolved in closed form as described above.
+ 
 <details markdown="1" class="notice">
 <summary>Two technical subtleties</summary>
-
-**Why eviction does not bias match probabilities.** After evictions, the probability that a new card matches memory is still $k/(2n-k)$. The reason: conditional on the current reduced state, forgotten cards are indistinguishable from never-seen cards. The original shuffle is uniform, and conditioning on which singletons are remembered does not bias the remaining positions. The unseen part of the board stays exchangeable.
-
-**Why optimal moves can change even below capacity.** The optimal move at $k=3$ can differ between Zwick and the bounded model even though $k=3<M=7$ and the local formula is identical. The reason: the *values* plugged into the formula are different.
-
-Think of it like a river. The riverbed (the formulas) is the same for the first 7 miles. But Zwick's river flows on to the sea, while the bounded model hits a dam at mile 7. The water level (the values) at mile 3 changes because of the dam downstream.
-
-Concretely, $e_{12,3}$ depends on $e_{12,5}$, which depends on $e_{12,7}$. In Zwick's model, $e_{12,7}$ feeds into $k=8,9,\dots,12$, including the pass states. Under $M=7$, $e_{12,7}$ loops back into the boundary recursion. Same formula, different downstream, different optimal move.
-
+ 
+**Why eviction does not bias match probabilities.** One might worry that forgetting cards changes the distribution of what remains. It does not: conditional on the current reduced state, a forgotten card is indistinguishable from one that was never seen. The original shuffle is uniform, and the unseen portion of the board remains exchangeable regardless of eviction history. So the match probability is still $k/(2n-k)$.
+ 
+**Why optimal moves can change even below capacity.** The formulas for $k < M$ are identical in the bounded and Zwick models. Yet the optimal move at, say, $k=3$ can differ between the two. The reason is that the *values* plugged into those formulas are different, because they ultimately depend on what happens at the boundary.
+ 
+An analogy: the riverbed is the same for the first 7 miles. But Zwick's river flows on to the sea, while the bounded model hits a dam at mile 7. The dam changes the water level everywhere upstream.
+ 
+Concretely, $e_{12,3}$ depends on $e_{12,5}$, which depends on $e_{12,7}$. In Zwick's model, $e_{12,7}$ feeds into $k=8,9,\dots,12$, including the pass equilibrium. Under $M=7$, $e_{12,7}$ loops back into the boundary recursion instead. Same local formula, different downstream values, different optimal move.
+ 
 </details>
 
 ## 7. Results
