@@ -265,7 +265,7 @@ On a match, you score a point and continue with one fewer pair and one fewer sin
 **2-move.** Suppose the first card misses. It is now in memory, so there are $k+1$ remembered positions and $d := 2n-k-1$ remaining unknowns. The second card is drawn uniformly from these $d$ unknowns:
  
 - **Lucky match** (prob $\frac{1}{d}$): the second card matches the first. You take the pair and continue from $(n-1, k)$.
-- **Auto-take** (prob $\frac{k}{d}$): the second card matches a *different* remembered singleton. The opponent immediately takes that pair — scoring a point and continuing from $(n-1,k)$ in their frame, which is $-(1 + e_{n-1,k})$ in yours.
+- **Auto-take** (prob $\frac{k}{d}$): the second card matches a *different* remembered singleton. The opponent immediately takes that pair, scoring a point and continuing from $(n-1,k)$ in their frame, which is $-(1 + e_{n-1,k})$ in yours.
 - **Double miss** (prob $\frac{2(n-k-1)}{d}$): no match at all. Both new cards enter memory and the opponent faces $(n, k+2)$.
  
 A note on the auto-take bookkeeping: the matched singleton and the second new card are both removed from memory ($-2$), but the first new card stays ($+1$). Net change in $k$: zero. Hence the continuation state is $(n-1,k)$, not $(n-1,k-1)$.
