@@ -1,395 +1,569 @@
-#!/usr/bin/env python3
-"""
-Asymmetric Memory: What if players have different capacities?
-Each player uses their own Bounded-optimal strategy (computed for their M).
-Each player has their own memory (capacity M1 vs M2).
+---
+title: "The Memory Game"
+permalink: /projects/memory/
+layout: single
+mathjax: true
+sidebar:
+  nav: "projects"
+toc: true
+---
 
-NOTE: With asymmetric memory, players no longer have identical memory.
-This means the shared-memory proof doesn't apply. However, both players
-still observe all flips — the difference is only in what they retain.
-We use each player's own optimal table as a reasonable (not provably optimal)
-strategy.
-"""
-
-import numpy as np
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-from fractions import Fraction
-from joblib import Parallel, delayed
-from collections import OrderedDict
-import os, time
-
-OUTPUT_DIR = os.path.dirname(os.path.abspath(__file__))
-def savefig(name):
-    plt.savefig(os.path.join(OUTPUT_DIR, name), dpi=150, bbox_inches='tight')
-
-# ═══════════════════════════════════════════════════════════════
-# COMPUTE STRATEGY TABLES FOR EACH M
-# ═══════════════════════════════════════════════════════════════
-def compute_bounded_values(N_max, M):
-    if M is None: M = 2*N_max+10
-    e = {(0,0): Fraction(0)}; opt = {}
-    for n in range(1, N_max+1):
-        if n <= M: e[(n,n)] = Fraction(n); opt[(n,n)] = 1
-        start_k = min(n-1, M) if n <= M else M
-        for k in range(start_k, -1, -1):
-            p_den = 2*n-k
-            if p_den == 0: continue
-            p = Fraction(k, p_den); q = Fraction(2*(n-k), p_den)
-            if k >= 1:
-                if k < M: v1 = p*(1+e[(n-1,min(k-1,M))]) - q*e[(n,min(k+1,M))]
-                else: v1 = p*(1+e[(n-1,M-1)])/(1+q) if (1+q)!=0 else Fraction(0)
-            else: v1 = None
-            d2 = (2*n-M) if k == M else (2*n-k-1)
-            if d2 > 0:
-                k_prime=min(k+1,M); k_lucky=k if k<M else M-1
-                k_auto=k if k<M else M-1; k_nm2=min(k+2,M)
-                fl=Fraction(1,d2); fa=Fraction(k_prime-1,d2) if k_prime>=1 else Fraction(0)
-                nk1=(n-M) if k == M else (n-k-1); fn=Fraction(2*nk1,d2) if nk1>0 else Fraction(0)
-                first=p*(1+e[(n-1,min(k-1,M))]) if k>=1 else Fraction(0)
-                ik=fl*(1+e[(n-1,min(k_lucky,M))]); ia=fa*(1+e[(n-1,min(k_auto,M))])
-                if k_nm2!=k and (n,k_nm2) in e:
-                    v2=first+q*(ik-ia-fn*e[(n,k_nm2)])
-                elif k<M: v2=first+q*(ik-ia-fn*e.get((n,k_nm2),Fraction(0)))
-                else:
-                    rhs=first+q*(ik-ia); denom2=1+q*fn
-                    v2=rhs/denom2 if denom2!=0 else Fraction(0)
-            elif d2==0:
-                v2=Fraction(1)+(e.get((n-1,min(k-1 if k>=1 else 0,M)),Fraction(0)) if k>=1 else Fraction(0))
-            else: v2=Fraction(0)
-            v1v=v1 if v1 is not None else Fraction(-99999)
-            if k==0: e[(n,k)]=v2; opt[(n,k)]=2
-            elif k==1:
-                if v1v>=v2: e[(n,k)]=v1v; opt[(n,k)]=1
-                else: e[(n,k)]=v2; opt[(n,k)]=2
-            else:
-                if v1v>0 and v1v>=v2: e[(n,k)]=v1v; opt[(n,k)]=1
-                elif v2>=0 and v2>=v1v: e[(n,k)]=v2; opt[(n,k)]=2
-                elif v1v<=0 and v2<=0: e[(n,k)]=Fraction(0); opt[(n,k)]=0
-                else: e[(n,k)]=max(v1v,v2); opt[(n,k)]=1 if v1v>v2 else 2
-    return e, opt
-
-N = 40
-M_values = list(range(3, 21))  # M=3 to M=20
-
-print("Computing strategy tables for each M...")
-TABLES = {}
-VALUES = {}
-for M in M_values:
-    e, opt = compute_bounded_values(N, M)
-    TABLES[M] = opt
-    VALUES[M] = e
-    print(f"  M={M:2d}: done")
-
-# ═══════════════════════════════════════════════════════════════
-# GAME ENGINE WITH ASYMMETRIC MEMORY
-# ═══════════════════════════════════════════════════════════════
-class PlayerMemory:
-    def __init__(self, cap, rng):
-        self.cap=cap; self.rng=rng; self.store=OrderedDict()
-    def observe(self, pos, value):
-        if pos in self.store: self.store.move_to_end(pos); self.store[pos]=value; return
-        while len(self.store)>=self.cap: self.store.popitem(last=False)
-        self.store[pos]=value
-    def find_value(self, value, exclude=None):
-        for pos,val in self.store.items():
-            if val==value and pos!=exclude: self.store.move_to_end(pos); return pos
-        return None
-    def known_alive(self, alive): return sum(1 for p in self.store if p in alive)
-    def forget_pos(self, pos):
-        if pos in self.store: del self.store[pos]
-
-def play_game(n_pairs, M1, M2, table1, table2, seed):
-    rng=np.random.default_rng(seed)
-    cards=list(range(n_pairs))*2; rng.shuffle(cards)
-    board=np.array(cards); alive=set(range(2*n_pairs))
-    mem=[PlayerMemory(M1, rng), PlayerMemory(M2, rng)]
-    scores=[0,0]; tables=[table1,table2]
-
-    def flip(pos):
-        v=board[pos]
-        mem[0].observe(pos,v); mem[1].observe(pos,v)
-        return v
-    def remove(p1,p2,player):
-        alive.discard(p1); alive.discard(p2)
-        mem[0].forget_pos(p1); mem[0].forget_pos(p2)
-        mem[1].forget_pos(p1); mem[1].forget_pos(p2)
-        scores[player]+=1
-    def pick_new(player, exclude=None):
-        al=[p for p in alive if p!=exclude]
-        if not al: return None
-        unk=[p for p in al if p not in mem[player].store]
-        return rng.choice(unk) if unk else rng.choice(al)
-    def pick_known(player, exclude=None):
-        al=[p for p in alive if p!=exclude]
-        if not al: return None
-        kn=[p for p in al if p in mem[player].store]
-        return rng.choice(kn) if kn else rng.choice(al)
-    def try_match(player, pos1, val1):
-        mp=mem[player].find_value(val1, exclude=pos1)
-        if mp is not None and mp in alive:
-            flip(mp)
-            if board[mp]==val1: remove(pos1,mp,player); return True
-        return False
-    def auto_take(player, val, pos):
-        opp=1-player; om=mem[opp].find_value(val, exclude=pos)
-        if om is not None and om in alive:
-            flip(om)
-            if board[om]==val: remove(pos,om,opp)
-
-    cur=0; passes=0
-    for _ in range(50000):
-        n=len(alive)//2
-        if n==0: break
-        k=min(mem[cur].known_alive(alive), mem[cur].cap)
-        move=tables[cur].get((n,k), 2)
-
-        if move==0:
-            passes+=1
-            if passes>=4: break
-            cur=1-cur; continue
-        passes=0
-        if move==1:
-            pos1=pick_new(cur)
-            if pos1 is None: break
-            val1=flip(pos1)
-            if try_match(cur,pos1,val1): continue
-            idle=pick_known(cur,pos1)
-            if idle is not None: flip(idle)
-            cur=1-cur
-        elif move==2:
-            pos1=pick_new(cur)
-            if pos1 is None: break
-            val1=flip(pos1)
-            if try_match(cur,pos1,val1): continue
-            pos2=pick_new(cur,pos1)
-            if pos2 is None: cur=1-cur; continue
-            val2=board[pos2]                 # peek — card2 does not enter memory yet
-            if val2==val1:                   # lucky match: card2 never enters memory
-                remove(pos1,pos2,cur); continue
-            # Convention B: check auto-take BEFORE card2 enters memory
-            opp=1-cur
-            om=mem[opp].find_value(val2, exclude=pos2)
-            if om is not None and om in alive and board[om]==val2:
-                flip(om)                     # matching card already in memory, no eviction
-                remove(pos2,om,opp)
-            else:
-                flip(pos2)                   # double miss: card2 enters memory now
-            cur=1-cur
-
-    s0,s1=scores; w=0 if s0>s1 else (1 if s1>s0 else -1)
-    return w, s0, s1
-
-def measure(n, M1, M2, t1, t2, ng, seed):
-    seeds=[np.random.SeedSequence(seed).spawn(ng)]
-    ints=[s.generate_state(1)[0] for s in seeds[0]]
-    res=Parallel(n_jobs=1,backend='loky')(
-        delayed(play_game)(n,M1,M2,t1,t2,s) for s in ints)
-    p1w,p2w,dr=0,0,0; ts=[0,0]
-    for w,s0,s1 in res:
-        ts[0]+=s0; ts[1]+=s1
-        if w==0: p1w+=1
-        elif w==1: p2w+=1
-        else: dr+=1
-    dec=p1w+p2w
-    return {
-        'p1_wr':p1w/ng, 'p2_wr':p2w/ng, 'draws':dr/ng,
-        'p2_cond':p2w/dec if dec>0 else .5,
-        'gain':(ts[0]-ts[1])/ng, 'avg':[ts[0]/ng, ts[1]/ng],
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      extensions: ["bm.js", "AMSmath.js", "AMSsymbols.js"]
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
     }
+  });
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 
-def run_point(n, M1, M2, t1, t2, ng, seed, label):
-    return (label, n, M1, M2, measure(n, M1, M2, t1, t2, ng, seed))
+<h2 data-toc-skip>The Optimal Strategy for Memory Under Bounded Working Memory</h2>
+**Taulant Koka · March 2026 · [GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
 
-# ═══════════════════════════════════════════════════════════════
-# EXPERIMENT 1: Full M1 × M2 matrix at fixed board sizes
-# ═══════════════════════════════════════════════════════════════
-ng = 100000
-test_Ms = [3, 5, 7, 9, 12, 20]
-board_sizes = [8, 12, 16, 24]
+## 1. The Game
 
-print(f"\nEXP 1: Asymmetric memory matchup matrices")
-print(f"  {len(test_Ms)}×{len(test_Ms)} capacity pairs × {len(board_sizes)} boards × {ng} games")
+Memory (also known as Concentration or Pairs) is a card game played with $n$ pairs of identical cards ($2n$ cards total), shuffled and placed face down on a table. Players alternate turns. On each turn, a player flips two cards face up. If the two cards match, the player takes the pair and plays again. If they do not match, both cards are flipped back face down and the turn passes to the opponent. The player with the most pairs at the end wins.
 
-jobs1 = []
-for n in board_sizes:
-    for M1 in test_Ms:
-        for M2 in test_Ms:
-            seed = 10000*n + 100*M1 + M2
-            jobs1.append((n, M1, M2, TABLES[M1], TABLES[M2], ng, seed,
-                         f"n={n} M1={M1} M2={M2}"))
+Despite being a children's game, Memory has a surprisingly rich strategic structure. Every card flip reveals information to *both* players, and the key decision is how to balance learning (flipping new cards) against exploiting what you already know (flipping a card whose match you remember). This raises a natural question: **does it matter who goes first?**
 
-t0 = time.time()
-res1 = Parallel(n_jobs=-1, backend='loky', verbose=10)(
-    delayed(run_point)(*j) for j in jobs1)
-print(f"Done in {time.time()-t0:.1f}s")
+If you want to skip the theory and just play, there's an [interactive game](#9-play-against-the-bot) at the end where you can take on the optimal strategy yourself.
 
-# Organize into matrices
-matrices = {}
-for label, n, M1, M2, r in res1:
-    matrices.setdefault(n, {})[(M1, M2)] = r
+*A note on methodology: this is the first time I've produced a mathematical result with the help of an AI agent. I used Claude Opus as a mathematical collaborator to explore conjectures, draft proof sketches, and sanity-check recurrences. The arguments were developed iteratively: I refined and corrected proof ideas, carried out parts of the derivations myself, and verified the final analysis and implementation.*
 
-# Print
-for n in board_sizes:
-    print(f"\nn={n} ({2*n} cards): P1 expected gain")
-    print(f"  {'P1\\P2':>8s}", end="")
-    for M2 in test_Ms: print(f"  M2={M2:2d}", end="")
-    print()
-    for M1 in test_Ms:
-        print(f"  M1={M1:2d}  ", end="")
-        for M2 in test_Ms:
-            r = matrices[n][(M1, M2)]
-            print(f"  {r['gain']:+6.2f}", end="")
-        print()
+## 2. What Zwick and Paterson Showed
 
-    print(f"\n  P(P2 wins | decisive)")
-    print(f"  {'P1\\P2':>8s}", end="")
-    for M2 in test_Ms: print(f"  M2={M2:2d}", end="")
-    print()
-    for M1 in test_Ms:
-        print(f"  M1={M1:2d}  ", end="")
-        for M2 in test_Ms:
-            r = matrices[n][(M1, M2)]
-            print(f"  {r['p2_cond']:6.3f}", end="")
-        print()
+In 1993, Uri Zwick and Michael Paterson published the definitive analysis of Memory under the assumption that both players have *perfect memory*: they remember the identity and position of every card ever flipped.
 
-# ═══════════════════════════════════════════════════════════════
-# EXPERIMENT 2: How much is one extra slot worth?
-# ═══════════════════════════════════════════════════════════════
-print(f"\n{'='*70}")
-print("EXP 2: Value of one extra memory slot")
-print(f"{'='*70}")
+Their key insight was to characterise each game position by just two numbers:
+- $n$: the number of pairs remaining on the board
+- $k$: the number of cards both players have previously inspected (and remember perfectly)
 
-fine_Ms = [3, 4, 5, 6, 7, 8, 9, 10, 12, 15]
-jobs2 = []
-for n in [8, 12, 16, 24]:
-    for M_base in fine_Ms:
-        if M_base + 1 > 20: continue
-        M_better = M_base + 1
-        if M_better not in TABLES: continue
-        # Better memory as P1
-        jobs2.append((n, M_better, M_base, TABLES[M_better],
-                      TABLES[M_base], ng, 20000*n+100*M_base,
-                      f"n={n} P1:M={M_better} vs P2:M={M_base}"))
-        # Better memory as P2
-        jobs2.append((n, M_base, M_better, TABLES[M_base],
-                      TABLES[M_better], ng, 30000*n+100*M_base,
-                      f"n={n} P1:M={M_base} vs P2:M={M_better}"))
+At each turn, the player chooses one of three moves:
 
-t0 = time.time()
-res2 = Parallel(n_jobs=-1, backend='loky', verbose=5)(
-    delayed(run_point)(*j) for j in jobs2)
-print(f"Done in {time.time()-t0:.1f}s")
+- **0-move (pass):** Flip two already-known, non-matching cards. The turn passes to the opponent.
+- **1-move:** Flip one new card. If it matches a remembered card, take the pair and play again. If not, "waste" the second flip by re-flipping a card you already know.
+- **2-move:** Flip one new card. If it matches a remembered card, take the pair. If not, flip a *second* new card. If the two new cards happen to match, take the pair. Otherwise, the turn passes.
 
-for label, n, M1, M2, r in res2:
-    better = "P1" if M1 > M2 else "P2"
-    print(f"  {label:<40s} gain={r['gain']:+.3f} P2|dec={r['p2_cond']:.3f} "
-          f"→ {better} (M={max(M1,M2)}) advantage")
+Through backward induction on the state space $(n,k)$ (solving the game by working backwards from the end, where the optimal play is obvious, to the beginning), they computed the exact optimal strategy. The results are surprising:
 
-# ═══════════════════════════════════════════════════════════════
-# PLOTS
-# ═══════════════════════════════════════════════════════════════
+1. **Player 2 has a slight advantage** for even $n \ge 8$, of magnitude about $1/(4n)$ pairs.
+2. **The key strategic weapon is the pass.** At high $k$, both players know where most pairs are but deliberately refrain from taking them, engaging in a delicate game of parity control.
+3. **Stalemates occur** in a substantial fraction of games under optimal play, when both players pass indefinitely.
 
-# ── Fig 1: Heatmap matrices ──
-fig1, axes1 = plt.subplots(1, len(board_sizes), figsize=(6*len(board_sizes), 5))
-fig1.suptitle(f'Asymmetric Memory: P1 Expected Gain\n'
-              f'Each player uses their own Bounded-optimal strategy | {ng} games',
-              fontsize=14, fontweight='bold')
+This is elegant, but it immediately raises the question: does any of this survive when players do not have perfect memory?
 
-for idx, n in enumerate(board_sizes):
-    ax = axes1[idx]
-    mat = np.zeros((len(test_Ms), len(test_Ms)))
-    for i, M1 in enumerate(test_Ms):
-        for j, M2 in enumerate(test_Ms):
-            mat[i, j] = matrices[n][(M1, M2)]['gain']
+## 3. First Attempt: Stochastic Memory Decay
 
-    vmax = max(abs(mat.min()), abs(mat.max()))
-    im = ax.imshow(mat, cmap='RdBu_r', vmin=-vmax, vmax=vmax, aspect='equal')
-    ax.set_xticks(range(len(test_Ms)))
-    ax.set_yticks(range(len(test_Ms)))
-    ax.set_xticklabels([str(m) for m in test_Ms], fontsize=9)
-    ax.set_yticklabels([str(m) for m in test_Ms], fontsize=9)
-    ax.set_xlabel('P2 memory M₂')
-    ax.set_ylabel('P1 memory M₁')
-    ax.set_title(f'n={n} ({2*n} cards)', fontweight='bold')
+My first approach, inspired by [Samuel Kilian](https://www.youtube.com/shorts/MPXQDAMsmro), was to model forgetting as probabilistic decay: each turn, every remembered card has a probability $\delta$ of being forgotten. This is analytically convenient, the Zwick framework mostly carries over, and it lets you sweep continuously from perfect memory ($\delta=0$) to complete amnesia ($\delta=1$).
 
-    for i in range(len(test_Ms)):
-        for j in range(len(test_Ms)):
-            val = mat[i, j]
-            color = 'white' if abs(val) > vmax * 0.4 else 'black'
-            ax.text(j, i, f'{val:+.1f}', ha='center', va='center',
-                   fontsize=8, fontweight='bold', color=color)
+I ran large-scale Monte Carlo simulations under this model. The results were interesting: at low $\delta$, the Zwick Player 2 advantage survives. Around $\delta \approx 0.10\text{--}0.15$, there is a phase transition where the Zwick stalemate regime collapses and the game becomes more decisive. At high $\delta$, the game converges to a coin flip.
 
-    plt.colorbar(im, ax=ax, shrink=0.8, label='P1 gain (pairs)')
+But the model bothered me. Probabilistic decay means you might remember a card you saw 20 turns ago while forgetting one you saw 2 turns ago. That does not match my experience of how memory works in this game. You either correctly remember where a card is or you do not. And when your brain is full and you see something new, something old gets pushed out. The bottleneck feels more like *capacity* than *reliability*.
 
-plt.tight_layout(rect=[0, 0, 1, 0.92])
-savefig('asymmetric_gain_heatmap.png')
-print("\nSaved asymmetric_gain_heatmap.png")
+## 4. From Miller's Law to a Tractable Model
 
-# ── Fig 2: Conditional P2 win rate heatmaps ──
-fig2, axes2 = plt.subplots(1, len(board_sizes), figsize=(6*len(board_sizes), 5))
-fig2.suptitle(f'Asymmetric Memory: P(P2 Wins | Decisive)\n'
-              f'{ng} games per cell',
-              fontsize=14, fontweight='bold')
+This pointed me toward George Miller's famous 1956 paper on the "magical number seven, plus or minus two". Later work has revised the effective capacity downward, with Cowan (2001) arguing for something closer to 4 chunks under stricter definitions, and the exact number depends heavily on chunking and task design. For this project I use $M=7$ as a convenient human-scale benchmark, not as a literal psychological constant. The important point is not the precise number but the qualitative fact: working memory has a hard capacity limit, and it is much smaller than a typical Memory board.
 
-for idx, n in enumerate(board_sizes):
-    ax = axes2[idx]
-    mat = np.zeros((len(test_Ms), len(test_Ms)))
-    for i, M1 in enumerate(test_Ms):
-        for j, M2 in enumerate(test_Ms):
-            mat[i, j] = matrices[n][(M1, M2)]['p2_cond']
+Of course, real human memory is more complex than a fixed-size buffer. Decay, interference, attention, emotional salience, rehearsal: they all play a role. A fully realistic model would need to account for all of these, and would almost certainly be intractable.
 
-    im = ax.imshow(mat, cmap='RdBu', vmin=0.3, vmax=0.7, aspect='equal')
-    ax.set_xticks(range(len(test_Ms)))
-    ax.set_yticks(range(len(test_Ms)))
-    ax.set_xticklabels([str(m) for m in test_Ms], fontsize=9)
-    ax.set_yticklabels([str(m) for m in test_Ms], fontsize=9)
-    ax.set_xlabel('P2 memory M₂')
-    ax.set_ylabel('P1 memory M₁')
-    ax.set_title(f'n={n} ({2*n} cards)', fontweight='bold')
+So I opted for a deliberate simplification: a deterministic bounded-memory model that captures the capacity constraint while remaining analytically solvable. Each player has a working memory of capacity $M$ (number of card positions). When memory is full and a new card is observed, the **least recently used** entry is evicted.
 
-    for i in range(len(test_Ms)):
-        for j in range(len(test_Ms)):
-            val = mat[i, j]
-            color = 'white' if abs(val - 0.5) > 0.1 else 'black'
-            ax.text(j, i, f'{val:.3f}', ha='center', va='center',
-                   fontsize=7, fontweight='bold', color=color)
+This is not meant to be a faithful model of human cognition. It is the simplest model that has the property I care about: memory is bounded, and new information displaces old information.
 
-    plt.colorbar(im, ax=ax, shrink=0.8, label='P(P2 wins | decisive)')
+The reason this simplification works so well turns out to be mathematical rather than psychological.
 
-plt.tight_layout(rect=[0, 0, 1, 0.92])
-savefig('asymmetric_p2cond_heatmap.png')
-print("Saved asymmetric_p2cond_heatmap.png")
+**Key property:** since both players see every flip and both use the same deterministic eviction rule, **both players have identical memory at all times**. The memory state is common knowledge. So the game remains one of perfect information, the same class of game Zwick analysed. All that changes is the state space.
 
-# ── Fig 3: Memory advantage curve ──
-fig3, ax3 = plt.subplots(figsize=(12, 7))
+Any stochastic model of forgetting (decay, random interference, attention fluctuation) would give the two players *different* memories, creating private information and turning the game into something closer to poker. That is a much harder problem. The deterministic LRU model sidesteps this and keeps backward induction available.
 
-# For each board size, plot P1 win rate when P1 has M+Δ vs P2 has M=7
-for idx, n in enumerate(board_sizes):
-    Ms_p1 = []
-    p1_gains = []
-    for M1 in test_Ms:
-        r = matrices[n].get((M1, 7))
-        if r:
-            Ms_p1.append(M1)
-            p1_gains.append(r['gain'])
+At the level of the full game, a state consists of:
+- the unmatched cards remaining on the board,
+- whose turn it is,
+- the ordered shared LRU memory list.
 
-    ax3.plot(Ms_p1, p1_gains, '-o', ms=7, lw=2,
-             label=f'n={n} ({2*n} cards)')
+The next section shows why, after one key structural theorem, this can be reduced to a much smaller state description.
 
-ax3.axhline(0, color='black', ls='--', alpha=0.5)
-ax3.axvline(7, color='red', ls=':', alpha=0.3, lw=2, label="P2 has M=7")
-ax3.set_xlabel('P1 memory capacity M₁ (P2 fixed at M₂=7)', fontsize=12)
-ax3.set_ylabel('P1 expected gain (pairs)', fontsize=12)
-ax3.set_title('How Much Does Better Memory Help?\n'
-              'P1 varies, P2 fixed at M=7, both play Bounded-optimal',
-              fontsize=14, fontweight='bold')
-ax3.legend(fontsize=11); ax3.grid(True, alpha=0.2)
-plt.tight_layout()
-savefig('asymmetric_memory_advantage.png')
-print("Saved asymmetric_memory_advantage.png")
+## 5. Greedy Matching Is Optimal
 
-print("\n" + "="*70)
-print("ALL DONE")
-print("="*70)
+Before computing the dynamic program, I need to settle a structural question: if the shared memory already contains both positions of some matching pair, is it ever optimal to leave that pair on the board?
+
+The short answer is no. Under shared memory, if you can see a pair, so can your opponent. Deferring it either hands it to your opponent (who takes it) or risks it being forgotten (evicted from memory). Neither outcome is better than just taking it now.
+
+### Theorem
+
+*If both players can see a matching pair in shared memory, taking it immediately is always at least as good as any other move.*
+
+More precisely: in the bounded-memory model with deterministic LRU eviction, suppose the shared memory contains both positions of some matching pair $P$. Then no legal action that leaves $P$ on the board can yield a higher expected payoff than taking $P$ at once. This is weak dominance: if two pairs are visible simultaneously, taking either one first may be equally good, but deferring a known pair is never strictly better.
+
+<details markdown="1" class="notice">
+<summary>Proof</summary>
+
+Write $s=(B,\pi,L)$ for a full game state, where $B$ is the set of unmatched cards, $\pi$ is the player to move, and $L$ is the ordered shared LRU memory list. For any legal action $a$, let $Q(s,a)$ be the value to the player to move of taking action $a$ in state $s$ and then playing optimally thereafter, and let
+
+$$
+V(s)=\max_a Q(s,a).
+$$
+
+Assume $\pi=A$, and that $L$ contains both $\alpha,\beta$ of the matching pair $P=\{\alpha,\beta\}$.
+
+Let $a$ be any legal action by $A$ that does not take $P$ immediately. We compare:
+
+- the **deferred** line, in which $A$ plays $a$ from $s$;
+- the **immediate-take** line, in which $A$ first takes $P$, moving to
+
+  $$
+  s^+ := T_P(s),
+  $$
+
+  and then both players play optimally.
+
+Thus
+
+$$
+Q(s,\text{take }P)=1+V(s^+).
+$$
+
+The key observation is that $s^+$ is obtained from $s$ by deleting $\alpha,\beta$ from both the board and the shared memory.
+
+**Lemma (LRU monotonicity).** Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations
+
+$$
+x_1,x_2,\dots,x_t,
+$$
+
+none of which is one of the deleted entries. Then after every prefix $x_1,\dots,x_r$, the updated list $L'_r$ is obtained from $L_r$ by deleting some subset of the originally deleted entries. In particular:
+
+1. every non-deleted card remembered in $L_r$ is also remembered in $L'_r$;
+2. the relative LRU order of the non-deleted remembered cards is the same in both lists.
+
+*Proof of lemma.* By induction on $r$.
+
+For $r=0$ this is true by construction. Assume it holds at step $r$, and consider the next observation $x_{r+1}$.
+
+- If $x_{r+1}$ is already present in both lists, both move it to the MRU end.
+- If $x_{r+1}$ is absent from both lists, both insert it. If no eviction occurs, the relation is preserved. If eviction occurs, $L_r$ evicts its LRU entry; $L'_r$, being obtained from $L_r$ by deleting entries, either evicts the same entry or one already deleted.
+- If $x_{r+1}$ is present in $L'_r$, then by the induction hypothesis it is also present in $L_r$, so this reduces to the first case.
+- The case where $x_{r+1}$ is present in $L_r$ but absent from $L'_r$ cannot occur, because deleted entries are excluded from the observation sequence.
+
+So the invariant is preserved for all $r$. $\square$
+
+Apply the lemma with the deleted entries equal to $\alpha,\beta$. It follows that for any common sequence of subsequent observations of non-$P$ cards, the immediate-take state $s^+$ is never worse informed about the remaining board than the deferred state.
+
+Now let $\tau$ be the first time in the deferred play at which one of three things happens: $A$ takes $P$, $B$ takes $P$, or one of $\alpha,\beta$ is evicted from memory:
+
+**Case 1: $B$ takes $P$ at time $\tau$.** Then the deferred line has allowed the opponent to score a publicly known pair that $A$ could have taken immediately. Relative to the immediate-take line, $A$ is down one pair and, by the lemma, is not better informed about the remaining board. Hence
+
+$$
+Q(s,\text{take }P)\;>\;Q(s,a).
+$$
+
+**Case 2: one of $\alpha,\beta$ is evicted before $P$ is taken.** Then the deferred line has failed to bank an immediately available point and has weakly reduced future information. The immediate-take line has already scored the point and is weakly better informed on the remaining board. So again
+
+$$
+Q(s,\text{take }P)\;>\;Q(s,a).
+$$
+
+**Case 3: $A$ takes $P$ at time $\tau$.** At that moment, both lines have removed the same pair $P$, and the remaining board is identical. Let $s_\tau^{\mathrm{def}}$ and $s_\tau^{\mathrm{imm}}$ be the resulting full states after removal of $P$ in the deferred and immediate-take lines respectively. By the LRU monotonicity lemma,
+
+$$
+s_\tau^{\mathrm{imm}}
+\quad\text{is weakly better informed than}\quad
+s_\tau^{\mathrm{def}}
+$$
+
+on the remaining board. Therefore
+
+$$
+V\!\left(s_\tau^{\mathrm{imm}}\right)\;\ge\;V\!\left(s_\tau^{\mathrm{def}}\right),
+$$
+
+and hence
+
+$$
+Q(s,\text{take }P)\;\ge\;Q(s,a).
+$$
+
+In all three cases,
+
+$$
+Q(s,\text{take }P)\;\ge\;Q(s,a)
+\qquad
+\text{for every legal }a\text{ that leaves }P\text{ on the board}.
+$$
+
+So taking a publicly known pair immediately is weakly dominant. $\square$
+
+**Remark.** This proof uses the fact that memory is shared and publicly observable. With private memory, A could know a pair that B does not know about. In that setting, holding the pair in reserve could be genuinely strategic.
+
+</details>
+
+### Corollary
+
+We may restrict attention to optimal strategies that never leave a publicly known pair unmatched at a decision point. Hence, in reduced states, the shared memory contains only unmatched singletons, one from each of $k$ distinct pairs. The value of a reduced state depends only on $(n,k)$, not on the specific card identities or their LRU order, because all singletons are exchangeable under relabeling. So the game state reduces to the pair $(n,k)$, and the full-state value $V(s)$ becomes the scalar $e_{n,k}$.
+
+<details markdown="1" class="notice">
+<summary>Why does value depend only on (n, k)?</summary>
+
+Among reduced states with $n$ remaining pairs and $k$ remembered singleton positions, the value depends only on $(n,k)$.
+
+*Sketch.* Once all remembered cards are unmatched singletons with distinct values, the only quantities that affect the transition law are:
+
+- the number $k$ of remembered singleton positions;
+- the number $2n-k$ of unknown positions;
+- the number of remembered singleton positions removed or added in each branch.
+
+The specific labels of the remembered cards are exchangeable under relabeling of pair identities. Moreover, when a known card is used as the idle flip in a 1-move or as part of a 0-move, the resulting continuation value depends only on the updated count.
+
+Thus the DP closes on $(n,k)$, and $V(s) = e_{n,k}$ where $(n,k)$ is the reduced state corresponding to $s$.
+
+</details>
+
+## 6. The Optimal Strategy
+
+With greedy matching established, I can compute the optimal 0/1/2-move strategy by backward induction on the reduced state space $(n,k)$ with $0 \le k \le \min(n,M)$.
+
+I write $e_{n,k}$ for the value of state $(n,k)$ to the player to move. Positive means the current player is favoured; negative means the opponent is. The three candidate moves (pass, 1-move, 2-move) each produce a formula for the expected value; the player picks the best one.
+
+The boundary conditions are: $e_{0,0}=0$ (no cards left), and $e_{n,n}=n$ whenever $n \le M$ (all remaining pairs are known, so the current player sweeps them).
+
+**Observation convention.** A card enters working memory only if its outcome is not resolved immediately. If you flip a card and it completes a pair — whether by matching the first card you flipped (lucky match) or by matching a singleton the opponent recognises (auto-take) — the pair is taken on the spot and neither card of the pair needs to be stored for future recall. Only cards whose fate remains unresolved occupy a memory slot. This matters at the boundary $k=M$: a lucky match after one eviction leaves $M-1$ old singletons in memory, not $M-2$.
+
+### 6.1 The three moves (when memory is not full, $k < M$)
+
+Let $p = k/(2n-k)$ be the probability that a newly flipped card matches one already in memory, and let $q = 1-p$.
+
+- **0-move (pass):** flip two cards you already know don't match. Nothing changes; the opponent inherits the same state. Value: $0$. Only legal when $k \ge 2$.
+- **1-move:** flip one new card. If it matches a remembered card (prob $p$), take the pair and play again from $(n{-}1, k{-}1)$. If not (prob $q$), waste your second flip on a card you already know, and the opponent faces $(n, k{+}1)$.
+- **2-move:** flip one new card. If it matches a remembered card, take the pair. If not, flip a second new card. This second card leads to one of three outcomes.
+
+<details markdown="1" class="notice">
+<summary>Full formulas for k < M</summary>
+
+**0-move.**
+
+$$
+e^0_{n,k}=-e_{n,k}.
+$$
+
+Including the pass among the candidate moves is equivalent to clamping the value at zero: if both the 1-move and 2-move are negative, the player passes.
+
+**1-move.**
+
+$$
+e^1_{n,k}
+=
+p\bigl(1+e_{n-1,k-1}\bigr)-q\,e_{n,k+1}.
+$$
+
+On a match, you score a point and continue with one fewer pair and one fewer singleton in memory. On a miss, the new card enters memory (raising $k$ by one) and the opponent moves.
+
+**2-move.** Suppose the first card misses. It is now in memory, so there are $k+1$ remembered positions and $d := 2n-k-1$ remaining unknowns. The second card is drawn uniformly from these $d$ unknowns:
+
+- **Lucky match** (prob $\frac{1}{d}$): the second card matches the first. You take the pair and continue from $(n-1, k)$.
+- **Auto-take** (prob $\frac{k}{d}$): the second card matches a *different* remembered singleton. The opponent immediately takes that pair — scoring a point and continuing from $(n-1,k)$ in their frame, which is $-(1 + e_{n-1,k})$ in yours.
+- **Double miss** (prob $\frac{2(n-k-1)}{d}$): no match at all. Both new cards enter memory and the opponent faces $(n, k+2)$.
+
+A note on the auto-take bookkeeping: the matched singleton and the second new card are both removed from memory ($-2$), but the first new card stays ($+1$). Net change in $k$: zero. Hence the continuation state is $(n-1,k)$, not $(n-1,k-1)$.
+
+Putting it together:
+
+$$
+e^2_{n,k}
+=
+p\bigl(1+e_{n-1,k-1}\bigr)
++
+q\left[
+\frac{1}{d}\bigl(1+e_{n-1,k}\bigr)
+-\frac{k}{d}\bigl(1+e_{n-1,k}\bigr)
+-\frac{2(n-k-1)}{d}\,e_{n,k+2}
+\right].
+$$
+
+</details>
+
+### 6.2 The boundary: what changes when memory is full ($k = M$)
+
+When memory is already full, flipping a new card triggers LRU eviction: the new card enters memory and the oldest singleton is pushed out. This has two consequences.
+
+First, a miss no longer increases $k$. Instead of advancing to $(n, M+1)$, the state **loops back to $(n, M)$**. This makes the recurrence self-referential, but the resulting equations can be solved in closed form.
+
+Second, eviction changes the sample space for the 2-move's second flip. In the $k < M$ case, after the first miss, the number of unknowns drops by one (from $2n-k$ to $2n-k-1$) because one unknown became known. At the boundary, the evicted card re-enters the unknown pool at the same time, so the two effects cancel: the number of unknowns **stays at $d := 2n - M$**.
+
+After the first miss, memory holds $M-1$ old singletons plus the first new card. Only those $M-1$ old singletons can be matched by the second card (the evicted one is no longer remembered). So the auto-take probability drops from $M/d$ to $(M-1)/d$, and both the lucky-match and auto-take branches lead to state $(n-1, M-1)$ rather than $(n-1, M)$.
+
+<details markdown="1" class="notice">
+<summary>Full boundary formulas at k = M</summary>
+
+**1-move at $k=M$.** A miss evicts the oldest singleton and loops back to $(n,M)$:
+
+$$
+e^1_{n,M}
+=
+p\bigl(1+e_{n-1,M-1}\bigr)-q\,e_{n,M}.
+$$
+
+If the 1-move turns out to be optimal at this state, then $e_{n,M}=e^1_{n,M}$ and we can solve directly:
+
+$$
+e^1_{n,M}
+=
+\frac{p\bigl(1+e_{n-1,M-1}\bigr)}{1+q}.
+$$
+
+**2-move at $k=M$.** After a first-card miss (with eviction), the second card is drawn from $d = 2n-M$ unknowns:
+
+- **Lucky match** (prob $\frac{1}{d}$): the second card matches the first. Take the pair; $M-1$ old singletons remain. State: $(n-1, M-1)$, not $(n-1, M-2)$, because the second card is acted on immediately and never enters memory (see observation convention above).
+- **Auto-take** (prob $\frac{M-1}{d}$): the second card matches one of the $M-1$ remaining old singletons. The opponent takes that pair. State: $(n-1, M-1)$.
+- **Double miss** (prob $\frac{2(n-M)}{d}$): no match. Memory is still full; the state loops back to $(n, M)$.
+
+Sanity check: $1 + (M-1) + 2(n-M) = 2n - M = d$. $\checkmark$
+
+$$
+e^2_{n,M}
+=
+p\bigl(1+e_{n-1,M-1}\bigr)
++
+q\left[
+\frac{1}{d}\bigl(1+e_{n-1,M-1}\bigr)
+-\frac{M-1}{d}\bigl(1+e_{n-1,M-1}\bigr)
+-\frac{2(n-M)}{d}\,e_{n,M}
+\right].
+$$
+
+Collecting $e_{n,M}$ on the left:
+
+$$
+e^2_{n,M}
+=
+\frac{
+\left(p+\frac{q(2-M)}{d}\right)\bigl(1+e_{n-1,M-1}\bigr)
+}{
+1+\frac{2q(n-M)}{d}
+}.
+$$
+
+Every term on the right involves $n-1$ pairs, which have already been computed. This closed-form boundary equation replaces Zwick's deep-$k$ recursion.
+
+</details>
+
+### 6.3 Optimal move selection
+
+At each state $(n,k)$, the player picks the move with the highest value:
+
+$$
+e_{n,k}
+=
+\begin{cases}
+e^2_{n,0}, & k=0,\\[4pt]
+\max\bigl\{e^1_{n,k},\,e^2_{n,k}\bigr\}, & k=1,\\[4pt]
+\max\bigl\{0,\,e^1_{n,k},\,e^2_{n,k}\bigr\}, & k\ge 2.
+\end{cases}
+$$
+
+At $k=0$ the 1-move is not available (there is nothing in memory to match), and the pass is not available either (you need at least two known cards to waste both flips). At $k=1$ the pass is still unavailable. For $k \ge 2$ the pass (value $0$) enters the candidate set.
+
+The recursion is evaluated by increasing $n$, and for each $n$ by decreasing $k$ from $\min(n,M)$ down to $0$. This ordering guarantees that every value on the right-hand side has already been computed, except for the self-referential boundary terms at $k = M$, which are resolved in closed form as described above.
+
+<details markdown="1" class="notice">
+<summary>Two technical subtleties</summary>
+
+**Why eviction does not bias match probabilities.** One might worry that forgetting cards changes the distribution of what remains. It does not: conditional on the current reduced state, a forgotten card is indistinguishable from one that was never seen. The original shuffle is uniform, and the unseen portion of the board remains exchangeable regardless of eviction history. So the match probability is still $k/(2n-k)$.
+
+**Why optimal moves can change even below capacity.** The formulas for $k < M$ are identical in the bounded and Zwick models. Yet the optimal move at, say, $k=3$ can differ between the two. The reason is that the *values* plugged into those formulas are different, because they ultimately depend on what happens at the boundary.
+
+An analogy: the riverbed is the same for the first 7 miles. But Zwick's river flows on to the sea, while the bounded model hits a dam at mile 7. The dam changes the water level everywhere upstream.
+
+Concretely, $e_{12,3}$ depends on $e_{12,5}$, which depends on $e_{12,7}$. In Zwick's model, $e_{12,7}$ feeds into $k=8,9,\dots,12$, including the pass equilibrium. Under $M=7$, $e_{12,7}$ loops back into the boundary recursion instead. Same local formula, different downstream values, different optimal move.
+
+</details>
+
+
+## 7. Results
+
+### Move tables
+
+The tables below show the optimal move at each knowledge level $k$ for several board sizes. Bold entries mark positions where the bounded-memory strategy differs from Zwick.
+
+**$n = 8$ (16 cards):**
+
+| | $k{=}0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ |
+|---|---|---|---|---|---|---|---|---|---|
+| **Zwick** $(M{=}\infty)$ | 2 | 2 | 1 | 2 | 1 | 2 | 1 | **0** | 1 |
+| **Bounded** $(M{=}7)$ | 2 | 2 | 1 | 2 | 1 | **0** | 1 | **1** | --- |
+
+**$n = 10$ (20 cards):**
+
+| | $k{=}0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ | $9$ | $10$ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| **Zwick** $(M{=}\infty)$ | 2 | 2 | 1 | 2 | 1 | 2 | 1 | 2 | 1 | **0** | 1 |
+| **Bounded** $(M{=}7)$ | 2 | 2 | 1 | 2 | 1 | **1** | 1 | **1** | --- | --- | --- |
+
+**$n = 12$ (24 cards):**
+
+| | $k{=}0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ | $9$ | $10$ | $11$ | $12$ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **Zwick** $(M{=}\infty)$ | 2 | 2 | 1 | 2 | 1 | 2 | 1 | 2 | 1 | **0** | 1 | **0** | 1 |
+| **Bounded** $(M{=}7)$ | 2 | 2 | 1 | **1** | 1 | **1** | 1 | **1** | --- | --- | --- | --- | --- |
+
+**$n = 16$ (32 cards):**
+
+| | $k{=}0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ |
+|---|---|---|---|---|---|---|---|---|
+| **Zwick** $(M{=}\infty)$ | 2 | 2 | 1 | 2 | 1 | 2 | 1 | 2 |
+| **Bounded** $(M{=}7)$ | 2 | **1** | 1 | **1** | 1 | **1** | 1 | **1** |
+
+**$n = 20$ (40 cards):**
+
+| | $k{=}0$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ |
+|---|---|---|---|---|---|---|---|---|
+| **Zwick** $(M{=}\infty)$ | 2 | 2 | 1 | 2 | 1 | 2 | 1 | 2 |
+| **Bounded** $(M{=}7)$ | 2 | **1** | 1 | **1** | 1 | **1** | 1 | **1** |
+
+For $n=16$ and $n=20$, the Zwick columns are truncated at $k=7$ for comparison; Zwick's full tables extend to $k=n$ with the familiar alternating 2/1 pattern and passes near the top.
+
+A clear pattern emerges as the board grows: the bounded-memory strategy converges to "flip two unknowns only at $k=0$; flip one everywhere else." The second unknown card mostly churns memory, and the cost of that churn increases with board size.
+
+### Position values
+
+Expected gain for the starting player (negative = Player 2 advantage):
+
+| $M$ | $n=8$ | $n=10$ | $n=12$ | $n=16$ | $n=20$ |
+|-----|-------|--------|--------|--------|--------|
+| 3 | $+0.039$ | $+0.030$ | $+0.024$ | $+0.017$ | $+0.014$ |
+| 5 | $-0.005$ | $+0.013$ | $+0.018$ | $+0.015$ | $+0.012$ |
+| **7** | $-0.007$ | $-0.039$ | $\mathbf{-0.030}$ | $+0.007$ | $+0.010$ |
+| 9 | $-0.033$ | $-0.039$ | $-0.020$ | $-0.026$ | $-0.001$ |
+| $\infty$ | $-0.033$ | $-0.038$ | $-0.020$ | $-0.018$ | $-0.012$ |
+
+These are exact values computed in rational arithmetic, with no simulation noise. For $n=12$ at $M=7$, the Player 2 advantage is $-0.030$, which is larger in magnitude than Zwick's perfect-recall value of $-0.020$.
+
+At very low $M$, memory is too constrained for strategy to matter and Player 1's first-mover advantage dominates. At high $M \ge n$, the model recovers Zwick exactly.
+
+## 8. Simulations
+
+The exact DP gives values and optimal moves, but simulations show how strategies perform against one another and let me explore settings where exact analysis is unavailable, such as fluctuating capacity and asymmetric players.
+
+### 8.1 Bounded-memory optimum vs Zwick
+
+Both players have $M=7$. I pit the bounded-memory optimal strategy against Zwick's perfect-recall strategy in all four matchup combinations, across board sizes from $n=8$ to $n=36$.
+
+<a href="/figures_memory/bounded_vs_zwick_conditional.svg" class="image-popup">
+  <img src="/figures_memory/bounded_vs_zwick_conditional.svg" alt="Conditional win rate: Bounded vs Zwick"
+     style="background: #fff; border-radius: 6px; cursor: zoom-in;">
+</a>
+
+<a href="/figures_memory/bounded_vs_zwick_gain.svg" class="image-popup">
+  <img src="/figures_memory/bounded_vs_zwick_gain.svg" alt="Expected gain: Bounded vs Zwick"
+     style="background: #fff; border-radius: 6px; cursor: zoom-in;">
+</a>
+
+Against opponents using Zwick's policy, the bounded-memory-optimal policy wins across all tested board sizes. At $n=36$ (72 cards), the bounded-memory player gains roughly 3 full pairs over a Zwick opponent. The gain grows with board size because larger boards spend more time near the full-memory boundary where the two strategies differ.
+
+The strategy matrix at $n=16$ shows that bounded-memory optimal dominates Zwick within this two-strategy comparison: no matter which of the two strategies your opponent plays, you are better off playing bounded. (The DP proves optimality within the full class of 0/1/2-move strategies; the simulation confirms it specifically against Zwick.)
+
+<a href="/figures_memory/bounded_vs_zwick_matrix.svg" class="image-popup">
+  <img src="/figures_memory/bounded_vs_zwick_matrix.svg" alt="Strategy matrix"
+     style="background: #fff; border-radius: 6px; cursor: zoom-in;">
+</a>
+
+### 8.2 Robustness to fluctuation
+
+Real working-memory capacity is not fixed at exactly 7 every turn. I model this by drawing the effective capacity each turn from $M_0+\mathrm{Uniform}(-\sigma,+\sigma)$, clamped to a feasible range.
+
+<a href="/figures_memory/fluctuation_bounded_vs_zwick.svg" class="image-popup">
+  <img src="/figures_memory/fluctuation_bounded_vs_zwick.svg" alt="Bounded-optimal vs Zwick under fluctuation"
+     style="background: #fff; border-radius: 6px; cursor: zoom-in;">
+</a>
+
+<a href="/figures_memory/fluctuation_cross_gain.svg" class="image-popup">
+  <img src="/figures_memory/fluctuation_cross_gain.svg" alt="Cross-strategy gain under fluctuation"
+     style="background: #fff; border-radius: 6px; cursor: zoom-in;">
+</a>
+
+The bounded-memory strategy remains dominant across all fluctuation levels. Even when capacity varies widely, flipping one new card is robust, while Zwick's two-card exploration remains fragile because it churns memory.
+
+### 8.3 Asymmetric memory
+
+What happens when the two players have different capacities? Say, an adult ($M=9$) against a child ($M=5$). Each player uses the optimal strategy for their own capacity.
+
+<a href="/figures_memory/asymmetric_gain_heatmap.svg" class="image-popup">
+  <img src="/figures_memory/asymmetric_gain_heatmap.svg" alt="Asymmetric memory: expected gain heatmap"
+     style="background: #fff; border-radius: 6px; cursor: zoom-in;">
+</a>
+<a href="/figures_memory/asymmetric_p2cond_heatmap.svg" class="image-popup">
+  <img src="/figures_memory/asymmetric_p2cond_heatmap.svg" alt="Asymmetric memory: P2 conditional win rate"
+     style="background: #fff; border-radius: 6px; cursor: zoom-in;">
+</a>
+<a href="/figures_memory/asymmetric_memory_advantage.svg" class="image-popup">
+  <img src="/figures_memory/asymmetric_memory_advantage.svg" alt="Asymmetric memory: advantage curve"
+     style="background: #fff; border-radius: 6px; cursor: zoom-in;">
+</a>
+
+Memory capacity dwarfs positional advantage. A single extra memory slot is worth far more than the tiny first- or second-player effect.
+
+With asymmetric memory, however, the shared-memory theorem no longer applies literally: the two players no longer have the same information state. So in that setting, these strategies should be understood as strong heuristics rather than proven optima.
+
+### 8.4 Draw rate vs capacity
+
+<a href="/figures_memory/draw_rate_vs_capacity.svg" class="image-popup">
+  <img src="/figures_memory/draw_rate_vs_capacity.svg" alt="Draw rate and P2 advantage vs memory capacity"
+     style="background: #fff; border-radius: 6px; cursor: zoom-in;">
+</a>
+
+The draw rate shows a striking non-monotonic pattern. For small boards, passes can create sticky stalemates at certain capacities; once memory becomes large enough to cover the whole board, those stalemates disappear because one player eventually sweeps everything.
+
+For standard game sizes with human-scale memory ($M\approx 7$), $M$ is far below $n$, passes typically disappear from the optimal strategy, and draws are rare.
+
+## 9. Play Against the Bot
+
+Theory is nice, but the best way to feel the difference between strategies is to play. The game below lets you play Memory against a bot that uses either the bounded-memory optimal strategy or Zwick's perfect-recall strategy. You can adjust the bot's memory capacity and see which cards it remembers in real time.
+
+Try this experiment: play a few games against the bounded-memory bot ($M=7$), then switch to Zwick. With the bounded strategy, the bot flips one unknown card and keeps its memories stable. With Zwick, it flips two unknowns and old memories get evicted. The Zwick bot *looks* smarter because it explores faster, but on bounded memory it performs worse.
+
+<iframe src="/assets/memory_game.html" width="100%" height="750" style="border:none; border-radius:8px; overflow:hidden;"></iframe>
+
+## 10. Code & Reproducibility
+
+The reference implementations are all available on GitHub:
+
+**[GitHub: memory-game](https://github.com/taulantkoka/memory-game)**
+
+### Quick Start
+```bash
+git clone https://github.com/taulantkoka/memory-game.git
+cd memory-game
+pip install numpy matplotlib joblib
+
+# Run everything (~30 min at 100k games/point)
+python run_analysis.py
+
+# Run a single analysis
+python run_analysis.py --only 01
+
+# List available analyses
+python run_analysis.py --list
+```
+
+## 11. What I Learned
+
+1. **Greedy matching is optimal** under shared memory: leaving a publicly known pair on the board is weakly dominated by taking it immediately.
+2. **The bounded-memory optimum is simple:** flip two new cards only at the very start; once you know a few positions, flip only one and match when you can.
+3. **The bounded-memory strategy dominates Zwick's** on large boards, and the gap grows with size.
+4. **Who goes first barely matters.** The positional effect is real but tiny.
+5. **What really matters is memory capacity.** A single extra memory slot is worth much more than move order.
+6. **Stalemates are mostly a perfect-memory phenomenon.** Under human-scale memory limits and standard board sizes, they largely disappear.
+
+The private-memory version of the game remains open and looks much harder: once players remember different things, the problem becomes one of incomplete information rather than perfect information.
+
+## References
+
+- Cowan, N. (2001). The magical number 4 in short-term memory: A reconsideration of mental storage capacity. *Behavioral and Brain Sciences*, 24(1), 87-114.
+- Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information. *Psychological Review*, 63(2), 81-97.
+- Zwick, U., & Paterson, M. S. (1993). The memory game. *Theoretical Computer Science*, 110(1), 169-196.
