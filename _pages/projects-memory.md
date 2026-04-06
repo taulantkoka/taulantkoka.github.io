@@ -233,7 +233,7 @@ I write $e_{n,k}$ for the value of state $(n,k)$ to the player to move. Positive
  
 The boundary conditions are: $e_{0,0}=0$ (no cards left), and $e_{n,n}=n$ whenever $n \le M$ (all remaining pairs are known, so the current player sweeps them).
  
-### 6.1 The three moves (when memory isn't full, $k < M$)
+### 6.1 Three moves ($k < M$)
  
 Let $p = k/(2n-k)$ be the probability that a newly flipped card matches one already in memory, and let $q = 1-p$.
  
