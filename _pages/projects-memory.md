@@ -444,7 +444,7 @@ Expected gain for the starting player (negative = Player 2 advantage):
 
 These are exact values computed in rational arithmetic, with no simulation noise. For $n=12$ at $M=7$, the Player 2 advantage is $-0.030$, which is larger in magnitude than Zwick's perfect-recall value of $-0.020$.
 
-At very low $M$, memory is too constrained for strategy to matter and Player 1's first-mover advantage dominates. At high $M \ge n$, the model recovers Zwick exactly.
+At very low $M$, memory is too constrained for strategy to matter and Player 1's first-mover advantage dominates. At high $M \ge n,$ the model recovers Zwick exactly.
 
 ## 8. Simulations
 
