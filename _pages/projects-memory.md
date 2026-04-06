@@ -229,11 +229,11 @@ Thus the DP closes on $(n,k)$, and $V(s) = e_{n,k}$ where $(n,k)$ is the reduced
 
 With greedy matching established, I can compute the optimal 0/1/2-move strategy by backward induction on the reduced state space $(n,k)$ with $0 \le k \le \min(n,M)$.
 
-I write $e_{n,k}$ for the value of state $(n,k)$ to the player to move. Positive means the current player is favoured; negative means the opponent is. The three candidate moves (pass, 1-move, 2-move) each produce a formula for the expected value; the player picks the best one.
+I write $e_{n,k}$ for the value of state $(n,k)$ to the player to move. Positive means the current player is favoured; negative means the opponent is. The three candidate moves (0-move, 1-move, 2-move) each produce a formula for the expected value; the player picks the best one.
 
 The boundary conditions are: $e_{0,0}=0$ (no cards left), and $e_{n,n}=n$ whenever $n \le M$ (all remaining pairs are known, so the current player sweeps them).
 
-**Observation convention.** A card enters working memory only if its outcome is not resolved immediately. If you flip a card and it completes a pair — whether by matching the first card you flipped (lucky match) or by matching a singleton the opponent recognises (auto-take) — the pair is taken on the spot and neither card of the pair needs to be stored for future recall. Only cards whose fate remains unresolved occupy a memory slot. This matters at the boundary $k=M$: a lucky match after one eviction leaves $M-1$ old singletons in memory, not $M-2$.
+**Observation convention.** A card enters working memory only if its outcome is not resolved immediately. If you flip a card and it completes a pair, whether by matching the first card you flipped (lucky match) or by matching a singleton the opponent recognises (auto-take), the pair is taken on the spot and neither card of the pair needs to be stored for future recall. Only cards whose fate remains unresolved occupy a memory slot. This matters at the boundary $k=M$: a lucky match after one eviction leaves $M-1$ old singletons in memory, not $M-2$.
 
 ### 6.1 The three moves (when memory is not full, $k < M$)
 
