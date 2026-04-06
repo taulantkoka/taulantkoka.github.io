@@ -235,7 +235,7 @@ The boundary conditions are: $e_{0,0}=0$ (no cards left), and $e_{n,n}=n$ whenev
 
 **Observation convention.** A card enters working memory only if its outcome is not resolved immediately. If you flip a card and it completes a pair, whether by matching the first card you flipped (lucky match) or by matching a singleton the opponent recognises (auto-take), the pair is taken on the spot and neither card of the pair needs to be stored for future recall. Only cards whose fate remains unresolved occupy a memory slot. This matters at the boundary $k=M$: a lucky match after one eviction leaves $M-1$ old singletons in memory, not $M-2$.
 
-### 6.1 The three moves (when memory is not full, $k < M$)
+### 6.1 The three moves ($k < M$)
 
 Let $p = k/(2n-k)$ be the probability that a newly flipped card matches one already in memory, and let $q = 1-p$.
 
@@ -288,7 +288,7 @@ $$
 
 </details>
 
-### 6.2 The boundary: what changes when memory is full ($k = M$)
+### 6.2 What changes when memory is full (boundary $k = M$)
 
 When memory is already full, flipping a new card triggers LRU eviction: the new card enters memory and the oldest singleton is pushed out. This has two consequences.
 
