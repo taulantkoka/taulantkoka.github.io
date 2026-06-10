@@ -136,23 +136,18 @@ $$
 x_1,x_2,\dots,x_t,
 $$
 
-none of which is one of the deleted entries. Then after every prefix $x_1,\dots,x_r$, the updated list $L'_r$ is obtained from $L_r$ by deleting some subset of the originally deleted entries. In particular:
+none of which is one of the deleted entries. Then deleting entries from an LRU cache cannot make the cache worse informed about the remaining, non-deleted cards. More precisely, after every prefix $x_1,\dots,x_r$:
 
-1. every non-deleted card remembered in $L_r$ is also remembered in $L'_r$;
-2. the relative LRU order of the non-deleted remembered cards is the same in both lists.
+1. every non-deleted card remembered in the original-updated list $L_r$ is also remembered in the deleted-updated list $L'_r$;
+2. $L'_r$ may additionally remember some non-deleted cards that $L_r$ has evicted, because deleting entries creates spare capacity.
 
-*Proof of lemma.* By induction on $r$.
+*Proof of lemma.* Couple the two LRU processes under the same observation sequence. Initially, $L'$ contains all of the non-deleted entries of $L$, and possibly has more free slots. Now process observations one at a time.
 
-For $r=0$ this is true by construction. Assume it holds at step $r$, and consider the next observation $x_{r+1}$.
+If an observed card is already present, the corresponding cache moves it to the MRU end. If it is absent, the cache inserts it and evicts its LRU entry only if full. The deleted cache can never have less free capacity than the original cache after ignoring the deleted entries, so any eviction that occurs in the deleted cache is no earlier, on non-deleted cards, than the corresponding eviction in the original cache. Thus a non-deleted card cannot disappear from $L'_r$ while still being present in $L_r$.
 
-- If $x_{r+1}$ is already present in both lists, both move it to the MRU end.
-- If $x_{r+1}$ is absent from both lists, both insert it. If no eviction occurs, the relation is preserved. If eviction occurs, $L_r$ evicts its LRU entry; $L'_r$, being obtained from $L_r$ by deleting entries, either evicts the same entry or one already deleted.
-- If $x_{r+1}$ is present in $L'_r$, then by the induction hypothesis it is also present in $L_r$, so this reduces to the first case.
-- The case where $x_{r+1}$ is present in $L_r$ but absent from $L'_r$ cannot occur, because deleted entries are excluded from the observation sequence.
+The invariant therefore holds for all prefixes. $\square$
 
-So the invariant is preserved for all $r$. $\square$
-
-Apply the lemma with the deleted entries equal to $\alpha,\beta$. It follows that for any common sequence of subsequent observations of non-$P$ cards, the immediate-take state $s^+$ is never worse informed about the remaining board than the deferred state.
+Apply the lemma with the deleted entries equal to $\alpha,\beta$. It follows that for any common sequence of subsequent observations of non-$P$ cards, the immediate-take state $s^+$ is weakly better informed about the remaining board than the deferred state: it has already banked $P$, and deleting $P$ from memory cannot reduce recall of the other unmatched cards.
 
 Now let $\tau$ be the first time in the deferred play at which one of three things happens: $A$ takes $P$, $B$ takes $P$, or one of $\alpha,\beta$ is evicted from memory:
 
@@ -233,16 +228,16 @@ The base cases are straightforward: $e_{0,0}=0$ (no cards left, no points to gai
 
 **Observation convention.** When does a flipped card enter working memory? Only when its outcome is *unresolved*. If a card completes a pair the moment it is revealed, whether by matching the first card (lucky match) or a singleton the opponent recognises (auto-take), the pair is removed immediately and neither card needs to be stored for future recall. Only unresolved cards occupy a memory slot. This convention matters at the boundary $k=M$: a lucky match after one eviction leaves $M-1$ old singletons in memory, not $M-2$.
 
-### 6.1 The three moves (when memory is not full, $k < M$)
+### 6.1 The three moves away from the memory boundary ($k \le M-2$)
 
 Let $p = k/(2n-k)$ be the probability that a newly flipped card matches one already in memory, and let $q = 1-p$.
 
 - **0-move (pass):** flip two cards you already know don't match. Nothing changes; the opponent inherits the same state. Value: $0$. Only legal when $k \ge 2$.
 - **1-move:** flip one new card. If it matches a remembered card (prob $p$), take the pair and play again from $(n{-}1, k{-}1)$. If not (prob $q$), waste your second flip on a card you already know, and the opponent faces $(n, k{+}1)$.
-- **2-move:** flip one new card. If it matches a remembered card, take the pair. If not, flip a second new card, which leads to one of three outcomes.
+- **2-move:** flip one new card. If it matches a remembered card, take the pair. If not, flip a second new card. In this subsection I assume $k \le M-2$, so two unresolved new cards can be stored without eviction.
 
 <details markdown="1" class="notice">
-<summary>Full formulas for k < M</summary>
+<summary>Full formulas for $k \le M-2$</summary>
 
 **0-move.**
 
@@ -286,7 +281,66 @@ $$
 
 </details>
 
-### 6.2 What changes when memory is full ($k = M$)
+### 6.2 The boundary-adjacent case ($k = M-1$)
+
+There is one extra case between the interior recurrence and the full-memory recurrence. At $k=M-1$, the first missed new card fills the last available memory slot. If the second new card is also unresolved, it must enter memory too, which immediately evicts the least-recently-used singleton. So the double-miss branch goes to $(n,M)$, not $(n,M+1)$.
+
+The 1-move formula is still the ordinary below-capacity formula:
+
+$$
+e^1_{n,M-1}
+=
+p\bigl(1+e_{n-1,M-2}\bigr)-q\,e_{n,M},
+$$
+
+where
+
+$$
+p=\frac{M-1}{2n-M+1},
+\qquad
+q=1-p.
+$$
+
+For the 2-move, after the first miss the memory is full and there are
+
+$$
+d=2n-M
+$$
+
+unknown positions available for the second flip:
+
+- **Lucky match** (prob $\frac{1}{d}$): the second card matches the first. You take the pair and continue from $(n-1,M-1)$.
+- **Auto-take** (prob $\frac{M-1}{d}$): the second card matches one of the old remembered singletons. The opponent takes that pair, and the continuation is $-(1+e_{n-1,M-1})$ in your frame.
+- **Double miss** (prob $\frac{2(n-M)}{d}$): both new cards are unresolved. The second new card enters memory and evicts the LRU singleton, so the opponent faces $(n,M)$.
+
+Thus
+
+$$
+e^2_{n,M-1}
+=
+p\bigl(1+e_{n-1,M-2}\bigr)
++
+q\left[
+\frac{1}{d}\bigl(1+e_{n-1,M-1}\bigr)
+-\frac{M-1}{d}\bigl(1+e_{n-1,M-1}\bigr)
+-\frac{2(n-M)}{d}\,e_{n,M}
+\right].
+$$
+
+Equivalently,
+
+$$
+e^2_{n,M-1}
+=
+p\bigl(1+e_{n-1,M-2}\bigr)
++
+q\left[
+\frac{2-M}{d}\bigl(1+e_{n-1,M-1}\bigr)
+-\frac{2(n-M)}{d}\,e_{n,M}
+\right].
+$$
+
+### 6.3 What changes when memory is full ($k = M$)
 
 When memory is already full, flipping a new card triggers LRU eviction: the new card enters and the oldest singleton is pushed out. This changes the recurrence in two ways.
 
@@ -351,7 +405,7 @@ Every term on the right involves $n-1$ pairs, which have already been computed. 
 
 </details>
 
-### 6.3 Optimal move selection
+### 6.4 Optimal move selection
 
 At each state $(n,k)$, the player picks the move with the highest value:
 
@@ -367,18 +421,18 @@ $$
 
 At $k=0$ there is nothing in memory to match, so the 1-move is unavailable. The pass also requires at least two known cards, so only the 2-move remains. At $k=1$ the pass is still unavailable. For $k \ge 2$ the pass (value $0$) enters the candidate set.
 
-The recursion is evaluated by increasing $n$, and for each $n$ by decreasing $k$ from $\min(n,M)$ down to $0$. This ordering ensures that every value on the right-hand side has already been computed, except for the self-referential boundary terms at $k = M$, which are resolved in closed form as shown above.
+The recursion is evaluated by increasing $n$, and for each $n$ by decreasing $k$ from $\min(n,M)$ down to $0$. This ordering ensures that every value on the right-hand side has already been computed. The only self-referential terms occur at $k=M$, where they are resolved in closed form before computing the boundary-adjacent state $k=M-1$.
 
 <details markdown="1" class="notice">
 <summary>Two technical subtleties</summary>
 
 **Why eviction does not bias match probabilities.** One might worry that forgetting cards changes the distribution of what remains. It does not: conditional on the current reduced state, a forgotten card is indistinguishable from one that was never seen. The original shuffle is uniform, and the unseen portion of the board remains exchangeable regardless of eviction history. So the match probability is still $k/(2n-k)$.
 
-**Why optimal moves can change even below capacity.** The formulas for $k < M$ are identical in the bounded and Zwick models. Yet the optimal move at, say, $k=3$ can differ between the two. The reason is that the *values* plugged into those formulas are different, because they ultimately depend on what happens at the boundary.
+**Why optimal moves can change even below capacity.** Away from the boundary, specifically for $k \le M-2$, the 2-move formula is identical to the corresponding Zwick formula. Yet the optimal move at, say, $k=3$ can still differ between the two models. The reason is that the *values* plugged into those formulas are different, because they ultimately depend on what happens at the boundary.
 
-An analogy: the riverbed is the same for the first 7 miles, but Zwick's river flows on to the sea while the bounded model hits a dam at mile 7. The dam changes the water level everywhere upstream.
+An analogy: the riverbed is the same for the first few miles, but Zwick's river flows on to the sea while the bounded model hits a dam at the memory limit. The dam changes the water level everywhere upstream.
 
-Concretely, $e_{12,3}$ depends on $e_{12,5}$, which depends on $e_{12,7}$. In Zwick's model, $e_{12,7}$ feeds into $k=8,9,\dots,12$, including the pass equilibrium. Under $M=7$, $e_{12,7}$ loops back into the boundary recursion instead. Same local formula, different downstream values, different optimal move.
+Concretely, $e_{12,3}$ depends on $e_{12,5}$, which depends on $e_{12,7}$. In Zwick's model, $e_{12,7}$ feeds into $k=8,9,\dots,12$, including the pass equilibrium. Under $M=7$, $e_{12,7}$ is the full-memory boundary state, while $e_{12,6}$ is the boundary-adjacent state whose double-miss branch feeds into $e_{12,7}$. Same local recurrence far enough from the boundary, different downstream values, different optimal move.
 
 </details>
 
