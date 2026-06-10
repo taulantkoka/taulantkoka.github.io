@@ -103,95 +103,48 @@ More precisely: in the bounded-memory model with deterministic LRU eviction, sup
 <details markdown="1" class="notice">
 <summary>Proof</summary>
 
-Write $s=(B,\pi,L)$ for a full game state, where $B$ is the set of unmatched cards, $\pi$ is the player to move, and $L$ is the ordered shared LRU memory list. For any legal action $a$, let $Q(s,a)$ be the value to the player to move of taking action $a$ in state $s$ and then playing optimally thereafter, and let
+Write $s=(B,\pi,L)$ for a full game state, where $B$ is the set of unmatched cards, $\pi$ is the player to move, and $L$ is the ordered shared LRU memory list. Assume $\pi=A$, and that $L$ contains both $\alpha,\beta$ of the matching pair $P=\{\alpha,\beta\}$.
+
+Let $\sigma$ be any strategy whose first action leaves $P$ on the board. I will construct another strategy $\sigma^+$ that first takes $P$ and then does at least as well.
+
+After taking $P$, the game moves to
 
 $$
-V(s)=\max_a Q(s,a).
+s^+ := T_P(s),
 $$
 
-Assume $\pi=A$, and that $L$ contains both $\alpha,\beta$ of the matching pair $P=\{\alpha,\beta\}$.
+which is obtained from $s$ by deleting $\alpha,\beta$ from both the board and the shared memory. The player scores one point and keeps the move.
 
-Let $a$ be any legal action by $A$ that does not take $P$ immediately. We compare:
+The only technical point is that deleting a known pair from an LRU memory cannot make the player less able to remember the other unmatched cards.
 
-- the **deferred** line, in which $A$ plays $a$ from $s$;
-- the **immediate-take** line, in which $A$ first takes $P$, moving to
-
-  $$
-  s^+ := T_P(s),
-  $$
-
-  and then both players play optimally.
-
-Thus
-
-$$
-Q(s,\text{take }P)=1+V(s^+).
-$$
-
-The key observation is that $s^+$ is obtained from $s$ by deleting $\alpha,\beta$ from both the board and the shared memory.
-
-**Lemma (LRU monotonicity).** Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations
+**Lemma (LRU deletion monotonicity).** Let $L$ be an LRU memory list, and let $L'$ be obtained from $L$ by deleting some entries. Suppose both lists are then updated by the same sequence of observations
 
 $$
 x_1,x_2,\dots,x_t,
 $$
 
-none of which is one of the deleted entries. Then deleting entries from an LRU cache cannot make the cache worse informed about the remaining, non-deleted cards. More precisely, after every prefix $x_1,\dots,x_r$:
+none of which is one of the deleted entries. Then deleting entries from an LRU cache cannot reduce recall of the remaining, non-deleted cards. More precisely, after every prefix $x_1,\dots,x_r$:
 
 1. every non-deleted card remembered in the original-updated list $L_r$ is also remembered in the deleted-updated list $L'_r$;
 2. $L'_r$ may additionally remember some non-deleted cards that $L_r$ has evicted, because deleting entries creates spare capacity.
 
 *Proof of lemma.* Couple the two LRU processes under the same observation sequence. Initially, $L'$ contains all of the non-deleted entries of $L$, and possibly has more free slots. Now process observations one at a time.
 
-If an observed card is already present, the corresponding cache moves it to the MRU end. If it is absent, the cache inserts it and evicts its LRU entry only if full. The deleted cache can never have less free capacity than the original cache after ignoring the deleted entries, so any eviction that occurs in the deleted cache is no earlier, on non-deleted cards, than the corresponding eviction in the original cache. Thus a non-deleted card cannot disappear from $L'_r$ while still being present in $L_r$.
+If an observed card is already present, the corresponding cache moves it to the MRU end. If it is absent, the cache inserts it and evicts its LRU entry only if full. The deleted cache can never have less effective capacity for non-deleted entries than the original cache, because the deleted entries no longer occupy slots. Therefore an eviction of a non-deleted card in the deleted cache cannot happen before the corresponding eviction in the original cache. Thus a non-deleted card cannot disappear from $L'_r$ while still being present in $L_r$.
 
-The invariant therefore holds for all prefixes. $\square$
+The invariant holds for all prefixes. $\square$
 
-Apply the lemma with the deleted entries equal to $\alpha,\beta$. It follows that for any common sequence of subsequent observations of non-$P$ cards, the immediate-take state $s^+$ is weakly better informed about the remaining board than the deferred state: it has already banked $P$, and deleting $P$ from memory cannot reduce recall of the other unmatched cards.
+Now define $\sigma^+$ as follows. First take $P$. After that, imitate $\sigma$ on the remaining board whenever possible, ignoring any later instruction of $\sigma$ that refers to $P$. This comparison is well-defined because, by the lemma, removing $P$ frees memory slots and does not reduce recall of any other unmatched card under the same future observations.
 
-Now let $\tau$ be the first time in the deferred play at which one of three things happens: $A$ takes $P$, $B$ takes $P$, or one of $\alpha,\beta$ is evicted from memory:
+There are three possible ways the original $\sigma$-line can treat $P$:
 
-**Case 1: $B$ takes $P$ at time $\tau$.** Then the deferred line has allowed the opponent to score a publicly known pair that $A$ could have taken immediately. Relative to the immediate-take line, $A$ is down one pair and, by the lemma, is not better informed about the remaining board. Hence
+**Case 1: the opponent takes $P$ before $A$ does.** Then $\sigma$ has given the opponent a publicly known pair that $A$ could have taken immediately. The strategy $\sigma^+$ has instead banked that point for $A$ and has not worsened memory for the remaining board. So $\sigma^+$ does at least as well.
 
-$$
-Q(s,\text{take }P)\;>\;Q(s,a).
-$$
+**Case 2: one of $\alpha,\beta$ is evicted before $P$ is taken.** Then $\sigma$ has failed to bank an immediately available point and has allowed the visible pair to disappear from memory. The strategy $\sigma^+$ has already scored that point and has not worsened memory for the remaining board. So $\sigma^+$ does at least as well.
 
-**Case 2: one of $\alpha,\beta$ is evicted before $P$ is taken.** Then the deferred line has failed to bank an immediately available point and has weakly reduced future information. The immediate-take line has already scored the point and is weakly better informed on the remaining board. So again
+**Case 3: $A$ eventually takes $P$.** Then both lines eventually give $A$ the same point for $P$, but $\sigma^+$ takes it earlier, keeps the move immediately, and never uses memory capacity to carry the already-known pair. Delaying $P$ creates no additional point and no memory advantage for the rest of the board. So $\sigma^+$ does at least as well.
 
-$$
-Q(s,\text{take }P)\;>\;Q(s,a).
-$$
-
-**Case 3: $A$ takes $P$ at time $\tau$.** At that moment, both lines have removed the same pair $P$, and the remaining board is identical. Let $s_\tau^{\mathrm{def}}$ and $s_\tau^{\mathrm{imm}}$ be the resulting full states after removal of $P$ in the deferred and immediate-take lines respectively. By the LRU monotonicity lemma,
-
-$$
-s_\tau^{\mathrm{imm}}
-\quad\text{is weakly better informed than}\quad
-s_\tau^{\mathrm{def}}
-$$
-
-on the remaining board. Therefore
-
-$$
-V\!\left(s_\tau^{\mathrm{imm}}\right)\;\ge\;V\!\left(s_\tau^{\mathrm{def}}\right),
-$$
-
-and hence
-
-$$
-Q(s,\text{take }P)\;\ge\;Q(s,a).
-$$
-
-In all three cases,
-
-$$
-Q(s,\text{take }P)\;\ge\;Q(s,a)
-\qquad
-\text{for every legal }a\text{ that leaves }P\text{ on the board}.
-$$
-
-So taking a publicly known pair immediately is weakly dominant. $\square$
+Thus for every strategy that leaves $P$ on the board, there is a strategy that takes $P$ immediately and yields weakly greater payoff. Therefore leaving a publicly known pair unmatched is weakly dominated, and we may restrict attention to optimal strategies that take such a pair immediately. $\square$
 
 **Remark.** This proof uses the fact that memory is shared and publicly observable. With private memory, A could know a pair that B does not know about. In that setting, holding the pair in reserve could be genuinely strategic.
 
